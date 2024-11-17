@@ -1,0 +1,6 @@
+
+{
+    "logFolder":"picarro_log/",
+    "logStart":"True",
+    "dataFolder":"picarro_data/"
+}

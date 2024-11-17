@@ -1,0 +1,1333 @@
+2024-10-07 16:30:26,819 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:30:26,820 - INFO - > Reutrn Result: : 
+2024-10-07 16:30:26,820 - INFO - > -- >>          : 
+2024-10-07 16:30:26,821 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:30:26,821 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:30:26,822 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:30:26,823 - INFO - > -- >>          : 
+2024-10-07 16:30:26,826 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:30:26,827 - INFO - > Return Result  : 
+2024-10-07 16:30:26,827 - INFO - > -- >>          : 
+2024-10-07 16:30:26,827 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:30:26,827 - INFO - > -- >>          : 
+2024-10-07 16:30:26,827 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:30:26,828 - INFO - > Return Result  : OK
+2024-10-07 16:30:26,828 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:30:26,828 - INFO - > Return Result  : 10.2323
+2024-10-07 16:30:26,828 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:30:26,828 - INFO - > Return Result  : 963
+2024-10-07 16:30:26,828 - INFO - > -- >>          : 1111000011
+2024-10-07 16:30:26,829 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:30:26,829 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:30:26,829 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:30:26,829 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:30:26,829 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:30:26,829 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:30:26,829 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:30:26,829 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:30:26,829 - INFO - > Return Result  : OK
+2024-10-07 16:30:26,830 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:30:26,830 - INFO - > Return Result  : ON;8
+2024-10-07 16:30:26,830 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:30:26,830 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:30:26,830 - INFO - > Return Result  : 
+2024-10-07 16:30:26,830 - INFO - > -- >>          : 3
+2024-10-07 16:30:26,831 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:30:26,831 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:30:26,832 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:30:26,832 - INFO - > -- >>          : 
+2024-10-07 16:30:26,832 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:30:26,833 - INFO - > Return Result  : 
+2024-10-07 16:30:26,833 - INFO - > -- >>          : 
+2024-10-07 16:30:26,833 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:30:26,834 - INFO - > -- >>          : 
+2024-10-07 16:30:26,834 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:30:26,834 - INFO - > Return Result  : OK
+2024-10-07 16:30:26,834 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:30:26,834 - INFO - > Return Result  : 1
+2024-10-07 16:30:26,834 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:30:26,834 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:30:26,834 - INFO - > Return Result  : OK
+2024-10-07 16:31:13,656 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:31:13,657 - INFO - > Reutrn Result: : 
+2024-10-07 16:31:13,657 - INFO - > -- >>          : 
+2024-10-07 16:31:13,657 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,658 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,659 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,659 - INFO - > -- >>          : 
+2024-10-07 16:31:13,662 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:31:13,663 - INFO - > Return Result  : 
+2024-10-07 16:31:13,663 - INFO - > -- >>          : 
+2024-10-07 16:31:13,663 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,664 - INFO - > -- >>          : 
+2024-10-07 16:31:13,664 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:31:13,664 - INFO - > Return Result  : OK
+2024-10-07 16:31:13,664 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:31:13,665 - INFO - > Return Result  : 10.2323
+2024-10-07 16:31:13,665 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:31:13,665 - INFO - > Return Result  : 963
+2024-10-07 16:31:13,665 - INFO - > -- >>          : 1111000011
+2024-10-07 16:31:13,665 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:31:13,665 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:31:13,665 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:31:13,665 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:31:13,665 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:31:13,665 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:31:13,666 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:31:13,666 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:31:13,666 - INFO - > Return Result  : OK
+2024-10-07 16:31:13,666 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:31:13,666 - INFO - > Return Result  : ON;8
+2024-10-07 16:31:13,666 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:31:13,666 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:31:13,667 - INFO - > Return Result  : 
+2024-10-07 16:31:13,667 - INFO - > -- >>          : 3
+2024-10-07 16:31:13,667 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:31:13,668 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:31:13,668 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:31:13,669 - INFO - > -- >>          : 
+2024-10-07 16:31:13,669 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:31:13,669 - INFO - > Return Result  : 
+2024-10-07 16:31:13,670 - INFO - > -- >>          : 
+2024-10-07 16:31:13,670 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:31:13,670 - INFO - > -- >>          : 
+2024-10-07 16:31:13,670 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:31:13,670 - INFO - > Return Result  : OK
+2024-10-07 16:31:13,671 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:31:13,671 - INFO - > Return Result  : 1
+2024-10-07 16:31:13,671 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:31:13,671 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:31:13,671 - INFO - > Return Result  : OK
+2024-10-07 16:31:13,881 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:31:13,882 - INFO - > Reutrn Result: : 
+2024-10-07 16:31:13,882 - INFO - > -- >>          : 
+2024-10-07 16:31:13,882 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,883 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,883 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:31:13,883 - INFO - > -- >>          : 
+2024-10-07 16:33:09,808 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:33:09,808 - INFO - > Reutrn Result: : 
+2024-10-07 16:33:09,810 - INFO - > -- >>          : 
+2024-10-07 16:33:09,810 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:33:09,810 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:33:09,811 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:33:09,811 - INFO - > -- >>          : 
+2024-10-07 16:33:09,815 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:33:09,816 - INFO - > Return Result  : 
+2024-10-07 16:33:09,817 - INFO - > -- >>          : 
+2024-10-07 16:33:09,817 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:33:09,818 - INFO - > -- >>          : 
+2024-10-07 16:33:09,818 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:33:09,819 - INFO - > Return Result  : OK
+2024-10-07 16:33:09,819 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:33:09,819 - INFO - > Return Result  : 10.2323
+2024-10-07 16:33:09,819 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:33:09,820 - INFO - > Return Result  : 963
+2024-10-07 16:33:09,820 - INFO - > -- >>          : 1111000011
+2024-10-07 16:33:09,820 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:33:09,820 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:33:09,820 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:33:09,820 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:33:09,820 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:33:09,821 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:33:09,821 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:33:09,821 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:33:09,821 - INFO - > Return Result  : OK
+2024-10-07 16:33:09,822 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:33:09,822 - INFO - > Return Result  : ON;8
+2024-10-07 16:33:09,822 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:33:09,822 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:33:09,823 - INFO - > Return Result  : 
+2024-10-07 16:33:09,824 - INFO - > -- >>          : 3
+2024-10-07 16:33:09,824 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:33:09,825 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:33:09,826 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:33:09,826 - INFO - > -- >>          : 
+2024-10-07 16:33:09,827 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:33:09,827 - INFO - > Return Result  : 
+2024-10-07 16:33:09,828 - INFO - > -- >>          : 
+2024-10-07 16:33:09,828 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:33:09,828 - INFO - > -- >>          : 
+2024-10-07 16:33:09,828 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:33:09,828 - INFO - > Return Result  : OK
+2024-10-07 16:33:09,828 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:33:09,830 - INFO - > Return Result  : 1
+2024-10-07 16:33:09,830 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:33:09,830 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:33:09,830 - INFO - > Return Result  : OK
+2024-10-07 16:33:10,045 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:33:10,045 - INFO - > Reutrn Result: : 
+2024-10-07 16:33:10,045 - INFO - > -- >>          : 
+2024-10-07 16:33:10,046 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:33:10,046 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:33:10,046 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:33:10,047 - INFO - > -- >>          : 
+2024-10-07 16:34:10,436 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:34:10,437 - INFO - > Reutrn Result: : 
+2024-10-07 16:34:10,438 - INFO - > -- >>          : 
+2024-10-07 16:34:10,438 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,439 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,440 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,440 - INFO - > -- >>          : 
+2024-10-07 16:34:10,443 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:34:10,444 - INFO - > Return Result  : 
+2024-10-07 16:34:10,444 - INFO - > -- >>          : 
+2024-10-07 16:34:10,445 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,445 - INFO - > -- >>          : 
+2024-10-07 16:34:10,446 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:34:10,446 - INFO - > Return Result  : OK
+2024-10-07 16:34:10,447 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:34:10,447 - INFO - > Return Result  : 10.2323
+2024-10-07 16:34:10,447 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:34:10,447 - INFO - > Return Result  : 963
+2024-10-07 16:34:10,447 - INFO - > -- >>          : 1111000011
+2024-10-07 16:34:10,448 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:34:10,448 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:34:10,448 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:34:10,449 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:34:10,449 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:34:10,449 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:34:10,449 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:34:10,450 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:34:10,450 - INFO - > Return Result  : OK
+2024-10-07 16:34:10,451 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:34:10,451 - INFO - > Return Result  : ON;8
+2024-10-07 16:34:10,451 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:34:10,452 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:34:10,452 - INFO - > Return Result  : 
+2024-10-07 16:34:10,452 - INFO - > -- >>          : 3
+2024-10-07 16:34:10,453 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:10,454 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:10,456 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:10,457 - INFO - > -- >>          : 
+2024-10-07 16:34:10,458 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:34:10,459 - INFO - > Return Result  : 
+2024-10-07 16:34:10,459 - INFO - > -- >>          : 
+2024-10-07 16:34:10,459 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:10,460 - INFO - > -- >>          : 
+2024-10-07 16:34:10,460 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:34:10,460 - INFO - > Return Result  : OK
+2024-10-07 16:34:10,460 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:34:10,460 - INFO - > Return Result  : 1
+2024-10-07 16:34:10,461 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:34:10,461 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:34:10,461 - INFO - > Return Result  : OK
+2024-10-07 16:34:10,670 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:34:10,671 - INFO - > Reutrn Result: : 
+2024-10-07 16:34:10,671 - INFO - > -- >>          : 
+2024-10-07 16:34:10,671 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,672 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,672 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:34:10,673 - INFO - > -- >>          : 
+2024-10-07 16:34:58,267 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:34:58,268 - INFO - > Reutrn Result: : 
+2024-10-07 16:34:58,268 - INFO - > -- >>          : 
+2024-10-07 16:34:58,269 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,270 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,270 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,271 - INFO - > -- >>          : 
+2024-10-07 16:34:58,275 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:34:58,275 - INFO - > Return Result  : 
+2024-10-07 16:34:58,276 - INFO - > -- >>          : 
+2024-10-07 16:34:58,276 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,276 - INFO - > -- >>          : 
+2024-10-07 16:34:58,276 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:34:58,277 - INFO - > Return Result  : OK
+2024-10-07 16:34:58,277 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:34:58,277 - INFO - > Return Result  : 10.2323
+2024-10-07 16:34:58,277 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:34:58,277 - INFO - > Return Result  : 963
+2024-10-07 16:34:58,278 - INFO - > -- >>          : 1111000011
+2024-10-07 16:34:58,278 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:34:58,278 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:34:58,278 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:34:58,278 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:34:58,278 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:34:58,278 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:34:58,278 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:34:58,279 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:34:58,279 - INFO - > Return Result  : OK
+2024-10-07 16:34:58,279 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:34:58,279 - INFO - > Return Result  : ON;8
+2024-10-07 16:34:58,279 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:34:58,279 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:34:58,280 - INFO - > Return Result  : 
+2024-10-07 16:34:58,280 - INFO - > -- >>          : 3
+2024-10-07 16:34:58,281 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:58,281 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:58,282 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:58,282 - INFO - > -- >>          : 
+2024-10-07 16:34:58,283 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:34:58,283 - INFO - > Return Result  : 
+2024-10-07 16:34:58,284 - INFO - > -- >>          : 
+2024-10-07 16:34:58,284 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:34:58,285 - INFO - > -- >>          : 
+2024-10-07 16:34:58,285 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:34:58,285 - INFO - > Return Result  : OK
+2024-10-07 16:34:58,285 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:34:58,285 - INFO - > Return Result  : 1
+2024-10-07 16:34:58,285 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:34:58,286 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:34:58,286 - INFO - > Return Result  : OK
+2024-10-07 16:34:58,498 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:34:58,499 - INFO - > Reutrn Result: : 
+2024-10-07 16:34:58,499 - INFO - > -- >>          : 
+2024-10-07 16:34:58,499 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,500 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,500 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:34:58,501 - INFO - > -- >>          : 
+2024-10-07 16:35:34,620 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:35:34,622 - INFO - > Reutrn Result: : 
+2024-10-07 16:35:34,622 - INFO - > -- >>          : 
+2024-10-07 16:35:34,622 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,623 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,623 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,624 - INFO - > -- >>          : 
+2024-10-07 16:35:34,626 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:35:34,627 - INFO - > Return Result  : 
+2024-10-07 16:35:34,627 - INFO - > -- >>          : 
+2024-10-07 16:35:34,627 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,627 - INFO - > -- >>          : 
+2024-10-07 16:35:34,627 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:35:34,628 - INFO - > Return Result  : OK
+2024-10-07 16:35:34,628 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:35:34,628 - INFO - > Return Result  : 10.2323
+2024-10-07 16:35:34,628 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:35:34,628 - INFO - > Return Result  : 963
+2024-10-07 16:35:34,628 - INFO - > -- >>          : 1111000011
+2024-10-07 16:35:34,628 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:35:34,629 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:35:34,629 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:35:34,629 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:35:34,629 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:35:34,629 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:35:34,629 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:35:34,629 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:35:34,629 - INFO - > Return Result  : OK
+2024-10-07 16:35:34,629 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:35:34,629 - INFO - > Return Result  : ON;8
+2024-10-07 16:35:34,629 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:35:34,629 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:35:34,630 - INFO - > Return Result  : 
+2024-10-07 16:35:34,630 - INFO - > -- >>          : 3
+2024-10-07 16:35:34,630 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:35:34,631 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:35:34,631 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:35:34,631 - INFO - > -- >>          : 
+2024-10-07 16:35:34,632 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:35:34,632 - INFO - > Return Result  : 
+2024-10-07 16:35:34,632 - INFO - > -- >>          : 
+2024-10-07 16:35:34,632 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:35:34,633 - INFO - > -- >>          : 
+2024-10-07 16:35:34,633 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:35:34,633 - INFO - > Return Result  : OK
+2024-10-07 16:35:34,633 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:35:34,633 - INFO - > Return Result  : 1
+2024-10-07 16:35:34,633 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:35:34,633 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:35:34,633 - INFO - > Return Result  : OK
+2024-10-07 16:35:34,847 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:35:34,848 - INFO - > Reutrn Result: : 
+2024-10-07 16:35:34,848 - INFO - > -- >>          : 
+2024-10-07 16:35:34,848 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,849 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,849 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:35:34,850 - INFO - > -- >>          : 
+2024-10-07 16:36:12,862 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:36:12,864 - INFO - > Reutrn Result: : 
+2024-10-07 16:36:12,864 - INFO - > -- >>          : 
+2024-10-07 16:36:12,864 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:12,865 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:36:12,865 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:36:12,865 - INFO - > -- >>          : 
+2024-10-07 16:36:12,867 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:36:12,868 - INFO - > Return Result  : 
+2024-10-07 16:36:12,868 - INFO - > -- >>          : 
+2024-10-07 16:36:12,868 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:12,868 - INFO - > -- >>          : 
+2024-10-07 16:36:12,868 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:36:12,870 - INFO - > Return Result  : OK
+2024-10-07 16:36:12,870 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:36:12,870 - INFO - > Return Result  : 10.2323
+2024-10-07 16:36:12,870 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:36:12,871 - INFO - > Return Result  : 963
+2024-10-07 16:36:12,871 - INFO - > -- >>          : 1111000011
+2024-10-07 16:36:12,872 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:36:12,872 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:36:12,872 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:36:12,872 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:36:12,873 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:36:12,873 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:36:12,873 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:36:12,873 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:36:12,873 - INFO - > Return Result  : OK
+2024-10-07 16:36:12,873 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:36:12,874 - INFO - > Return Result  : ON;8
+2024-10-07 16:36:12,874 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:36:12,874 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:36:12,876 - INFO - > Return Result  : 
+2024-10-07 16:36:12,877 - INFO - > -- >>          : 3
+2024-10-07 16:36:12,877 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:12,878 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:12,879 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:12,879 - INFO - > -- >>          : 
+2024-10-07 16:36:12,880 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:36:12,880 - INFO - > Return Result  : 
+2024-10-07 16:36:12,880 - INFO - > -- >>          : 
+2024-10-07 16:36:12,881 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:12,881 - INFO - > -- >>          : 
+2024-10-07 16:36:12,881 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:36:12,881 - INFO - > Return Result  : OK
+2024-10-07 16:36:12,881 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:36:12,882 - INFO - > Return Result  : 1
+2024-10-07 16:36:12,882 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:36:12,882 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:36:12,882 - INFO - > Return Result  : OK
+2024-10-07 16:36:13,102 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:36:13,103 - INFO - > Reutrn Result: : 
+2024-10-07 16:36:13,103 - INFO - > -- >>          : 
+2024-10-07 16:36:13,103 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:13,104 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:36:13,104 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:36:13,105 - INFO - > -- >>          : 
+2024-10-07 16:36:19,275 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:36:19,276 - INFO - > Reutrn Result: : 
+2024-10-07 16:36:19,276 - INFO - > -- >>          : 
+2024-10-07 16:36:19,276 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,277 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,277 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,278 - INFO - > -- >>          : 
+2024-10-07 16:36:19,281 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:36:19,283 - INFO - > Return Result  : 
+2024-10-07 16:36:19,283 - INFO - > -- >>          : 
+2024-10-07 16:36:19,283 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,284 - INFO - > -- >>          : 
+2024-10-07 16:36:19,284 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:36:19,284 - INFO - > Return Result  : OK
+2024-10-07 16:36:19,285 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:36:19,285 - INFO - > Return Result  : 10.2323
+2024-10-07 16:36:19,285 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:36:19,285 - INFO - > Return Result  : 963
+2024-10-07 16:36:19,285 - INFO - > -- >>          : 1111000011
+2024-10-07 16:36:19,285 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:36:19,285 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:36:19,285 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:36:19,286 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:36:19,286 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:36:19,286 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:36:19,286 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:36:19,286 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:36:19,286 - INFO - > Return Result  : OK
+2024-10-07 16:36:19,286 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:36:19,287 - INFO - > Return Result  : ON;8
+2024-10-07 16:36:19,287 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:36:19,288 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:36:19,288 - INFO - > Return Result  : 
+2024-10-07 16:36:19,289 - INFO - > -- >>          : 3
+2024-10-07 16:36:19,289 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:19,290 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:19,290 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:19,291 - INFO - > -- >>          : 
+2024-10-07 16:36:19,291 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:36:19,292 - INFO - > Return Result  : 
+2024-10-07 16:36:19,292 - INFO - > -- >>          : 
+2024-10-07 16:36:19,292 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:19,293 - INFO - > -- >>          : 
+2024-10-07 16:36:19,293 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:36:19,293 - INFO - > Return Result  : OK
+2024-10-07 16:36:19,293 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:36:19,294 - INFO - > Return Result  : 1
+2024-10-07 16:36:19,294 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:36:19,294 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:36:19,294 - INFO - > Return Result  : OK
+2024-10-07 16:36:19,503 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:36:19,504 - INFO - > Reutrn Result: : 
+2024-10-07 16:36:19,505 - INFO - > -- >>          : 
+2024-10-07 16:36:19,505 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,506 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,506 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:36:19,507 - INFO - > -- >>          : 
+2024-10-07 16:36:31,914 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:36:31,915 - INFO - > Reutrn Result: : 
+2024-10-07 16:36:31,915 - INFO - > -- >>          : 
+2024-10-07 16:36:31,916 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:31,917 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:36:31,917 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:36:31,917 - INFO - > -- >>          : 
+2024-10-07 16:36:31,923 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:36:31,924 - INFO - > Return Result  : 
+2024-10-07 16:36:31,924 - INFO - > -- >>          : 
+2024-10-07 16:36:31,925 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:31,925 - INFO - > -- >>          : 
+2024-10-07 16:36:31,926 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:36:31,927 - INFO - > Return Result  : OK
+2024-10-07 16:36:31,927 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:36:31,927 - INFO - > Return Result  : 10.2323
+2024-10-07 16:36:31,927 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:36:31,928 - INFO - > Return Result  : 963
+2024-10-07 16:36:31,928 - INFO - > -- >>          : 1111000011
+2024-10-07 16:36:31,928 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:36:31,928 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:36:31,928 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:36:31,928 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:36:31,928 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:36:31,928 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:36:31,929 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:36:31,929 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:36:31,929 - INFO - > Return Result  : OK
+2024-10-07 16:36:31,929 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:36:31,929 - INFO - > Return Result  : ON;8
+2024-10-07 16:36:31,929 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:36:31,929 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:36:31,931 - INFO - > Return Result  : 
+2024-10-07 16:36:31,931 - INFO - > -- >>          : 3
+2024-10-07 16:36:31,931 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:31,932 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:31,932 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:31,933 - INFO - > -- >>          : 
+2024-10-07 16:36:31,933 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:36:31,934 - INFO - > Return Result  : 
+2024-10-07 16:36:31,934 - INFO - > -- >>          : 
+2024-10-07 16:36:31,934 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:36:31,934 - INFO - > -- >>          : 
+2024-10-07 16:36:31,935 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:36:31,935 - INFO - > Return Result  : OK
+2024-10-07 16:36:31,935 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:36:31,935 - INFO - > Return Result  : 1
+2024-10-07 16:36:31,935 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:36:31,935 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:36:31,935 - INFO - > Return Result  : OK
+2024-10-07 16:36:32,148 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:36:32,148 - INFO - > Reutrn Result: : 
+2024-10-07 16:36:32,148 - INFO - > -- >>          : 
+2024-10-07 16:36:32,148 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:36:32,149 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:36:32,149 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:36:32,150 - INFO - > -- >>          : 
+2024-10-07 16:37:06,333 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:06,334 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:06,334 - INFO - > -- >>          : 
+2024-10-07 16:37:06,334 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,335 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,335 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,335 - INFO - > -- >>          : 
+2024-10-07 16:37:06,338 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:37:06,339 - INFO - > Return Result  : 
+2024-10-07 16:37:06,339 - INFO - > -- >>          : 
+2024-10-07 16:37:06,340 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,341 - INFO - > -- >>          : 
+2024-10-07 16:37:06,341 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:37:06,342 - INFO - > Return Result  : OK
+2024-10-07 16:37:06,342 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:37:06,342 - INFO - > Return Result  : 10.2323
+2024-10-07 16:37:06,342 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:37:06,342 - INFO - > Return Result  : 963
+2024-10-07 16:37:06,342 - INFO - > -- >>          : 1111000011
+2024-10-07 16:37:06,342 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:06,342 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:06,343 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:37:06,343 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:37:06,343 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:37:06,343 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:37:06,343 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:37:06,343 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:37:06,343 - INFO - > Return Result  : OK
+2024-10-07 16:37:06,343 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:37:06,343 - INFO - > Return Result  : ON;8
+2024-10-07 16:37:06,343 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:37:06,343 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:37:06,344 - INFO - > Return Result  : 
+2024-10-07 16:37:06,344 - INFO - > -- >>          : 3
+2024-10-07 16:37:06,345 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:06,345 - INFO - > -- >>          : 09/12/19 00:01:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:06,345 - INFO - > -- >>          : 09/12/19 00:02:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:06,346 - INFO - > -- >>          : 
+2024-10-07 16:37:06,346 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:37:06,347 - INFO - > Return Result  : 
+2024-10-07 16:37:06,347 - INFO - > -- >>          : 
+2024-10-07 16:37:06,347 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:06,347 - INFO - > -- >>          : 
+2024-10-07 16:37:06,347 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:37:06,347 - INFO - > Return Result  : OK
+2024-10-07 16:37:06,348 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:37:06,348 - INFO - > Return Result  : 1
+2024-10-07 16:37:06,348 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:37:06,348 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:37:06,348 - INFO - > Return Result  : OK
+2024-10-07 16:37:06,553 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:06,554 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:06,555 - INFO - > -- >>          : 
+2024-10-07 16:37:06,555 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,555 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,556 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:06,557 - INFO - > -- >>          : 
+2024-10-07 16:37:46,894 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:46,895 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:46,895 - INFO - > -- >>          : 
+2024-10-07 16:37:46,895 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:46,896 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:46,896 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:46,896 - INFO - > -- >>          : 
+2024-10-07 16:37:46,899 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:37:46,900 - INFO - > Return Result  : 
+2024-10-07 16:37:46,900 - INFO - > -- >>          : 
+2024-10-07 16:37:46,900 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:46,900 - INFO - > -- >>          : 
+2024-10-07 16:37:46,900 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:37:46,901 - INFO - > Return Result  : OK
+2024-10-07 16:37:46,901 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:37:46,901 - INFO - > Return Result  : 10.2323
+2024-10-07 16:37:46,901 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:37:46,901 - INFO - > Return Result  : 963
+2024-10-07 16:37:46,901 - INFO - > -- >>          : 1111000011
+2024-10-07 16:37:46,901 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:46,901 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:46,902 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:37:46,902 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:37:46,902 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:37:46,902 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:37:46,902 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:37:46,902 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:37:46,902 - INFO - > Return Result  : OK
+2024-10-07 16:37:46,902 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:37:46,902 - INFO - > Return Result  : ON;8
+2024-10-07 16:37:46,902 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:37:46,902 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:37:46,903 - INFO - > Return Result  : 
+2024-10-07 16:37:46,903 - INFO - > -- >>          : 3
+2024-10-07 16:37:46,904 - INFO - > -- >>          : 09/21/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:46,905 - INFO - > -- >>          : 09/21/19 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:46,906 - INFO - > -- >>          : 09/21/19 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:46,907 - INFO - > -- >>          : 
+2024-10-07 16:37:46,907 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:37:46,908 - INFO - > Return Result  : 
+2024-10-07 16:37:46,908 - INFO - > -- >>          : 
+2024-10-07 16:37:46,909 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:46,909 - INFO - > -- >>          : 
+2024-10-07 16:37:46,910 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:37:46,910 - INFO - > Return Result  : OK
+2024-10-07 16:37:46,910 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:37:46,910 - INFO - > Return Result  : 1
+2024-10-07 16:37:46,910 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:37:46,910 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:37:46,910 - INFO - > Return Result  : OK
+2024-10-07 16:37:50,138 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:50,141 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:50,141 - INFO - > -- >>          : 
+2024-10-07 16:37:50,141 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,142 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,142 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,143 - INFO - > -- >>          : 
+2024-10-07 16:37:50,145 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:37:50,146 - INFO - > Return Result  : 
+2024-10-07 16:37:50,146 - INFO - > -- >>          : 
+2024-10-07 16:37:50,146 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,146 - INFO - > -- >>          : 
+2024-10-07 16:37:50,146 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:37:50,147 - INFO - > Return Result  : OK
+2024-10-07 16:37:50,147 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:37:50,147 - INFO - > Return Result  : 10.2323
+2024-10-07 16:37:50,147 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:37:50,147 - INFO - > Return Result  : 963
+2024-10-07 16:37:50,147 - INFO - > -- >>          : 1111000011
+2024-10-07 16:37:50,148 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:50,148 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:50,148 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:37:50,148 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:37:50,148 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:37:50,148 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:37:50,148 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:37:50,148 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:37:50,148 - INFO - > Return Result  : OK
+2024-10-07 16:37:50,148 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:37:50,148 - INFO - > Return Result  : ON;8
+2024-10-07 16:37:50,148 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:37:50,148 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:37:50,149 - INFO - > Return Result  : 
+2024-10-07 16:37:50,149 - INFO - > -- >>          : 3
+2024-10-07 16:37:50,149 - INFO - > -- >>          : 09/21/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:50,150 - INFO - > -- >>          : 09/21/19 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:50,150 - INFO - > -- >>          : 09/21/19 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:50,151 - INFO - > -- >>          : 
+2024-10-07 16:37:50,151 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:37:50,151 - INFO - > Return Result  : 
+2024-10-07 16:37:50,151 - INFO - > -- >>          : 
+2024-10-07 16:37:50,151 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:50,152 - INFO - > -- >>          : 
+2024-10-07 16:37:50,152 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:37:50,152 - INFO - > Return Result  : OK
+2024-10-07 16:37:50,152 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:37:50,152 - INFO - > Return Result  : 1
+2024-10-07 16:37:50,153 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:37:50,153 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:37:50,153 - INFO - > Return Result  : OK
+2024-10-07 16:37:50,364 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:50,365 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:50,365 - INFO - > -- >>          : 
+2024-10-07 16:37:50,365 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,366 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,366 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:50,366 - INFO - > -- >>          : 
+2024-10-07 16:37:54,194 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:54,195 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:54,195 - INFO - > -- >>          : 
+2024-10-07 16:37:54,196 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,196 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,197 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,197 - INFO - > -- >>          : 
+2024-10-07 16:37:54,200 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:37:54,201 - INFO - > Return Result  : 
+2024-10-07 16:37:54,201 - INFO - > -- >>          : 
+2024-10-07 16:37:54,201 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,201 - INFO - > -- >>          : 
+2024-10-07 16:37:54,202 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:37:54,202 - INFO - > Return Result  : OK
+2024-10-07 16:37:54,203 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:37:54,203 - INFO - > Return Result  : 10.2323
+2024-10-07 16:37:54,203 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:37:54,203 - INFO - > Return Result  : 963
+2024-10-07 16:37:54,203 - INFO - > -- >>          : 1111000011
+2024-10-07 16:37:54,203 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:54,203 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:37:54,203 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:37:54,204 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:37:54,204 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:37:54,204 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:37:54,204 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:37:54,204 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:37:54,205 - INFO - > Return Result  : OK
+2024-10-07 16:37:54,205 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:37:54,205 - INFO - > Return Result  : ON;8
+2024-10-07 16:37:54,205 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:37:54,206 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:37:54,207 - INFO - > Return Result  : 
+2024-10-07 16:37:54,207 - INFO - > -- >>          : 3
+2024-10-07 16:37:54,207 - INFO - > -- >>          : 09/21/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:54,208 - INFO - > -- >>          : 09/21/19 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:54,209 - INFO - > -- >>          : 09/21/19 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:54,209 - INFO - > -- >>          : 
+2024-10-07 16:37:54,209 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:37:54,210 - INFO - > Return Result  : 
+2024-10-07 16:37:54,210 - INFO - > -- >>          : 
+2024-10-07 16:37:54,210 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:37:54,211 - INFO - > -- >>          : 
+2024-10-07 16:37:54,211 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:37:54,211 - INFO - > Return Result  : OK
+2024-10-07 16:37:54,211 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:37:54,211 - INFO - > Return Result  : 1
+2024-10-07 16:37:54,212 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:37:54,212 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:37:54,212 - INFO - > Return Result  : OK
+2024-10-07 16:37:54,436 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:37:54,438 - INFO - > Reutrn Result: : 
+2024-10-07 16:37:54,438 - INFO - > -- >>          : 
+2024-10-07 16:37:54,438 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,438 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,439 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:37:54,439 - INFO - > -- >>          : 
+2024-10-07 16:38:22,277 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:38:22,279 - INFO - > Reutrn Result: : 
+2024-10-07 16:38:22,279 - INFO - > -- >>          : 
+2024-10-07 16:38:22,279 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:22,280 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:38:22,280 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:38:22,280 - INFO - > -- >>          : 
+2024-10-07 16:38:22,283 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:38:22,284 - INFO - > Return Result  : 
+2024-10-07 16:38:22,284 - INFO - > -- >>          : 
+2024-10-07 16:38:22,284 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:22,285 - INFO - > -- >>          : 
+2024-10-07 16:38:22,285 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:38:22,286 - INFO - > Return Result  : OK
+2024-10-07 16:38:22,286 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:38:22,286 - INFO - > Return Result  : 10.2323
+2024-10-07 16:38:22,286 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:38:22,286 - INFO - > Return Result  : 963
+2024-10-07 16:38:22,287 - INFO - > -- >>          : 1111000011
+2024-10-07 16:38:22,287 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:38:22,287 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:38:22,287 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:38:22,287 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:38:22,287 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:38:22,287 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:38:22,288 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:38:22,288 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:38:22,288 - INFO - > Return Result  : OK
+2024-10-07 16:38:22,288 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:38:22,288 - INFO - > Return Result  : ON;8
+2024-10-07 16:38:22,288 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:38:22,288 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:38:22,289 - INFO - > Return Result  : 
+2024-10-07 16:38:22,289 - INFO - > -- >>          : 3
+2024-10-07 16:38:22,290 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:22,290 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:22,291 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:22,291 - INFO - > -- >>          : 
+2024-10-07 16:38:22,291 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:38:22,292 - INFO - > Return Result  : 
+2024-10-07 16:38:22,292 - INFO - > -- >>          : 
+2024-10-07 16:38:22,292 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:22,293 - INFO - > -- >>          : 
+2024-10-07 16:38:22,293 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:38:22,293 - INFO - > Return Result  : OK
+2024-10-07 16:38:22,293 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:38:22,293 - INFO - > Return Result  : 1
+2024-10-07 16:38:22,293 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:38:22,293 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:38:22,293 - INFO - > Return Result  : OK
+2024-10-07 16:38:24,232 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:38:24,233 - INFO - > Reutrn Result: : 
+2024-10-07 16:38:24,233 - INFO - > -- >>          : 
+2024-10-07 16:38:24,233 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:24,234 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:38:24,234 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:38:24,235 - INFO - > -- >>          : 
+2024-10-07 16:38:24,239 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:38:24,240 - INFO - > Return Result  : 
+2024-10-07 16:38:24,240 - INFO - > -- >>          : 
+2024-10-07 16:38:24,240 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:24,241 - INFO - > -- >>          : 
+2024-10-07 16:38:24,241 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:38:24,242 - INFO - > Return Result  : OK
+2024-10-07 16:38:24,242 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:38:24,242 - INFO - > Return Result  : 10.2323
+2024-10-07 16:38:24,242 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:38:24,242 - INFO - > Return Result  : 963
+2024-10-07 16:38:24,242 - INFO - > -- >>          : 1111000011
+2024-10-07 16:38:24,242 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:38:24,242 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:38:24,243 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:38:24,243 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:38:24,243 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:38:24,243 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:38:24,243 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:38:24,243 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:38:24,243 - INFO - > Return Result  : OK
+2024-10-07 16:38:24,243 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:38:24,243 - INFO - > Return Result  : ON;8
+2024-10-07 16:38:24,244 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:38:24,244 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:38:24,244 - INFO - > Return Result  : 
+2024-10-07 16:38:24,244 - INFO - > -- >>          : 3
+2024-10-07 16:38:24,245 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:24,245 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:24,246 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:24,247 - INFO - > -- >>          : 
+2024-10-07 16:38:24,247 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:38:24,247 - INFO - > Return Result  : 
+2024-10-07 16:38:24,248 - INFO - > -- >>          : 
+2024-10-07 16:38:24,248 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:24,248 - INFO - > -- >>          : 
+2024-10-07 16:38:24,248 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:38:24,248 - INFO - > Return Result  : OK
+2024-10-07 16:38:24,248 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:38:24,249 - INFO - > Return Result  : 1
+2024-10-07 16:38:24,249 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:38:24,249 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:38:24,249 - INFO - > Return Result  : OK
+2024-10-07 16:38:26,874 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:38:26,876 - INFO - > Reutrn Result: : 
+2024-10-07 16:38:26,876 - INFO - > -- >>          : 
+2024-10-07 16:38:26,876 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:26,877 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:38:26,877 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:38:26,878 - INFO - > -- >>          : 
+2024-10-07 16:38:26,880 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:38:26,881 - INFO - > Return Result  : 
+2024-10-07 16:38:26,881 - INFO - > -- >>          : 
+2024-10-07 16:38:26,881 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:26,882 - INFO - > -- >>          : 
+2024-10-07 16:38:26,882 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:38:26,882 - INFO - > Return Result  : OK
+2024-10-07 16:38:26,882 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:38:26,883 - INFO - > Return Result  : 10.2323
+2024-10-07 16:38:26,883 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:38:26,883 - INFO - > Return Result  : 963
+2024-10-07 16:38:26,883 - INFO - > -- >>          : 1111000011
+2024-10-07 16:38:26,883 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:38:26,883 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:38:26,883 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:38:26,883 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:38:26,883 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:38:26,883 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:38:26,883 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:38:26,884 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:38:26,884 - INFO - > Return Result  : OK
+2024-10-07 16:38:26,884 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:38:26,884 - INFO - > Return Result  : ON;8
+2024-10-07 16:38:26,884 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:38:26,884 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:38:26,885 - INFO - > Return Result  : 
+2024-10-07 16:38:26,885 - INFO - > -- >>          : 3
+2024-10-07 16:38:26,885 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:26,886 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:26,886 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:26,887 - INFO - > -- >>          : 
+2024-10-07 16:38:26,887 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:38:26,887 - INFO - > Return Result  : 
+2024-10-07 16:38:26,887 - INFO - > -- >>          : 
+2024-10-07 16:38:26,887 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:38:26,888 - INFO - > -- >>          : 
+2024-10-07 16:38:26,888 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:38:26,888 - INFO - > Return Result  : OK
+2024-10-07 16:38:26,888 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:38:26,889 - INFO - > Return Result  : 1
+2024-10-07 16:38:26,889 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:38:26,889 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:38:26,889 - INFO - > Return Result  : OK
+2024-10-07 16:38:27,098 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:38:27,099 - INFO - > Reutrn Result: : 
+2024-10-07 16:38:27,099 - INFO - > -- >>          : 
+2024-10-07 16:38:27,099 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:38:27,100 - INFO - > -- >>          : 2024-09-12 00:01:00;23.480;1.233;20.111;
+2024-10-07 16:38:27,100 - INFO - > -- >>          : 2024-09-12 00:02:00;23.480;1.233;20.111;
+2024-10-07 16:38:27,101 - INFO - > -- >>          : 
+2024-10-07 16:39:14,251 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:39:14,252 - INFO - > Reutrn Result: : 
+2024-10-07 16:39:14,252 - INFO - > -- >>          : 
+2024-10-07 16:39:14,252 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:14,253 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:39:14,253 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:39:14,253 - INFO - > -- >>          : 
+2024-10-07 16:39:14,256 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:39:14,257 - INFO - > Return Result  : 
+2024-10-07 16:39:14,257 - INFO - > -- >>          : 
+2024-10-07 16:39:14,257 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:14,257 - INFO - > -- >>          : 
+2024-10-07 16:39:14,257 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:39:14,258 - INFO - > Return Result  : OK
+2024-10-07 16:39:14,258 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:39:14,258 - INFO - > Return Result  : 10.2323
+2024-10-07 16:39:14,258 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:39:14,258 - INFO - > Return Result  : 963
+2024-10-07 16:39:14,258 - INFO - > -- >>          : 1111000011
+2024-10-07 16:39:14,258 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:39:14,258 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:39:14,259 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:39:14,259 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:39:14,259 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:39:14,259 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:39:14,259 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:39:14,259 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:39:14,259 - INFO - > Return Result  : OK
+2024-10-07 16:39:14,259 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:39:14,259 - INFO - > Return Result  : ON;8
+2024-10-07 16:39:14,259 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:39:14,259 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:39:14,260 - INFO - > Return Result  : 
+2024-10-07 16:39:14,260 - INFO - > -- >>          : 3
+2024-10-07 16:39:14,261 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:14,261 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:14,262 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:14,262 - INFO - > -- >>          : 
+2024-10-07 16:39:14,262 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:39:14,263 - INFO - > Return Result  : 
+2024-10-07 16:39:14,263 - INFO - > -- >>          : 
+2024-10-07 16:39:14,263 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:14,264 - INFO - > -- >>          : 
+2024-10-07 16:39:14,264 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:39:14,264 - INFO - > Return Result  : OK
+2024-10-07 16:39:14,264 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:39:14,264 - INFO - > Return Result  : 1
+2024-10-07 16:39:14,264 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:39:14,264 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:39:14,264 - INFO - > Return Result  : OK
+2024-10-07 16:39:17,073 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:39:17,074 - INFO - > Reutrn Result: : 
+2024-10-07 16:39:17,075 - INFO - > -- >>          : 
+2024-10-07 16:39:17,075 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,075 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,076 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,076 - INFO - > -- >>          : 
+2024-10-07 16:39:17,079 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:39:17,079 - INFO - > Return Result  : 
+2024-10-07 16:39:17,079 - INFO - > -- >>          : 
+2024-10-07 16:39:17,080 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,080 - INFO - > -- >>          : 
+2024-10-07 16:39:17,080 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:39:17,081 - INFO - > Return Result  : OK
+2024-10-07 16:39:17,081 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:39:17,081 - INFO - > Return Result  : 10.2323
+2024-10-07 16:39:17,081 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:39:17,081 - INFO - > Return Result  : 963
+2024-10-07 16:39:17,081 - INFO - > -- >>          : 1111000011
+2024-10-07 16:39:17,081 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:39:17,081 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:39:17,082 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:39:17,082 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:39:17,082 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:39:17,082 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:39:17,082 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:39:17,082 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:39:17,082 - INFO - > Return Result  : OK
+2024-10-07 16:39:17,082 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:39:17,082 - INFO - > Return Result  : ON;8
+2024-10-07 16:39:17,082 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:39:17,082 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:39:17,083 - INFO - > Return Result  : 
+2024-10-07 16:39:17,083 - INFO - > -- >>          : 3
+2024-10-07 16:39:17,084 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:17,084 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:17,084 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:17,085 - INFO - > -- >>          : 
+2024-10-07 16:39:17,085 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:39:17,086 - INFO - > Return Result  : 
+2024-10-07 16:39:17,086 - INFO - > -- >>          : 
+2024-10-07 16:39:17,086 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:17,086 - INFO - > -- >>          : 
+2024-10-07 16:39:17,086 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:39:17,086 - INFO - > Return Result  : OK
+2024-10-07 16:39:17,087 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:39:17,087 - INFO - > Return Result  : 1
+2024-10-07 16:39:17,087 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:39:17,087 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:39:17,087 - INFO - > Return Result  : OK
+2024-10-07 16:39:17,297 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:39:17,298 - INFO - > Reutrn Result: : 
+2024-10-07 16:39:17,298 - INFO - > -- >>          : 
+2024-10-07 16:39:17,298 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,299 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,299 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:39:17,299 - INFO - > -- >>          : 
+2024-10-07 16:39:34,461 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:39:34,462 - INFO - > Reutrn Result: : 
+2024-10-07 16:39:34,462 - INFO - > -- >>          : 
+2024-10-07 16:39:34,462 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,463 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,463 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,464 - INFO - > -- >>          : 
+2024-10-07 16:39:34,466 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:39:34,467 - INFO - > Return Result  : 
+2024-10-07 16:39:34,467 - INFO - > -- >>          : 
+2024-10-07 16:39:34,467 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,469 - INFO - > -- >>          : 
+2024-10-07 16:39:34,469 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:39:34,470 - INFO - > Return Result  : OK
+2024-10-07 16:39:34,470 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:39:34,470 - INFO - > Return Result  : 10.2323
+2024-10-07 16:39:34,470 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:39:34,470 - INFO - > Return Result  : 963
+2024-10-07 16:39:34,470 - INFO - > -- >>          : 1111000011
+2024-10-07 16:39:34,470 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:39:34,470 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:39:34,470 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:39:34,470 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:39:34,470 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:39:34,471 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:39:34,471 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:39:34,471 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:39:34,471 - INFO - > Return Result  : OK
+2024-10-07 16:39:34,471 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:39:34,471 - INFO - > Return Result  : ON;8
+2024-10-07 16:39:34,472 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:39:34,472 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:39:34,472 - INFO - > Return Result  : 
+2024-10-07 16:39:34,473 - INFO - > -- >>          : 3
+2024-10-07 16:39:34,473 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:34,474 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:34,475 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:34,476 - INFO - > -- >>          : 
+2024-10-07 16:39:34,476 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:39:34,477 - INFO - > Return Result  : 
+2024-10-07 16:39:34,477 - INFO - > -- >>          : 
+2024-10-07 16:39:34,477 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:39:34,477 - INFO - > -- >>          : 
+2024-10-07 16:39:34,478 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:39:34,478 - INFO - > Return Result  : OK
+2024-10-07 16:39:34,478 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:39:34,478 - INFO - > Return Result  : 1
+2024-10-07 16:39:34,478 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:39:34,478 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:39:34,478 - INFO - > Return Result  : OK
+2024-10-07 16:39:34,694 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:39:34,695 - INFO - > Reutrn Result: : 
+2024-10-07 16:39:34,695 - INFO - > -- >>          : 
+2024-10-07 16:39:34,695 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,695 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,696 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:39:34,696 - INFO - > -- >>          : 
+2024-10-07 16:40:14,596 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:40:14,597 - INFO - > Reutrn Result: : 
+2024-10-07 16:40:14,597 - INFO - > -- >>          : 
+2024-10-07 16:40:14,598 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,598 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,599 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,599 - INFO - > -- >>          : 
+2024-10-07 16:40:14,602 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:40:14,603 - INFO - > Return Result  : 
+2024-10-07 16:40:14,603 - INFO - > -- >>          : 
+2024-10-07 16:40:14,603 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,604 - INFO - > -- >>          : 
+2024-10-07 16:40:14,604 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:40:14,605 - INFO - > Return Result  : OK
+2024-10-07 16:40:14,605 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:40:14,605 - INFO - > Return Result  : 10.2323
+2024-10-07 16:40:14,606 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:40:14,606 - INFO - > Return Result  : 963
+2024-10-07 16:40:14,606 - INFO - > -- >>          : 1111000011
+2024-10-07 16:40:14,606 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:40:14,606 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:40:14,606 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:40:14,607 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:40:14,607 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:40:14,607 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:40:14,607 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:40:14,607 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:40:14,607 - INFO - > Return Result  : OK
+2024-10-07 16:40:14,607 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:40:14,607 - INFO - > Return Result  : ON;8
+2024-10-07 16:40:14,608 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:40:14,608 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:40:14,608 - INFO - > Return Result  : 
+2024-10-07 16:40:14,609 - INFO - > -- >>          : 3
+2024-10-07 16:40:14,609 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:14,611 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:14,611 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:14,612 - INFO - > -- >>          : 
+2024-10-07 16:40:14,612 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:40:14,612 - INFO - > Return Result  : 
+2024-10-07 16:40:14,612 - INFO - > -- >>          : 
+2024-10-07 16:40:14,613 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:14,613 - INFO - > -- >>          : 
+2024-10-07 16:40:14,613 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:40:14,613 - INFO - > Return Result  : OK
+2024-10-07 16:40:14,613 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:40:14,613 - INFO - > Return Result  : 1
+2024-10-07 16:40:14,614 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:40:14,614 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:40:14,614 - INFO - > Return Result  : OK
+2024-10-07 16:40:14,827 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:40:14,828 - INFO - > Reutrn Result: : 
+2024-10-07 16:40:14,828 - INFO - > -- >>          : 
+2024-10-07 16:40:14,828 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,828 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,828 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:40:14,830 - INFO - > -- >>          : 
+2024-10-07 16:40:26,558 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:40:26,559 - INFO - > Reutrn Result: : 
+2024-10-07 16:40:26,559 - INFO - > -- >>          : 
+2024-10-07 16:40:26,559 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,560 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,560 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,561 - INFO - > -- >>          : 
+2024-10-07 16:40:26,563 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:40:26,564 - INFO - > Return Result  : 
+2024-10-07 16:40:26,565 - INFO - > -- >>          : 
+2024-10-07 16:40:26,565 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,565 - INFO - > -- >>          : 
+2024-10-07 16:40:26,565 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:40:26,566 - INFO - > Return Result  : OK
+2024-10-07 16:40:26,566 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:40:26,566 - INFO - > Return Result  : 10.2323
+2024-10-07 16:40:26,566 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:40:26,566 - INFO - > Return Result  : 963
+2024-10-07 16:40:26,567 - INFO - > -- >>          : 1111000011
+2024-10-07 16:40:26,567 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:40:26,567 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:40:26,567 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:40:26,567 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:40:26,567 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:40:26,567 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:40:26,567 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:40:26,567 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:40:26,567 - INFO - > Return Result  : OK
+2024-10-07 16:40:26,567 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:40:26,568 - INFO - > Return Result  : ON;8
+2024-10-07 16:40:26,568 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:40:26,568 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:40:26,568 - INFO - > Return Result  : 
+2024-10-07 16:40:26,568 - INFO - > -- >>          : 3
+2024-10-07 16:40:26,569 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:26,569 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:26,570 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:26,570 - INFO - > -- >>          : 
+2024-10-07 16:40:26,570 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:40:26,571 - INFO - > Return Result  : 
+2024-10-07 16:40:26,571 - INFO - > -- >>          : 
+2024-10-07 16:40:26,571 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:40:26,572 - INFO - > -- >>          : 
+2024-10-07 16:40:26,572 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:40:26,572 - INFO - > Return Result  : OK
+2024-10-07 16:40:26,572 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:40:26,572 - INFO - > Return Result  : 1
+2024-10-07 16:40:26,572 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:40:26,572 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:40:26,572 - INFO - > Return Result  : OK
+2024-10-07 16:40:26,774 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:40:26,775 - INFO - > Reutrn Result: : 
+2024-10-07 16:40:26,775 - INFO - > -- >>          : 
+2024-10-07 16:40:26,775 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,776 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,776 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:40:26,776 - INFO - > -- >>          : 
+2024-10-07 16:41:16,665 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:41:16,666 - INFO - > Reutrn Result: : 
+2024-10-07 16:41:16,666 - INFO - > -- >>          : 
+2024-10-07 16:41:16,666 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,667 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,667 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,668 - INFO - > -- >>          : 
+2024-10-07 16:41:16,670 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:41:16,671 - INFO - > Return Result  : 
+2024-10-07 16:41:16,671 - INFO - > -- >>          : 
+2024-10-07 16:41:16,671 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,671 - INFO - > -- >>          : 
+2024-10-07 16:41:16,671 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:41:16,672 - INFO - > Return Result  : OK
+2024-10-07 16:41:16,672 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:41:16,672 - INFO - > Return Result  : 10.2323
+2024-10-07 16:41:16,672 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:41:16,672 - INFO - > Return Result  : 963
+2024-10-07 16:41:16,672 - INFO - > -- >>          : 1111000011
+2024-10-07 16:41:16,672 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:41:16,673 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:41:16,673 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:41:16,673 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:41:16,673 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:41:16,673 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:41:16,673 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:41:16,673 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:41:16,673 - INFO - > Return Result  : OK
+2024-10-07 16:41:16,673 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:41:16,673 - INFO - > Return Result  : ON;8
+2024-10-07 16:41:16,673 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:41:16,673 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:41:16,674 - INFO - > Return Result  : 
+2024-10-07 16:41:16,674 - INFO - > -- >>          : 3
+2024-10-07 16:41:16,675 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:41:16,675 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:41:16,676 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:41:16,676 - INFO - > -- >>          : 
+2024-10-07 16:41:16,676 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:41:16,677 - INFO - > Return Result  : 
+2024-10-07 16:41:16,677 - INFO - > -- >>          : 
+2024-10-07 16:41:16,677 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:41:16,678 - INFO - > -- >>          : 
+2024-10-07 16:41:16,678 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:41:16,678 - INFO - > Return Result  : OK
+2024-10-07 16:41:16,678 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:41:16,678 - INFO - > Return Result  : 1
+2024-10-07 16:41:16,678 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:41:16,678 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:41:16,678 - INFO - > Return Result  : OK
+2024-10-07 16:41:16,885 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:41:16,885 - INFO - > Reutrn Result: : 
+2024-10-07 16:41:16,886 - INFO - > -- >>          : 
+2024-10-07 16:41:16,886 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,886 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,887 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:41:16,888 - INFO - > -- >>          : 
+2024-10-07 16:44:05,973 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:44:05,974 - INFO - > Reutrn Result: : 
+2024-10-07 16:44:05,974 - INFO - > -- >>          : 
+2024-10-07 16:44:05,974 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:44:05,975 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:44:05,975 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:44:05,975 - INFO - > -- >>          : 
+2024-10-07 16:44:05,978 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 16:44:05,978 - INFO - > Return Result  : 
+2024-10-07 16:44:05,978 - INFO - > -- >>          : 
+2024-10-07 16:44:05,979 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:44:05,979 - INFO - > -- >>          : 
+2024-10-07 16:44:05,979 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 16:44:05,980 - INFO - > Return Result  : OK
+2024-10-07 16:44:05,980 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 16:44:05,980 - INFO - > Return Result  : 10.2323
+2024-10-07 16:44:05,980 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 16:44:05,981 - INFO - > Return Result  : 963
+2024-10-07 16:44:05,981 - INFO - > -- >>          : 1111000011
+2024-10-07 16:44:05,981 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 16:44:05,981 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 16:44:05,981 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 16:44:05,981 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 16:44:05,981 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 16:44:05,981 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 16:44:05,981 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 16:44:05,981 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 16:44:05,981 - INFO - > Return Result  : OK
+2024-10-07 16:44:05,982 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 16:44:05,982 - INFO - > Return Result  : ON;8
+2024-10-07 16:44:05,982 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 16:44:05,982 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 16:44:05,982 - INFO - > Return Result  : 
+2024-10-07 16:44:05,982 - INFO - > -- >>          : 3
+2024-10-07 16:44:05,983 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:44:05,983 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:44:05,984 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:44:05,984 - INFO - > -- >>          : 
+2024-10-07 16:44:05,984 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 16:44:05,985 - INFO - > Return Result  : 
+2024-10-07 16:44:05,985 - INFO - > -- >>          : 
+2024-10-07 16:44:05,985 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 16:44:05,986 - INFO - > -- >>          : 
+2024-10-07 16:44:05,986 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 16:44:05,986 - INFO - > Return Result  : OK
+2024-10-07 16:44:05,986 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 16:44:05,986 - INFO - > Return Result  : 1
+2024-10-07 16:44:05,986 - INFO - > -- >> Explain  : Armed
+2024-10-07 16:44:05,986 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 16:44:05,986 - INFO - > Return Result  : OK
+2024-10-07 16:44:06,198 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 16:44:06,198 - INFO - > Reutrn Result: : 
+2024-10-07 16:44:06,198 - INFO - > -- >>          : 
+2024-10-07 16:44:06,198 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 16:44:06,199 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 16:44:06,199 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 16:44:06,200 - INFO - > -- >>          : 
+2024-10-07 21:36:22,984 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 21:36:22,984 - INFO - > Reutrn Result: : 
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 
+2024-10-07 21:36:22,984 - INFO - > Run Command    : _Meas_GetBufferFirst
+2024-10-07 21:36:22,984 - INFO - > Return Result  : 
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 2024-09-12 00:00:00;23.480;1.233;20.111;
+2024-10-07 21:36:22,984 - INFO - > -- >>          : 
+2024-10-07 21:36:22,999 - INFO - > Run Command    : _Meas_ClearBuffer
+2024-10-07 21:36:22,999 - INFO - > Return Result  : OK
+2024-10-07 21:36:22,999 - INFO - > Run Command    : _Meas_GetScanTime
+2024-10-07 21:36:22,999 - INFO - > Return Result  : 10.2323
+2024-10-07 21:36:22,999 - INFO - > Run Command    : _Instr_GetStatus
+2024-10-07 21:36:22,999 - INFO - > Return Result  : 963
+2024-10-07 21:36:22,999 - INFO - > -- >>          : 1111000011
+2024-10-07 21:36:22,999 - INFO - > -- >>          : The warm box temperature is within acceptable bounds for measurements.
+2024-10-07 21:36:22,999 - INFO - > -- >>          : The cavity temperature is within acceptable bounds for measurements.
+2024-10-07 21:36:22,999 - INFO - > -- >>          : The gas sample pressure is within acceptable bounds for measurement..
+2024-10-07 21:36:22,999 - INFO - > -- >>          : Valves are open (pressure is within acceptable bounds for measurement.
+2024-10-07 21:36:22,999 - INFO - > -- >>          : The error queue is empty.
+2024-10-07 21:36:22,999 - INFO - > -- >>          : The measurement system is currently active.
+2024-10-07 21:36:22,999 - INFO - > -- >>          : The instrument is currently capable of measuring the sample gas.
+2024-10-07 21:36:22,999 - INFO - > Run Command    : _Valves_Seq_Start
+2024-10-07 21:36:22,999 - INFO - > Return Result  : OK
+2024-10-07 21:36:22,999 - INFO - > Run Command    : _Valves_Seq_Readstate
+2024-10-07 21:36:22,999 - INFO - > Return Result  : ON;8
+2024-10-07 21:36:22,999 - INFO - > -- >> Explain  : 3 ON
+2024-10-07 21:36:22,999 - INFO - > Run Command    : _Pulse_GetBuffer
+2024-10-07 21:36:22,999 - INFO - > Return Result  : 
+2024-10-07 21:36:22,999 - INFO - > -- >>          : 3
+2024-10-07 21:36:22,999 - INFO - > -- >>          : 09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 21:36:22,999 - INFO - > -- >>          : 09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 21:36:23,005 - INFO - > -- >>          : 09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 21:36:23,005 - INFO - > -- >>          : 
+2024-10-07 21:36:23,005 - INFO - > Run Command    : _Pulse_GetBufferFirst
+2024-10-07 21:36:23,006 - INFO - > Return Result  : 
+2024-10-07 21:36:23,006 - INFO - > -- >>          : 
+2024-10-07 21:36:23,006 - INFO - > -- >>          : 09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;
+2024-10-07 21:36:23,007 - INFO - > -- >>          : 
+2024-10-07 21:36:23,007 - INFO - > Run Command    : _Plus_ClearBuffer
+2024-10-07 21:36:23,007 - INFO - > Return Result  : OK
+2024-10-07 21:36:23,007 - INFO - > Run Command    : _Plus_GetStatus
+2024-10-07 21:36:23,007 - INFO - > Return Result  : 1
+2024-10-07 21:36:23,007 - INFO - > -- >> Explain  : Armed
+2024-10-07 21:36:23,008 - INFO - > Run Command    : _Plus_GetStatus CO2_H2O
+2024-10-07 21:36:23,008 - INFO - > Return Result  : OK
+2024-10-07 21:36:23,680 - INFO - > Run Command    : _Meas_GetBuffer
+2024-10-07 21:36:23,680 - INFO - > Reutrn Result: : 
+2024-10-07 21:36:23,680 - INFO - > -- >>          : 
+2024-10-07 21:36:23,680 - INFO - > -- >>          : 2024-09-21 00:00:00;23.480;1.233;20.111;
+2024-10-07 21:36:23,680 - INFO - > -- >>          : 2024-09-21 00:05:00;23.480;1.233;20.111;
+2024-10-07 21:36:23,680 - INFO - > -- >>          : 2024-09-21 00:10:00;23.480;1.233;20.111;
+2024-10-07 21:36:23,680 - INFO - > -- >>          : 
