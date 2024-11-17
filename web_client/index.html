@@ -1,0 +1,95 @@
+<!-- <script>
+    var ws = new WebSocket('ws://127.0.0.1:5001/message') 
+    ws.onopen = function () {
+            console.log("start connection")
+        }
+        ws.onclose = function (e) {
+            console.log("connection closed (" + e.code + ")");
+        }
+    ws.onmessage = function (event) {
+        /*服务器端向客户端发送数据时，自动热行*/
+        var response = event.data; 
+        console.log(response)
+}
+</script>
+
+<h1>hello</h1> -->
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <title>socket.io</title>
+</head>
+<button onclick="picarroConfigSend()">Picarro config setting</button>
+<button onclick="piacrroGetData()">Picarro get data</button>
+<h1 id="receive"></h1>
+<body>
+    <script>
+        var socket = null
+        function initWebSocket() {
+            socket = io.connect('ws://localhost:5000/echo', {
+                timeout: 300000,
+                reconnectionDelayMax: 1000,
+                reconnectionDelay: 500
+            })
+            socket.on('connect', () => {
+                console.log('建立链接')
+                // socket.emit('connect1', { 'data': 'I\'m connected!' })
+            })
+            socket.on('disconnect', () => {
+                console.log('连接断开')
+                // socket.emit('disconnect1', { 'data': 'I\'m disconnected!' });
+            })
+            socket.on('my_response', msg => {
+                // 接受数据
+                console.log("msg",msg)
+            })
+            socket.on('error message', msg => {
+                console.log('error:' + msg)
+
+            })
+        }
+        function picarroConfigSend() {
+            
+            sendObj={
+                "logFolder": "picarro_log/",
+                "logStart": "True",
+                "dataFolder": "picarro_data/",
+            
+            }
+            socket.emit('picarroConfig', sendObj)
+            console.log("sendObj")
+        }
+            function piacrroGetData() {
+
+                sendObj = {
+                    "execFun": "_Pulse_GetBuffer",
+                }
+                socket.emit('piacrroGetData', sendObj)
+                console.log("sendObj")
+            }
+        initWebSocket()
+    </script>
+</body>
+
+</html>
+<!-- <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+<div id="data_show"></div>
+
+<script>
+    $(document).ready(function () {
+        namespace = '/echo';
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        socket.on('echo', function (res) {
+            var data_show = res.data;
+            if (data_show) {
+                $("#data_show").append(data_show).append('<br/>');
+            }
+        });
+    });
+</script> -->
+
