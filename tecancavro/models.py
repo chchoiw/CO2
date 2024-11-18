@@ -39,8 +39,8 @@ class XCaliburD(Syringe):
                    30: 70, 31: 60, 32: 50, 33: 40, 34: 30, 35: 20, 36: 18,
                    37: 16, 38: 14, 39: 12, 40: 10}
 
-    def __init__(self, com_link, num_ports=9, syringe_ul=1000, direction='CW',
-                 microstep=2, waste_port=9, slope=14, init_force=0,
+    def __init__(self, com_link, num_ports=4, syringe_ul=1000, direction='CW',
+                 microstep=2, waste_port=4, slope=14, init_force=0,
                  debug=True, debug_log_path='./pump_log/'):
         """
         Object initialization function.
@@ -287,7 +287,7 @@ class XCaliburD(Syringe):
             self.movePlungerAbs(0)
             delay = self.executeChain()
             self.waitReady(delay)
-
+        return True
     #########################################################################
     # Command chain functions                                               #
     #########################################################################
