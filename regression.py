@@ -19,7 +19,7 @@ class regression:
 
 
     def readData(self):
-        if self.data=None:
+        if self.data is None:
             datas=pd.read_csv(self.fileName,index_col=0 )
             datas['meas_datetime'] = pd.to_datetime(datas['meas_datetime'])
         else:

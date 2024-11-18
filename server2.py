@@ -10,7 +10,7 @@ import time
 import traceback
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-
+from scipy import integrate
 # class instrument():
 
 #     @abstractmethod
@@ -48,7 +48,7 @@ def disconnect_msg():
 class instrumentActoin:
     #     # if config["logStart"] == "True":
     #     logger.handlers.clear()
-    def init(self, logger=None,picarro=None,xlp=None):
+    def __init__(self, logger=None,picarro=None,xlp=None):
         self.picarro=picarro
         self.xlp=xlp
         self.logger=logger
@@ -99,7 +99,9 @@ class instrumentActoin:
 
 
 
-    def flush_pump(self,data):
+    def flush_pump(self,data=None):
+        if data is None:
+            return
         for i in range( data["flush_times"]):
             for in_port in data["in_port"]:
                 waitSeconds=self.xlp.extractToWaste( in_port=in_port, volume_ul=1100, out_port=data["out_port"],
@@ -113,10 +115,19 @@ class instrumentActoin:
         resNewDf=pd.concat([resDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
         
         csvStr=resNewDf.to_csv()
-        .emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        socketio.emit('responseData', {
+                      'csvStr': csvStr}, namespace=self.name_space)
         time.sleep(1)
 
         return resDf
+    def calNetArea(self, x, y, baseValue=0):
+        result = integrate.trapezoid(y, x)
+        print(result)
+        if result-baseValue < 0:
+            result2 = 0
+        else:
+            result2 = result-baseValue
+        return result
     def reagent_get_conc_data(self,data,baseValue=0):
         """
         input: data={"meas_datetime":"", "meas_name":"","meas_vol":"","meas_DIC":""}
@@ -134,9 +145,10 @@ class instrumentActoin:
         x=resDf["meas_DIC"].tolist()
         y = resDf["meas_val1"].tolist()
         x = resDf["meas_datetimestamp"].tolist()
-        resDf["meas_netarea"]=reg.calNetArea(x=x, y=y,baseValue=baseValue)
+        resDf["meas_netarea"]=self.calNetArea(x=x, y=y,baseValue=baseValue)
         csvStr=resDf.to_csv()
-        .emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        socketio.emit('responseData', {
+                      'csvStr': csvStr}, namespace=self.name_space)
         return resDf
 
 
@@ -148,7 +160,7 @@ class instrumentActoin:
         if completeFlag:
             tmpDf=self.reagent_get_conc_data(data)
         if data["flush"]:
-            self.flush_pump
+            self.flush_pump()
         return tmpDf
 
 
@@ -184,10 +196,10 @@ class instrumentActoin:
         return resDf    
 
 
-
-# @socketio.on('picarroConfig', namespace=name_space)
-# def mtest_message(picarroConfig):
-#     print(picarroConfig)
+@socketio.on('responseData', namespace=name_space)
+def mtest_message(receiveData):
+    print(receiveData)
+    ia.reagent_get_conc_data(receiveData, baseValue=0)
 #     picarroConfig={
 #         "data":{
 #                 "logFolder": "picarro_log/",
@@ -223,3 +235,25 @@ class instrumentActoin:
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
+    xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
+    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+                            request=False, hello=None, answer=None, termin=chr(13),
+                            timesleep=0.2, logger=None)
+
+    config={
+        "logFolder": "picarro_log/",
+        "logStart": "True",
+        "dataFolder": "picarro_data/"
+    }
+    if config["logStart"] in ["True", "true", "TRUE"]:
+        logFolder = config["logFolder"]
+        logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+        file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+        logger.addHandler(file_handler)
+    picarro = Picarro_G2301(rs232Device, logger, config, False)
+    ia=instrumentActoin(xlp=xlp,picarro=picarro,logger=logger)
+    
