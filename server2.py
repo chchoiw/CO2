@@ -11,7 +11,11 @@ import traceback
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
+# class instrument():
 
+#     @abstractmethod
+#     def (self):
+#         pass
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
@@ -41,48 +45,165 @@ def connected_msg():
 def disconnect_msg():
     print('client disconnected.')
 
+class instrumentActoin:
+    #     # if config["logStart"] == "True":
+    #     logger.handlers.clear()
+    def init(self, logger=None,picarro=None,xlp=None):
+        self.picarro=picarro
+        self.xlp=xlp
+        self.logger=logger
+        self.name_space = '/echo'
+    def set_config(self,acitionKey,actionData):
+        config = actionData
+        logger=self.logger
+        
+        # if actionKey.lower()=="set_picarro_config":
+        # from logger_moudle import logger
+        if logger is None :
+            self.logger = logging.getLogger('mylogger')
+            logger.setLevel(logging.DEBUG)
+            console_handler = logging.StreamHandler()
+        # Open and read the JSON file
+        # with open('picarro_G2302.json', 'r') as file:
+        #     config = json.load(file)
+        # file.close()
+        if config["logStart"].lower()== "true":
+            logFolder = config["logFolder"]
+            logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+            file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
+            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            console_handler.setFormatter(formatter)
+            file_handler.setFormatter(formatter)
+            logger.addHandler(console_handler)
+            logger.addHandler(file_handler)
+        
+    def close_log(self):
+        if self.logger is not None:
+            self.logger.handlers.clear()
+        return True
+    def open_connection(self,actionKey):
+        if actionKey=="open_connection_picarro":
+            rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+                                    request=False, hello=None, answer=None, termin=chr(13),
+                                    timesleep=0.2, logger=None)
 
-@socketio.on('picarroConfig', namespace=name_space)
-def mtest_message(picarroConfig):
-    print(picarroConfig)
-    config = picarroConfig
+            self.picarro = Picarro_G2301(rs232Device, logger, config, False)
+        elif actionKey=="open_connection_xlp":
+            pass
+            # rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+            #                         request=False, hello=None, answer=None, termin=chr(13),
+            #                         timesleep=0.2, logger=None)
+
+            # self.picarro = Picarro_G2301(rs232Device, logger, config, False)        
+        return True
+
+
+
+    def flush_pump(self,data):
+        for i in range( data["flush_times"]):
+            for in_port in data["in_port"]:
+                waitSeconds=self.xlp.extractToWaste( in_port=in_port, volume_ul=1100, out_port=data["out_port"],
+                        speed_code=None, minimal_reset=False, flush=True)
+        # print(waitSeconds)
+                self.xlp.waitReady(waitSeconds)
+        return True
+
+    def reagent_get_each_conc_data(self,resDf):
+        dataTmpDf=self.picarro._Meas_GetBuffer()
+        resNewDf=pd.concat([resDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
+        
+        csvStr=resNewDf.to_csv()
+        .emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        time.sleep(1)
+
+        return resDf
+    def reagent_get_conc_data(self,data,baseValue=0):
+        """
+        input: data={"meas_datetime":"", "meas_name":"","meas_vol":"","meas_DIC":""}
+        get CO content each seconds and calculate net aeas 
+        output: result dataframe
+        """
+
+        resDf=pd.DataFrame(columns=["meas_datetime","meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3"])
+        for j in range(150):
+            resDf=self.reagent_get_each_conc_data(resDf)
+        resDf["meas_DIC"]=data["sample_DIC"]
+        resDf["meas_name"]=data["sample_name"]
+        resDf["meas_vol"]=data["sample_vol"]
+        resDf["meas_usage"]=data["sample_usage"]
+        x=resDf["meas_DIC"].tolist()
+        y = resDf["meas_val1"].tolist()
+        x = resDf["meas_datetimestamp"].tolist()
+        resDf["meas_netarea"]=reg.calNetArea(x=x, y=y,baseValue=baseValue)
+        csvStr=resDf.to_csv()
+        .emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        return resDf
 
 
 
 
-    # from logger_moudle import logger
-
-    logger = logging.getLogger('mylogger')
-    logger.setLevel(logging.DEBUG)
-    console_handler = logging.StreamHandler()
-
-
-    # Open and read the JSON file
-    # with open('picarro_G2302.json', 'r') as file:
-    #     config = json.load(file)
-    # file.close()
-
-    if config["logStart"] in ["True", "true", "TRUE"]:
-        logFolder = config["logFolder"]
-        logDtStr = datetime.datetime.now().strftime("%Y%m%d")
-        file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        console_handler.setFormatter(formatter)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-        logger.addHandler(file_handler)
+    def run_one_test(self,data):
+        completeFlag=self.xlp.primePort( in_port=data["in_port"], volume_ul=data["sample_vol"], speed_code=None, out_port=data["out_port"],
+                  split_command=False)
+        if completeFlag:
+            tmpDf=self.reagent_get_conc_data(data)
+        if data["flush"]:
+            self.flush_pump
+        return tmpDf
 
 
-    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                            request=False, hello=None, answer=None, termin=chr(13),
-                            timesleep=0.2, logger=None)
+    def run_full_test(self,dataFull):
+        sampleName="test1"
+        resDf=pd.DataFrame(columns=["meas_datetime","meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3"])
+        for i in range(len(dataFull)):
+            data=dataFull[i]
+            tmpDf=self.run_one_test(data)
+            resDf=pd.concat([resDf, tmpDf]).drop_duplicates(keep=False, ignore_index=True)
+        # fileName="/picarro_data/{}__{}.csv".format(sampleName,logDtStr)
+        # resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
+        csvStr=resDf.to_csv()
+        socketio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        return resDf
+
+    def cal_a_b(self,resDf):
+        reg= regression(data=resDf)
+        regData = resDf.loc[resDf["meas_usage"]=="sample"]
+        calDICData= resDf.loc[(resDf["meas_DIC"]=="measure")]
+        y = regData["meas_val1"].tolist()
+        x = regData["meas_dic"].tolist()
+        slope, intercept, r_value, p_value, std_err =reg.cal_regression( x,y)
+        resDf["a"]=slope
+        resDf["b"]=intercept
+        DICValue=reg.dicContent(co2PeakArea,slope=slope,intercept=intercept,sampleVol=1)
+        resDf.loc[calDICData.index,"meas_DIC"]=DICValue
+        nowDt=datetime.datetime.now().strftime("%Y%m%d_%H%M")
+        fileName="picarro_data/{}_{}.csv".format("test",nowDt)
+        resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
+        csvStr=resDf.to_csv()
+        socketio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        return resDf    
 
 
-    picarro = Picarro_G2301(rs232Device, logger, config, False)
-    funStr=config["execFun"]
-    fun= getattr(picarro, funStr)
-    data = fun()
-    print(data)
+
+# @socketio.on('picarroConfig', namespace=name_space)
+# def mtest_message(picarroConfig):
+#     print(picarroConfig)
+#     picarroConfig={
+#         "data":{
+#                 "logFolder": "picarro_log/",
+#                 "logFlag": "True",
+#                 "dataFolder": "picarro_data/",
+#                 }
+#                 # "instrument":["picarro",
+#                 "action"："set_picarro_config"                           
+#             }
+#     config = picarroConfig["data"]
+#     # from logger_moudle import logger
+#     # picarro = Picarro_G2301(rs232Device, logger, config, False)
+#     funStr=config["execFun"]
+#     fun= getattr(picarro, funStr)
+#     data = fun()
+#     print(data)
     # # result = bar()
     # # picarro._Meas_GetBufferFirst()
     # # picarro._Meas_ClearBuffer()
@@ -95,40 +216,10 @@ def mtest_message(picarroConfig):
     # # picarro._Plus_ClearBuffer()
     # # picarro._Plus_GetStatus()
     # # picarro._Flux_Mode_Switch()
-
-
-    reg = regression("data.csv")
-
-    reg.readFile()
-
-    # # print(type(reg.data.loc[1,"meas_time"]))
-    print(reg.data["meas_datetime"].tolist())
-
-
-    # beginTimeStamp = (beginTime-datetime.datetime(1970, 1, 1)).total_seconds()
-    # endTimeStamp = (endTime-datetime.datetime(1970, 1, 1)).total_seconds()
-    beginTimeStamp = datetime.datetime.strptime(
-        "2024-09-21 00:00:00", "%Y-%m-%d %H:%M:%S").timestamp()
-    print(beginTimeStamp)
-    endTimeStamp = datetime.datetime.strptime(
-        "2024-09-21 01:10:01", "%Y-%m-%d %H:%M:%S").timestamp()
-    subData = reg.data.loc[(reg.data["meas_datetimestamp"] >= beginTimeStamp) & (
-        reg.data["meas_datetimestamp"] <= endTimeStamp)]
-    print(subData)
-    y = subData["meas_val1"].tolist()
-    x = subData["meas_datetimestamp"].tolist()
-
-    print(reg.data["meas_val1"].tolist())
-    print(reg.data["meas_datetimestamp"].tolist())
-
-
-    print("regression value", reg.calNetArea(y, x))
-
-
     # if config["logStart"] == "True":
     #     logger.handlers.clear()
     # print("yes")
-    emit('my_response', {'message': "sucessful"})
+    # emit('my_response', {'message': "sucessful"})
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)

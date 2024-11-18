@@ -37,7 +37,7 @@ class Picarro_G2301():
         if self.prodFlag:
             buffReturn=self.rs232Conn.query(command)        
         else:
-            buffReturn=chr(13)+"2024-09-21 00:00:00;23.480;1.233;20.111;"+chr(13)+\
+            buffReturn="2"+chr(13)+"2024-09-21 00:00:00;23.480;1.233;20.111;"+chr(13)+\
            "2024-09-21 00:05:00;23.480;1.233;20.111;"+chr(13)+\
                 "2024-09-21 00:10:00;23.480;1.233;20.111;"+chr(13)
         if self.handleError(buffReturn): return 
@@ -46,7 +46,7 @@ class Picarro_G2301():
         self.logInfoCall("Reutrn Result:", "")
         
         retAry=buffReturn.split(chr(13))
-        for i in range(len(retAry)):
+        for i in range(1,len(retAry)):
             ret=retAry[i]
             # self.logger.info("> {<:15}:{}".format(ret))
             self.logInfoCall("-- >> ", ret)

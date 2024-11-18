@@ -13,13 +13,17 @@ lock = RLock()
 import logging
 pd.options.display.float_format = '{:.3f}'.format
 class regression:
-    def __init__(self, fileName ):
+    def __init__(self, fileName=None,data=None ):
         self.fileName = fileName
+        self.data=data
 
 
-    def readFile(self):
-        datas=pd.read_csv(self.fileName,index_col=0 )
-        datas['meas_datetime'] = pd.to_datetime(datas['meas_datetime'])
+    def readData(self):
+        if self.data=None:
+            datas=pd.read_csv(self.fileName,index_col=0 )
+            datas['meas_datetime'] = pd.to_datetime(datas['meas_datetime'])
+        else:
+            datas=self.data
         for i in datas.index:
             #########################
             # datas.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
@@ -30,7 +34,8 @@ class regression:
         # y = datas.loc[:,""] 
         # x = datas.iloc[:, 2] 
         # subData=datas.loc[(datas["type"]=="Valid")]
-        self.data=datas      
+        self.data=datas   
+        return datas
     def cal_regression(self, x,y):
         # datas = pd.read_excel(self.fileName) # 读取 excel 数据，引号里面是 excel 文件的位置
 
@@ -62,7 +67,7 @@ class regression:
         density = (999.842594 + 0.06793952*T - 0.00909529*T^2 + 0.0001001685*T^3 -0.000001120083*T^4 + 0.000000006536332*T^5 + (0.824493-0.0040899*T + 0.000076438*T^2 - 0.00000082467*T^3 + 0.0000000053875*T^4)*S + (-0.00572466 + 0.00010227*T - 0.0000016546*T^2)*S^1.5 +0.00048314*S^2)/1000
         return density
 
-    def calNetArea(self,y,x,baseValue=0):        
+    def calNetArea(self,x,y,baseValue=0):        
         result=integrate.trapezoid(y, x)
         print(result)
         if result-baseValue<0:
