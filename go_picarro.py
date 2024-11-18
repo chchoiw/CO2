@@ -54,7 +54,7 @@ data=picarro._Meas_GetBuffer()
 
 reg = regression("data.csv")
 
-reg.readFile()
+reg.readData()
 
 # print(type(reg.data.loc[1,"meas_time"]))
 print(reg.data["meas_datetime"].tolist())

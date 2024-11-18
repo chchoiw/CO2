@@ -11,6 +11,9 @@ import traceback
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from scipy import integrate
+from tecancavro.models import XCaliburD
+
+from tecancavro.transport import TecanAPISerial, TecanAPINode
 # class instrument():
 
 #     @abstractmethod
@@ -48,11 +51,12 @@ def disconnect_msg():
 class instrumentActoin:
     #     # if config["logStart"] == "True":
     #     logger.handlers.clear()
-    def __init__(self, logger=None,picarro=None,xlp=None):
+    def __init__(self, logger=None, picarro=None, xlp=None, prodFlag=True):
         self.picarro=picarro
         self.xlp=xlp
         self.logger=logger
         self.name_space = '/echo'
+        self.prodFlag=prodFlag
     def set_config(self,acitionKey,actionData):
         config = actionData
         logger=self.logger
@@ -112,6 +116,8 @@ class instrumentActoin:
 
     def reagent_get_each_conc_data(self,resDf):
         dataTmpDf=self.picarro._Meas_GetBuffer()
+        # print("---dataTmpDf")
+        # print(dataTmpDf)
         resNewDf=pd.concat([resDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
         
         csvStr=resNewDf.to_csv()
@@ -119,7 +125,7 @@ class instrumentActoin:
                       'csvStr': csvStr}, namespace=self.name_space)
         time.sleep(1)
 
-        return resDf
+        return resNewDf
     def calNetArea(self, x, y, baseValue=0):
         result = integrate.trapezoid(y, x)
         print(result)
@@ -136,15 +142,38 @@ class instrumentActoin:
         """
 
         resDf=pd.DataFrame(columns=["meas_datetime","meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3"])
-        for j in range(150):
+        oldDf = resDf
+        for j in range(3):
             resDf=self.reagent_get_each_conc_data(resDf)
+            print("--get bew resDf")
+            print(resDf)
+            if not self.prodFlag:
+                if data["sample_name"]=="sample1":
+                    resDf["meas_val1"] = resDf["meas_val1"].astype(float)+1.1*(j)
+                elif data["sample_name"] == "sample2":
+                    resDf["meas_val1"]=resDf["meas_val1"].astype(float)+1.2*(j)
+                elif data["sample_name"] == "sample3":
+                    resDf["meas_val1"] = resDf["meas_val1"].astype(float)+1.3*(j)
+                elif data["sample_name"] == "measure1":
+                    print("shape",resDf["meas_val1"].shape)
+                    resDf["meas_val1"] = resDf["meas_val1"].astype(float)+0.9*(j)
+        for i in resDf.index:
+            #########################
+            # resDf.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
+            #####################
+            # datas['meas_datetime'])
+                resDf.loc[i, 'meas_datetimestamp']=pd.to_datetime(resDf.loc[i,
+                                                           "meas_datetime"]).timestamp()-60*60*8
         resDf["meas_DIC"]=data["sample_DIC"]
         resDf["meas_name"]=data["sample_name"]
         resDf["meas_vol"]=data["sample_vol"]
         resDf["meas_usage"]=data["sample_usage"]
         x=resDf["meas_DIC"].tolist()
         y = resDf["meas_val1"].tolist()
+        print("---", data["sample_name"])
         x = resDf["meas_datetimestamp"].tolist()
+
+
         resDf["meas_netarea"]=self.calNetArea(x=x, y=y,baseValue=baseValue)
         csvStr=resDf.to_csv()
         socketio.emit('responseData', {
@@ -155,11 +184,13 @@ class instrumentActoin:
 
 
     def run_one_test(self,data):
-        completeFlag=self.xlp.primePort( in_port=data["in_port"], volume_ul=data["sample_vol"], speed_code=None, out_port=data["out_port"],
+        completeFlag=False
+        if self.prodFlag:
+            completeFlag=self.xlp.primePort( in_port=data["in_port"], volume_ul=data["sample_vol"], speed_code=None, out_port=data["out_port"],
                   split_command=False)
-        if completeFlag:
+        if completeFlag or not self.prodFlag:
             tmpDf=self.reagent_get_conc_data(data)
-        if data["flush"]:
+        if "flush" in data.keys() and data["flush"] and self.prodFlag:
             self.flush_pump()
         return tmpDf
 
@@ -180,13 +211,15 @@ class instrumentActoin:
     def cal_a_b(self,resDf):
         reg= regression(data=resDf)
         regData = resDf.loc[resDf["meas_usage"]=="sample"]
-        calDICData= resDf.loc[(resDf["meas_DIC"]=="measure")]
-        y = regData["meas_val1"].tolist()
-        x = regData["meas_dic"].tolist()
+        calDICData= resDf.loc[(resDf["meas_usage"]=="measure")]
+        y = regData["meas_val1"].astype(float).tolist()
+        x = regData["meas_DIC"].astype(float).tolist()
         slope, intercept, r_value, p_value, std_err =reg.cal_regression( x,y)
         resDf["a"]=slope
         resDf["b"]=intercept
-        DICValue=reg.dicContent(co2PeakArea,slope=slope,intercept=intercept,sampleVol=1)
+        measureDfFirstIdx=calDICData.index[0]
+        meas_netarea=calDICData.loc[measureDfFirstIdx, "meas_netarea"]
+        DICValue=reg.dicContent(co2PeakArea=meas_netarea,slope=slope,intercept=intercept,sampleVol=1)
         resDf.loc[calDICData.index,"meas_DIC"]=DICValue
         nowDt=datetime.datetime.now().strftime("%Y%m%d_%H%M")
         fileName="picarro_data/{}_{}.csv".format("test",nowDt)
@@ -196,10 +229,8 @@ class instrumentActoin:
         return resDf    
 
 
-@socketio.on('responseData', namespace=name_space)
-def mtest_message(receiveData):
-    print(receiveData)
-    ia.reagent_get_conc_data(receiveData, baseValue=0)
+
+
 #     picarroConfig={
 #         "data":{
 #                 "logFolder": "picarro_log/",
@@ -233,27 +264,42 @@ def mtest_message(receiveData):
     # print("yes")
     # emit('my_response', {'message': "sucessful"})
 
-if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000)
-    xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
-    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+# xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
+xlp=None
+rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
                             request=False, hello=None, answer=None, termin=chr(13),
                             timesleep=0.2, logger=None)
 
-    config={
-        "logFolder": "picarro_log/",
-        "logStart": "True",
-        "dataFolder": "picarro_data/"
-    }
-    if config["logStart"] in ["True", "true", "TRUE"]:
-        logFolder = config["logFolder"]
-        logDtStr = datetime.datetime.now().strftime("%Y%m%d")
-        file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        console_handler.setFormatter(formatter)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-        logger.addHandler(file_handler)
-    picarro = Picarro_G2301(rs232Device, logger, config, False)
-    ia=instrumentActoin(xlp=xlp,picarro=picarro,logger=logger)
-    
+config = {
+    "logFolder": "picarro_log/",
+    "logStart": "True",
+    "dataFolder": "picarro_data/"
+}
+logger = logging.getLogger('mylogger')
+logger.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+if config["logStart"] in ["True", "true", "TRUE"]:
+    logFolder = config["logFolder"]
+    logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+    file_handler = logging.FileHandler(
+        logFolder+'_{}.txt'.format(logDtStr))
+    formatter = logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
+ia = instrumentActoin(xlp=xlp, picarro=picarro,
+                        logger=logger, prodFlag=False)
+@socketio.on('responseData', namespace=name_space)
+
+def mtest_message(receiveData):
+    print(receiveData)
+
+    # print(ia.reagent_get_conc_data(receiveData["data"][0], baseValue=0))
+    res=ia.run_full_test(receiveData["data"])
+    res2=ia.cal_a_b(res)
+    print(res2)
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000)

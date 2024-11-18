@@ -60,7 +60,7 @@ class Picarro_G2301():
                 retDf.loc[retDfIdx,"meas_val2"]=valAry[2]
                 retDf.loc[retDfIdx,"meas_val3"]=valAry[3]
                 retDfIdx+=1
-        # print(retDf)
+        print(retDf)
         retDf.to_csv("data.csv")
         return retDf
 
@@ -523,17 +523,17 @@ rs232Device=RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
 
 picarro = Picarro_G2301(rs232Device, logger, config, False)
 picarro._Meas_GetBuffer()
-picarro._Meas_GetBufferFirst()
-picarro._Meas_ClearBuffer()
-picarro._Meas_GetScanTime()
-picarro._Instr_GetStatus()
-picarro._Valves_Seq_Start()
-picarro._Valves_Seq_Readtstate()
-picarro._Pulse_GetBuffer()
-picarro._Pulse_GetBufferFirst()
-picarro._Plus_ClearBuffer()
-picarro._Plus_GetStatus()
-picarro._Flux_Mode_Switch()
+# picarro._Meas_GetBufferFirst()
+# picarro._Meas_ClearBuffer()
+# picarro._Meas_GetScanTime()
+# picarro._Instr_GetStatus()
+# picarro._Valves_Seq_Start()
+# picarro._Valves_Seq_Readtstate()
+# picarro._Pulse_GetBuffer()
+# picarro._Pulse_GetBufferFirst()
+# picarro._Plus_ClearBuffer()
+# picarro._Plus_GetStatus()
+# picarro._Flux_Mode_Switch()
 
 if config["logStart"]=="True":
     logger.handlers.clear()

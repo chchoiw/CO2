@@ -24,9 +24,10 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
     <title>socket.io</title>
 </head>
-<button onclick="picarroConfigSend()">Picarro config setting</button>
+<button onclick="send()">Picarro config setting</button>
 <button onclick="piacrroGetData()">Picarro get data</button>
 <h1 id="receive"></h1>
+
 <body>
     <script>
         var socket = null
@@ -44,34 +45,63 @@
                 console.log('连接断开')
                 // socket.emit('disconnect1', { 'data': 'I\'m disconnected!' });
             })
-            socket.on('my_response', msg => {
+            socket.on('responseData', msg => {
                 // 接受数据
-                console.log("msg",msg)
+                console.log("msg", msg)
             })
             socket.on('error message', msg => {
                 console.log('error:' + msg)
 
             })
         }
-        function picarroConfigSend() {
-            
-            sendObj={
-                "logFolder": "picarro_log/",
-                "logStart": "True",
-                "dataFolder": "picarro_data/",
-            
+        function send() {
+
+            // sendObj={
+            //     "logFolder": "picarro_log/",
+            //     "logStart": "True",
+            //     "dataFolder": "picarro_data/",
+
+            // }
+            sendObj = {
+                "data": [{
+                    "sample_datetime": "2024-09-21 00:00:00",
+                    "sample_name": "sample1", "sample_vol": "1.", "sample_DIC": "200.",
+                    "sample_usage": "sample", "sample_DIC": "2."
+                },
+                {
+                    "sample_datetime": "2024-09-21 00:00:00",
+                    "sample_name": "sample2", "sample_vol": "2.", "sample_DIC": "400.",
+                    "sample_usage": "sample", "sample_DIC": "4."
+                },
+                {
+                    "sample_datetime": "2024-09-21 00:00:00",
+                    "sample_name": "sample3", "sample_vol": "3.", "sample_DIC": "300.",
+                    "sample_usage": "sample", "sample_DIC": "3."
+                },
+                // {
+                //     "sample_datetime": "2024-09-21 00:00:00",
+                //     "sample_name": "sample4", "sample_vol": "2.5", "sample_DIC": "450.",
+                //     "sample_usage": "sample", "sample_DIC": "4."
+                // },
+                {
+                    "sample_datetime": "2024-09-21 00:00:00",
+                    "sample_name": "measure1", "sample_vol": "2.3", "sample_DIC": "420.",
+                    "sample_usage": "measure", "sample_DIC": "4."
+                },
+                ]
+
             }
-            socket.emit('picarroConfig', sendObj)
+            socket.emit('responseData', sendObj)
             console.log("sendObj")
         }
-            function piacrroGetData() {
+        function piacrroGetData() {
 
-                sendObj = {
-                    "execFun": "_Pulse_GetBuffer",
-                }
-                socket.emit('piacrroGetData', sendObj)
-                console.log("sendObj")
+            sendObj = {
+                "execFun": "_Pulse_GetBuffer",
             }
+            socket.emit('piacrroGetData', sendObj)
+            console.log("sendObj")
+        }
         initWebSocket()
     </script>
 </body>
@@ -92,4 +122,3 @@
         });
     });
 </script> -->
-
