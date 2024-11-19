@@ -3,13 +3,14 @@ from regression import regression
 from picarro_G2301 import Picarro_G2301
 import json
 import logging
+import mylogger
 from mySerial import RS232_Device
 import re
 import datetime
 import time
 import traceback
 from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+from flask_self.sio import SocketIO, emit
 from scipy import integrate
 from tecancavro.models import XCaliburD
 
@@ -20,43 +21,19 @@ from tecancavro.transport import TecanAPISerial, TecanAPINode
 #     def (self):
 #         pass
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret_key'
 
-socketio = SocketIO()
-socketio.init_app(app, cors_allowed_origins='*')
-
-name_space = '/echo'
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/push')
-def push_once():
-    event_name = 'echo'
-    broadcasted_data = {'data': "test message!"}
-    # 设置广播数据
-    socketio.emit(event_name, broadcasted_data, broadcast=False, namespace=name_space)
-    return 'done!'
-
-@socketio.on('connect', namespace=name_space)
-def connected_msg():
-    print('client connected.')
-
-@socketio.on('disconnect', namespace=name_space)
-def disconnect_msg():
-    print('client disconnected.')
 
 class instrumentActoin:
     #     # if config["logStart"] == "True":
     #     logger.handlers.clear()
-    def __init__(self, logger=None, picarro=None, xlp=None, prodFlag=True):
+    def __init__(self, logger=None,sio=sio, picarro=None, xlp=None, prodFlag=True,name_space="echo"):
         self.picarro=picarro
         self.xlp=xlp
         self.logger=logger
-        self.name_space = '/echo'
+        self.name_space = name_space
+        self.sio=sio
         self.prodFlag=prodFlag
+        self.oldConcDataWithStdDf=None
     def set_config(self,acitionKey,actionData):
         config = actionData
         logger=self.logger
@@ -121,8 +98,8 @@ class instrumentActoin:
         resNewDf=pd.concat([resDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
         
         csvStr=resNewDf.to_csv()
-        socketio.emit('responseData', {
-                      'csvStr': csvStr}, namespace=self.name_space)
+        self.sio.emit('responseData', {
+                      "data": csvStr}, namespace=self.name_space)
         time.sleep(1)
 
         return resNewDf
@@ -176,12 +153,9 @@ class instrumentActoin:
 
         resDf["meas_netarea"]=self.calNetArea(x=x, y=y,baseValue=baseValue)
         csvStr=resDf.to_csv()
-        socketio.emit('responseData', {
-                      'csvStr': csvStr}, namespace=self.name_space)
+        self.sio.emit('responseData', {
+                      "data": csvStr}, namespace=self.name_space)
         return resDf
-
-
-
 
     def run_one_test(self,data):
         completeFlag=False
@@ -205,7 +179,7 @@ class instrumentActoin:
         # fileName="/picarro_data/{}__{}.csv".format(sampleName,logDtStr)
         # resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
         csvStr=resDf.to_csv()
-        socketio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
         return resDf
 
     def cal_a_b(self,resDf):
@@ -225,12 +199,26 @@ class instrumentActoin:
         fileName="picarro_data/{}_{}.csv".format("test",nowDt)
         resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
         csvStr=resDf.to_csv()
-        socketio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+        self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
         return resDf    
 
+    def reagent_get_conc_data_with_std(self):
 
+        dataTmpDf=self.picarro._Pulse_GetBuffer_()
+        # print("---dataTmpDf")
+        # print(dataTmpDf)
+        if self.oldConcDataWithStdDf is None:
+            resNewDf=dataTmpDf
+        else:
+            resNewDf=pd.concat([self.oldConcDataWithStdDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
+            diffDf=dataTmpDf[~self.oldConcDataWithStdDf.eq(dataTmpDf).all(axis=1)]
+            self.oldConcDataWithStdDf=resNewDf
+            if diffDf.shape[0]>0:
+                diffDataJson=diffDf.to_json(orient="records")
+                self.sio.emit('concDataWithStd', {"data":diffDataJson}, namespace=self.name_space)
+        time.sleep(1)
 
-
+        return resNewDf
 #     picarroConfig={
 #         "data":{
 #                 "logFolder": "picarro_log/",
@@ -265,6 +253,39 @@ class instrumentActoin:
     # emit('my_response', {'message': "sucessful"})
 
 # xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
+
+
+
+
+        
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret_key'
+
+socketio = SocketIO()
+socketio.init_app(app, cors_allowed_origins='*')
+
+name_space = '/echo'
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/push')
+def push_once():
+    event_name = 'echo'
+    broadcasted_data = {'data': "test message!"}
+    # 设置广播数据
+    socketio.emit(event_name, broadcasted_data, broadcast=False, namespace=name_space)
+    return 'done!'
+
+@socketio.on('connect', namespace=name_space)
+def connected_msg():
+    print('client connected.')
+
+@socketio.on('disconnect', namespace=name_space)
+def disconnect_msg():
+    print('client disconnected.')
 xlp=None
 rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
                             request=False, hello=None, answer=None, termin=chr(13),
@@ -275,7 +296,7 @@ config = {
     "logStart": "True",
     "dataFolder": "picarro_data/"
 }
-logger = logging.getLogger('mylogger')
+logger = mylogger.getLogger('mylogger')
 logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
 if config["logStart"] in ["True", "true", "TRUE"]:
@@ -291,8 +312,8 @@ if config["logStart"] in ["True", "true", "TRUE"]:
     logger.addHandler(file_handler)
 picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
 ia = instrumentActoin(xlp=xlp, picarro=picarro,
-                        logger=logger, prodFlag=False)
-@socketio.on('responseData', namespace=name_space)
+                        logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
+# @self.sio.on('responseData', namespace=name_space)
 
 def mtest_message(receiveData):
     print(receiveData)
@@ -302,4 +323,4 @@ def mtest_message(receiveData):
     res2=ia.cal_a_b(res)
     print(res2)
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000)
+    self.sio.run(app, host='0.0.0.0', port=5000)
