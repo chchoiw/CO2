@@ -3,14 +3,14 @@ from regression import regression
 from picarro_G2301 import Picarro_G2301
 import json
 import logging
-import mylogger
+from myLogger import mylogger
 from mySerial import RS232_Device
 import re
 import datetime
 import time
 import traceback
 from flask import Flask, render_template
-from flask_self.sio import SocketIO, emit
+from flask_socketio import SocketIO, emit
 from scipy import integrate
 from tecancavro.models import XCaliburD
 
@@ -26,7 +26,7 @@ from tecancavro.transport import TecanAPISerial, TecanAPINode
 class instrumentActoin:
     #     # if config["logStart"] == "True":
     #     logger.handlers.clear()
-    def __init__(self, logger=None,sio=sio, picarro=None, xlp=None, prodFlag=True,name_space="echo"):
+    def __init__(self, logger=None,sio=None, picarro=None, xlp=None, prodFlag=True,name_space="echo"):
         self.picarro=picarro
         self.xlp=xlp
         self.logger=logger
@@ -80,15 +80,20 @@ class instrumentActoin:
 
 
 
-    def flush_pump(self,data=None):
+    def flush_pump(self,data=None,times=3,waitGap=500):
         if data is None:
             return
-        for i in range( data["flush_times"]):
+        if "flush_times" in data.keys():
+            times=data["flush_times"].astype("int")
+        if "waitGap" in data.keys():
+            waitGap=data["flush_times"].astype("int")
+        for i in range(times ):
             for in_port in data["in_port"]:
                 waitSeconds=self.xlp.extractToWaste( in_port=in_port, volume_ul=1100, out_port=data["out_port"],
                         speed_code=None, minimal_reset=False, flush=True)
         # print(waitSeconds)
                 self.xlp.waitReady(waitSeconds)
+            self.xlp.waitReady(waitGap*1./1000)
         return True
 
     def reagent_get_each_conc_data(self,resDf):
@@ -204,19 +209,37 @@ class instrumentActoin:
 
     def reagent_get_conc_data_with_std(self):
 
-        dataTmpDf=self.picarro._Pulse_GetBuffer_()
+        dataTmpDf = self.picarro._Pulse_GetBuffer()
         # print("---dataTmpDf")
         # print(dataTmpDf)
-        if self.oldConcDataWithStdDf is None:
-            resNewDf=dataTmpDf
-        else:
-            resNewDf=pd.concat([self.oldConcDataWithStdDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
-            diffDf=dataTmpDf[~self.oldConcDataWithStdDf.eq(dataTmpDf).all(axis=1)]
-            self.oldConcDataWithStdDf=resNewDf
-            if diffDf.shape[0]>0:
-                diffDataJson=diffDf.to_json(orient="records")
-                self.sio.emit('concDataWithStd', {"data":diffDataJson}, namespace=self.name_space)
-        time.sleep(1)
+        print("get data with std")
+        print(dataTmpDf)
+        for i in range(3):
+            if self.oldConcDataWithStdDf is None:
+                # resNewDf=dataTmpDf
+                dataTmpJson = dataTmpDf.to_json(orient="records")
+                self.sio.emit('concDataWithStd', {
+                              "data": dataTmpJson}, namespace=self.name_space)
+            else:
+                resNewDf=pd.concat([self.oldConcDataWithStdDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
+                diffDf=dataTmpDf[~self.oldConcDataWithStdDf.eq(dataTmpDf).all(axis=1)]
+                self.oldConcDataWithStdDf=resNewDf
+                if diffDf.shape[0]>0:
+                    diffDataJson=diffDf.to_json(orient="records")
+                    self.sio.emit('concDataWithStd', {"data":diffDataJson}, namespace=self.name_space)
+                if not self.prodFlag:
+                    # "plus_datetime","mean1","std1","slope1","mean2","std2","slope2","mean3","std3","slope3"
+                    diffDataJson.loc[0,"mean1"]=1.1*i
+                    diffDataJson.loc[0, "mean2"] = 1.2*i
+                    diffDataJson.loc[0, "mean3"] = 1.3*i
+                    diffDataJson.loc[0, "std1"] = 1.1*i
+                    diffDataJson.loc[0, "std2"] = 1.2*i
+                    diffDataJson.loc[0, "std3"] = 1.3*i
+                    diffDataJson.loc[0, "slope1"] = 1.1*i
+                    diffDataJson.loc[0, "slope2"] = 1.2*i
+                    diffDataJson.loc[0, "slope3"] = 1.3*i
+                    self.sio.emit('concDataWithStd', {"data":diffDataJson}, namespace=self.name_space)
+            time.sleep(1)
 
         return resNewDf
 #     picarroConfig={
@@ -296,7 +319,7 @@ config = {
     "logStart": "True",
     "dataFolder": "picarro_data/"
 }
-logger = mylogger.getLogger('mylogger')
+logger = mylogger(name='mylogger', level=0, sio=socketio, name_space=name_space)
 logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
 if config["logStart"] in ["True", "true", "TRUE"]:
@@ -313,14 +336,17 @@ if config["logStart"] in ["True", "true", "TRUE"]:
 picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
 ia = instrumentActoin(xlp=xlp, picarro=picarro,
                         logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
-# @self.sio.on('responseData', namespace=name_space)
 
+
+@socketio.on('responseData', namespace=name_space)
 def mtest_message(receiveData):
     print(receiveData)
 
     # print(ia.reagent_get_conc_data(receiveData["data"][0], baseValue=0))
-    res=ia.run_full_test(receiveData["data"])
-    res2=ia.cal_a_b(res)
-    print(res2)
+    # res=ia.run_full_test(receiveData["data"])
+    # res2=ia.cal_a_b(res)
+    for i in range(3):
+        ia.reagent_get_conc_data_with_std()
+    # print(res2)
 if __name__ == '__main__':
-    self.sio.run(app, host='0.0.0.0', port=5000)
+    socketio.run(app, host='0.0.0.0', port=5000)

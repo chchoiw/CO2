@@ -344,7 +344,7 @@ class Picarro_G2301():
                 retDf.loc[retDfIdx,"std3"]=valAry[8]
                 retDf.loc[retDfIdx,"slope3"]=valAry[9]
                 retDfIdx+=1
-        # print(retDf)
+        print(retDf)
         return retDf
     def _Pulse_GetBufferFirst(self):
         command="_Pulse_GetBufferFirst"+chr(13)
@@ -522,14 +522,14 @@ rs232Device=RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
 
 
 picarro = Picarro_G2301(rs232Device, logger, config, False)
-picarro._Meas_GetBuffer()
+# picarro._Meas_GetBuffer()
 # picarro._Meas_GetBufferFirst()
 # picarro._Meas_ClearBuffer()
 # picarro._Meas_GetScanTime()
 # picarro._Instr_GetStatus()
 # picarro._Valves_Seq_Start()
 # picarro._Valves_Seq_Readtstate()
-# picarro._Pulse_GetBuffer()
+picarro._Pulse_GetBuffer()
 # picarro._Pulse_GetBufferFirst()
 # picarro._Plus_ClearBuffer()
 # picarro._Plus_GetStatus()

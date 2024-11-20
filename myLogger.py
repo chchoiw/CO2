@@ -21,8 +21,8 @@ class mylogger(logging.Logger):
         def addAndExec(self,msg, *args, **kwargs):
 
             func(self, msg,*args, **kwargs)
-            # self.sio.emit('log', {'logStr': msg}, namespace=self.name_space)
-            # print("wrapmsg",msg)
+            self.sio.emit('log', {'data': msg}, namespace=self.name_space)
+            print("wrapmsg",msg)
         return addAndExec
 
     @wrapEmit
