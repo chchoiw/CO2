@@ -38,6 +38,10 @@ class XCaliburD(Syringe):
                    24: 130, 25: 120, 26: 110, 17: 100, 28: 90, 29: 80,
                    30: 70, 31: 60, 32: 50, 33: 40, 34: 30, 35: 20, 36: 18,
                    37: 16, 38: 14, 39: 12, 40: 10}
+    SLOPE_CODES={1: 2500,2:5000,3:7500,4:10000,5:12500,
+                 6:15000,7:17500,8:20000,9:22500,10:25000,
+                 11:27500,12:30000,13:32500,14:35000,15:37500,
+                 16:40000,17:42500,18:45000,19:47500,20:50000,}
 
     def __init__(self, com_link, num_ports=4, syringe_ul=1000, direction='CW',
                  microstep=2, waste_port=4, slope=14, init_force=0,
@@ -163,8 +167,8 @@ class XCaliburD(Syringe):
         direction = direction if direction is not None else self.direction
         out_port = out_port if out_port is not None else self.waste_port
         in_port = in_port if in_port is not None else 0
-        self.sendRcv("U8", execute=True)
-        self.waitReady()
+        # self.sendRcv("U8", execute=True)
+        # self.waitReady()
         # self.sendRcv("U41", execute=True)
         # self.waitReady()
         cmd_string = '{0}{1}{2}{3}'.format(
@@ -173,7 +177,7 @@ class XCaliburD(Syringe):
         self.sendRcv(cmd_string, execute=True)
         self.waitReady()
 
-        return 0  # 0 seconds left to wait
+        return cmd_string  # 0 seconds left to wait
 
     #########################################################################
     # Convenience functions                                                 #
@@ -580,16 +584,25 @@ class XCaliburD(Syringe):
         self.cmd_chain += cmd_string
 
     @execWrap
-    def setSlope(self, slope_code, chain=False):
+    def setSlope(self, slope_code=None,slope_value=None):
         self.logCall('setSlope', locals())
+        import numpy as np
+        def closestIdx(lst, K):
+            lst = np.asarray(lst)
+            idx = (np.abs(lst - K)).argmin()
+            return idx
+        if slope_value is not None:
+            slope_code=closestIdx(self.__class__.SLOPE_CODES,slope_value)
 
+        if slope_value is None and slope_code is None:
+            raise(ValueError('slope_code and slope_value are None'))
         if not 1 <= slope_code <= 20:
             raise(ValueError('`slope_code` [{0}] must be between 1 and 20'
-                             ''.format(slope_code)))
+                            ''.format(slope_code)))
         cmd_string = 'L{0}'.format(slope_code)
         self.sim_speed_change = True
         self.cmd_chain += cmd_string
-
+        
     # Chainable control commands
 
     @execWrap
@@ -655,7 +668,7 @@ class XCaliburD(Syringe):
         self.getCutoffSpeed()
 
     def getPlungerPos(self):
-        """ Returns the absolute plunger position as an int (0-3000) """
+        """ Returns the absolute plunger position as an int (0-4800) """
         self.logCall('getPlungerPos', locals())
 
         cmd_string = '?'
@@ -680,6 +693,7 @@ class XCaliburD(Syringe):
         data = self.sendRcv(cmd_string)
         self.state['top_speed'] = int(data)
         return self.state['top_speed']
+
 
     def getCutoffSpeed(self):
         """ Returns the cutoff speed as an int (in pulses/sec) """
@@ -720,6 +734,21 @@ class XCaliburD(Syringe):
         data = self.sendRcv(cmd_string)
         return int(data)
 
+
+    def getCurrentMode(self):
+        """ Returns the top speed as an int (in pulses/sec) """
+        self.logCall('getCurrentMode', locals())
+
+        cmd_string = '?28'
+        data = self.sendRcv(cmd_string)
+        # normal, fine positioning, or microstep
+        if "normal" in data:
+            self.state['microstep'] = 0
+        elif "fine positioning" in data:
+            self.state['microstep'] = 1
+        elif "microstep" in data:
+            self.state['microstep'] = 2
+        return self.state['microstep']
     #########################################################################
     # Config commands                                                       #
     #########################################################################
@@ -921,6 +950,40 @@ class XCaliburD(Syringe):
         # else:
         #     steps = volume_ul * (3000/self.syringe_ul)
         return int(steps)
+
+
+    def _stepsToUl(self, steps, microstep=None):
+        """
+        Converts a volume in microliters (ul) to encoder steps.
+
+        Args:
+            `steps` (int) 
+        Kwargs:
+            `microstep` (bool) : whether to convert to standard steps or
+                                 microsteps
+
+        """
+
+        if microstep is None:
+            microstepVar = self.state['microstep']
+        else:
+            microstepVar=microstep
+        print(microstepVar)
+        if microstepVar in [0, "0", "Normal", "normal", "NORMAL"]:
+            volume_ul =  steps*1./6000*self.syringe_ul
+        elif microstepVar in [1, "1", "Fine", "FINE", "fine"]:
+            volume_ul =  steps*1./48000*self.syringe_ul
+        elif microstepVar in [2, "2", "Micro", "MICRO", "micro"]:
+            volume_ul =  steps*1./48000*self.syringe_ul
+        # if microstep is None:
+        #     microstep = self.state['microstep']
+        # if microstep:
+        #     steps = volume_ul * (24000/self.syringe_ul)
+        # else:
+        #     steps = volume_ul * (3000/self.syringe_ul)
+        return volume_ul
+
+
 
     def _simIncToPulses(self, speed_inc):
         """
