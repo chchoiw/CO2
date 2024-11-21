@@ -80,21 +80,7 @@ class instrumentActoin:
 
 
 
-    def flush_pump(self,data=None,times=3,waitGap=500):
-        if data is None:
-            return
-        if "flush_times" in data.keys():
-            times=data["flush_times"].astype("int")
-        if "waitGap" in data.keys():
-            waitGap=data["flush_times"].astype("int")
-        for i in range(times ):
-            for in_port in data["in_port"]:
-                waitSeconds=self.xlp.extractToWaste( in_port=in_port, volume_ul=1100, out_port=data["out_port"],
-                        speed_code=None, minimal_reset=False, flush=True)
-        # print(waitSeconds)
-                self.xlp.waitReady(waitSeconds)
-            self.xlp.waitReady(waitGap*1./1000)
-        return True
+
 
     def reagent_get_each_conc_data(self,resDf):
         dataTmpDf=self.picarro._Meas_GetBuffer()
@@ -310,9 +296,7 @@ def connected_msg():
 def disconnect_msg():
     print('client disconnected.')
 xlp=None
-rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                            request=False, hello=None, answer=None, termin=chr(13),
-                            timesleep=0.2, logger=None)
+
 
 config = {
     "logFolder": "picarro_log/",
@@ -333,20 +317,151 @@ if config["logStart"] in ["True", "true", "TRUE"]:
     file_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
-picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
-ia = instrumentActoin(xlp=xlp, picarro=picarro,
-                        logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
+
+# ia = instrumentActoin(xlp=xlp, picarro=picarro,
+#                         logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
 
 
-@socketio.on('responseData', namespace=name_space)
-def mtest_message(receiveData):
+
+pumpDefaultSetting={
+    "extractSpeed":900,
+    "dispenseSpeed":900,
+
+}
+
+
+@socketio.on('connectPump', namespace=name_space)
+def connectPump(receiveData):
     print(receiveData)
+    xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
+                 microstep=2, waste_port=4, slope=14, init_force=0,
+                 debug=True, debug_log_path='./pump_log/')
+@socketio.on('connectPicarro', namespace=name_space)
+def connectPump(receiveData):
+    print(receiveData)
+    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+                                request=False, hello=None, answer=None, termin=chr(13),
+                                timesleep=0.2, logger=None)
+    picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
 
-    # print(ia.reagent_get_conc_data(receiveData["data"][0], baseValue=0))
-    # res=ia.run_full_test(receiveData["data"])
-    # res2=ia.cal_a_b(res)
-    for i in range(3):
-        ia.reagent_get_conc_data_with_std()
+# @socketio.on('responseData', namespace=name_space)
+# def mtest_message(receiveData):
+#     print(receiveData)
+
+#     # print(ia.reagent_get_conc_data(receiveData["data"][0], baseValue=0))
+#     # res=ia.run_full_test(receiveData["data"])
+#     # res2=ia.cal_a_b(res)
+#     for i in range(3):
+#         ia.reagent_get_conc_data_with_std()
     # print(res2)
+
+@socketio.on('init', namespace=name_space)
+def initPump(receiveData):
+    print(receiveData)
+    command=xlp.init( init_force=None, direction=None, in_port=None,
+             out_port=None)
+    logger.info("泵己初始化完成,指令為{}".format(command))
+
+    
+
+
+@socketio.on('dispense', namespace=name_space)
+def dispense(receiveData):
+    # print(receiveData)
+    for subData in receiveData["data"]:
+        to_port=subData["to_port"]
+        volume_ul=subData["volume_ul"]
+        if "dispenseSpeed" in subData.keys():
+            dispenseSpeed = int(subData("dispenseSpeed"))
+        else:
+            dispenseSpeed =pumpDefaultSetting["dispenseSpeed"]        
+        xlp.setTopSpeed(dispenseSpeed)
+        xlp.dispene( to_port, volume_ul)
+        command=xlp.self.cmd_chain
+        delay = xlp.executeChain()
+        logger.info("{}加樣{}ul,指令{},請等待{}秒").format(to_port,volume_ul,command,delay)
+        xlp.waitReady(delay)    
+
+
+@socketio.on('extract', namespace=name_space)
+def dispense(receiveData):
+    # print(receiveData)
+    for subData in receiveData["data"]:
+        from_port=subData["from_port"]
+        volume_ul=subData["volume_ul"]
+        if "extractSpeed" in subData.keys():
+            extractSpeed = int(subData("extractSpeed"))
+        else:
+            extractSpeed =pumpDefaultSetting["extractSpeed"]
+        
+        xlp.setTopSpeed(extractSpeed)
+        xlp.extract( from_port, volume_ul)
+        command=xlp.self.cmd_chain
+        delay = xlp.executeChain()
+        logger.info("從{}抽樣{}ul,指令{},請等待{}秒").format(from_port,volume_ul,command,delay)
+        xlp.waitReady(delay)    
+
+
+@socketio.on('getPumpStatus', namespace=name_space)
+def getPumpPosition(receiveData):
+    pos=xlp.getPlungerPos()
+    modeNum=xlp.getCurrentMode()
+    volumn_ul=xlp._stepsToUl()
+    curPort=xlp.getCurPort()
+    nowDt=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    responseData={
+        "data":
+        {
+            "modeNum":modeNum,
+            "pos":pos,
+            "volumn_ul":volumn_ul,
+            "curPort":curPort,
+            "datetime":nowDt
+        }
+
+    }
+    socketio.emit('responsePumpStatus', responseData, namespace=name_space)
+
+@socketio.on('flush', namespace=name_space)
+def flush_pump(receiveData):
+    if receiveData["data"] is None:
+        return
+    dataAry=receiveData["data"]
+    for subData in dataAry:
+        if "flush_times" in subData.keys():
+            times=subData["flush_times"].astype("int")
+        if "wait_gap_ms" in subData.keys():
+            wait_gap_ms=subData["wait_gap_ms"].astype("int")
+        if "waste_port" in subData.keys():
+            out_port=subData["waste_port"]
+        else:
+            out_port=xlp.waste_port
+        for i in range(times ):
+            waitSeconds=xlp.extractToWaste( in_port=subData["in_port"], volume_ul=1100, out_port=out_port,
+                    speed_code=None, minimal_reset=False, flush=True)
+            xlp.waitReady(waitSeconds)
+            logger.info("{}清洗第{}次").format(subData["in_port"],i)
+        xlp.waitReady(wait_gap_ms*1./1000)
+
+    
+
+
+# @socketio.on('setSpeed', namespace=name_space)
+# def mtest_message(receiveData):
+#     print(receiveData)
+#     keys=receiveData["data"].keys()
+
+#     if "extractSpeed" in keys:
+#         startSpeed=receiveData["data"]["extractSpeed"]
+#         xlp.setStartSpeed( pulses_per_sec=startSpeed,execute=True)
+#         logger.info("將初始").format(to_port,volume_ul)    
+    # if "topSpeed" in keys:
+    #     topSpeed=receiveData["data"]["topSpeed"]
+    #     xlp.setTopSpeed( pulses_per_sec=startSpeed,execute=True)
+    # if "slopeValue" in keys:
+    #     slopeValue=receiveData["data"]["slopeValue"]
+    #     xlp.setSlope( slope_value=slopeValue,execute=True)
+
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
