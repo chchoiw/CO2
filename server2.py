@@ -23,7 +23,7 @@ from tecancavro.transport import TecanAPISerial, TecanAPINode
 
 
 
-class instrumentActoin:
+class measureAction:
     #     # if config["logStart"] == "True":
     #     logger.handlers.clear()
     def __init__(self, logger=None,sio=None, picarro=None, xlp=None, prodFlag=True,name_space="echo"):
@@ -82,7 +82,16 @@ class instrumentActoin:
 
 
 
-    def reagent_get_each_conc_data(self,resDf):
+    def getCO2Second(self,resDf,gapSencond=1):
+        
+        '''
+        每秒讀取儀器最近的DATA, 
+        輸入:resDf-之前的數據
+        輸出:resNewDf-讀取後更新的數據
+        '''
+        
+        
+
         dataTmpDf=self.picarro._Meas_GetBuffer()
         # print("---dataTmpDf")
         # print(dataTmpDf)
@@ -91,7 +100,7 @@ class instrumentActoin:
         csvStr=resNewDf.to_csv()
         self.sio.emit('responseData', {
                       "data": csvStr}, namespace=self.name_space)
-        time.sleep(1)
+        time.sleep(gapSencond)
 
         return resNewDf
     def calNetArea(self, x, y, baseValue=0):
@@ -102,17 +111,36 @@ class instrumentActoin:
         else:
             result2 = result-baseValue
         return result
-    def reagent_get_conc_data(self,data,baseValue=0):
+    def getCO2Sample(self,data,estimateSampeSecond=150,baseValue=0):
         """
-        input: data={"meas_datetime":"", "meas_name":"","meas_vol":"","meas_DIC":""}
-        get CO content each seconds and calculate net aeas 
+        測定已知DIC的1次Sample的過程, 並計算面積
+        input:    
+          "data":{
+            "flush":True,
+            "in_port":1,
+            "sample_vol":2,
+            "out_port":2,
+            "sample_DIC":1090,
+            "sample_name":"sample1",
+            "sample_usage":"sample"
+            }
         output: result dataframe
+        "meas_datetime", get realtime data from picarro 
+        'meas_datetimestamp',
+        "meas_name":pass from sample_name
+        "meas_usage":pass from sample_usage
+        "meas_vol":pass from sample_vol
+        "meas_DIC":pass from sample_DIC
+        "meas_val1":get realtime data from picarro 
+        "meas_val2":get realtime data from picarro 
+        "meas_val3":get realtime data from picarro 
+        "meas_netarea":integral by 'meas_datetimestamp'-"meas_val1"
         """
 
-        resDf=pd.DataFrame(columns=["meas_datetime","meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3"])
+        resDf=pd.DataFrame(columns=["meas_datetime",'meas_datetimestamp',"meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3","meas_netarea"])
         oldDf = resDf
-        for j in range(3):
-            resDf=self.reagent_get_each_conc_data(resDf)
+        for j in range(estimateSampeSecond):
+            resDf=self.getCO2Second(resDf)
             print("--get bew resDf")
             print(resDf)
             if not self.prodFlag:
@@ -136,7 +164,7 @@ class instrumentActoin:
         resDf["meas_name"]=data["sample_name"]
         resDf["meas_vol"]=data["sample_vol"]
         resDf["meas_usage"]=data["sample_usage"]
-        x=resDf["meas_DIC"].tolist()
+        # x=resDf["meas_DIC"].tolist()
         y = resDf["meas_val1"].tolist()
         print("---", data["sample_name"])
         x = resDf["meas_datetimestamp"].tolist()
@@ -148,29 +176,48 @@ class instrumentActoin:
                       "data": csvStr}, namespace=self.name_space)
         return resDf
 
-    def run_one_test(self,data):
+    def runOneMeasure(self,data):
+        """
+        測定已知DIC的1次Sample的過程, 包括泵的操作
+        """
         completeFlag=False
         if self.prodFlag:
             completeFlag=self.xlp.primePort( in_port=data["in_port"], volume_ul=data["sample_vol"], speed_code=None, out_port=data["out_port"],
                   split_command=False)
         if completeFlag or not self.prodFlag:
-            tmpDf=self.reagent_get_conc_data(data)
+            tmpDf=self.getCO2Sample(data)
         if "flush" in data.keys() and data["flush"] and self.prodFlag:
             self.flush_pump()
         return tmpDf
 
 
-    def run_full_test(self,dataFull):
+    def runEntireMeasure(self,dataFull,batchMinTimes=2, batchMaxTimes=5,esp=0.01):
+        """
+        測定已知DIC的2-5次Sample的過程, 包括泵的操作
+        """
         sampleName="test1"
         resDf=pd.DataFrame(columns=["meas_datetime","meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3"])
-        for i in range(len(dataFull)):
+        sucessfulTimes=0
+        for i in range(int(batchMaxTimes)):
             data=dataFull[i]
-            tmpDf=self.run_one_test(data)
+            tmpDf=self.runOneMeasure(data)
+            # add flag to reduce the successful measure
+            pulseDtStr,pulseMean,pulseStd,pulseSlope=self.getCO2PulseBuffer()
+            RSD=(float(pulseStd)/float(pulseMean))
+            if RSD <= esp:
+                sucessfulTimes+=1
+            tmpDf.loc[tmpDf.index,"RSD"]=round(RSD,2)
             resDf=pd.concat([resDf, tmpDf]).drop_duplicates(keep=False, ignore_index=True)
+            csvStr=resDf.to_csv()
+            self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
+
+                # self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
+            if sucessfulTimes >=batchMinTimes:
+                return resDf
+            
         # fileName="/picarro_data/{}__{}.csv".format(sampleName,logDtStr)
         # resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
-        csvStr=resDf.to_csv()
-        self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
+
         return resDf
 
     def cal_a_b(self,resDf):
@@ -193,8 +240,10 @@ class instrumentActoin:
         self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
         return resDf    
 
-    def reagent_get_conc_data_with_std(self):
-
+    def getCO2PulseBuffer_notUse(self):
+        """
+        取得最新的Pulse data
+        """
         dataTmpDf = self.picarro._Pulse_GetBuffer()
         # print("---dataTmpDf")
         # print(dataTmpDf)
@@ -228,6 +277,29 @@ class instrumentActoin:
             time.sleep(1)
 
         return resNewDf
+    
+
+
+    def getCO2PulseBuffer(self):
+        """
+        取得最新的Pulse data
+        """
+        dataTmpDf = self.picarro._Pulse_GetBuffer()
+        # print("---dataTmpDf")
+        # print(dataTmpDf)
+        print("get data with std")
+        print(dataTmpDf)
+
+        for i in dataTmpDf.index:
+            #########################
+            # resDf.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
+            #####################
+            # datas['meas_datetime'])
+                dataTmpDf.loc[i, 'meas_datetimestamp']=pd.to_datetime(dataTmpDf.loc[i,
+                                                           "plus_datetime"]).timestamp()-60*60*8
+        idMax=dataTmpDf["meas_datetimestamp"].idxmax()
+
+        return dataTmpDf.loc[idMax,"plus_datetime"],dataTmpDf.loc[idMax,"mean1"],dataTmpDf.loc[idMax,"std1"],dataTmpDf.loc[idMax,"slope1"]
 #     picarroConfig={
 #         "data":{
 #                 "logFolder": "picarro_log/",
@@ -303,16 +375,19 @@ config = {
     "logStart": "True",
     "dataFolder": "picarro_data/"
 }
-logger = mylogger(name='mylogger', level=0, sio=socketio, name_space=name_space)
+logger = mylogger(name=__name__, level=0, sio=socketio, name_space=name_space)
 logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
 if config["logStart"] in ["True", "true", "TRUE"]:
     logFolder = config["logFolder"]
-    logDtStr = datetime.datetime.now().strftime("%Y%m%d")
-    file_handler = logging.FileHandler(
-        logFolder+'_{}.txt'.format(logDtStr))
+    # logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+
     formatter = logging.Formatter(
         '%(asctime)s - %(levelname)s - %(message)s')
+    # file_handler = logging.FileHandler(
+    #     logFolder+'_{}.txt'.format(logDtStr))
+    file_handler=logging.handlers.TimedRotationFileHandler(logFolder+"frontEndLog",when='d',interval=1,backupCount=365)
+    file_handler.suffix="%Y%m%d_%H%M.log"
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
@@ -328,7 +403,27 @@ pumpDefaultSetting={
     "dispenseSpeed":900,
 
 }
+rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+                            request=False, hello=None, answer=None, termin=chr(13),
+                            timesleep=0.2, logger=None)
+picarro=Picarro_G2301(rs232Device, logger, config, prodFlag=False)
+xlp=XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
+                 microstep=2, waste_port=4, slope=14, init_force=0,
+                 debug=True, debug_log_path='./pump_log/')
+ma = measureAction(xlp=xlp, picarro=picarro,
+                        logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
 
+
+# @socketio.on('responseData', namespace=name_space)
+# def mtest_message(receiveData):
+#     print(receiveData)
+
+#     # print(ia.getCO2Sample(receiveData["data"][0], baseValue=0))
+#     # res=ia.runEntireMeasure(receiveData["data"])
+#     # res2=ia.cal_a_b(res)
+#     for i in range(3):
+#         ia.getCO2Sample_with_std()
+    # print(res2)
 
 @socketio.on('connectPump', namespace=name_space)
 def connectPump(receiveData):
@@ -344,19 +439,53 @@ def connectPump(receiveData):
                                 timesleep=0.2, logger=None)
     picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
 
-# @socketio.on('responseData', namespace=name_space)
-# def mtest_message(receiveData):
-#     print(receiveData)
 
-#     # print(ia.reagent_get_conc_data(receiveData["data"][0], baseValue=0))
-#     # res=ia.run_full_test(receiveData["data"])
-#     # res2=ia.cal_a_b(res)
-#     for i in range(3):
-#         ia.reagent_get_conc_data_with_std()
-    # print(res2)
+@socketio.on("connect", namespace=name_space)
+def connectInstrument(receiveData):
+    '''
+    receiveData={"plump":"connect","picarro":"connect"}
+    '''
+    if "plump" in receiveData.keys() and receiveData["plump"]=="connect":
+        if xlp is None:
+            xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
+                    microstep=2, waste_port=4, slope=14, init_force=0,
+                    debug=True, debug_log_path='./pump_log/')
+            socketio.emit("responseConnect",{"data","Connect xlp6000 sucessfully."}, namespace=name_space) 
+        else:
+            socketio.emit("responseConnect",{"data","Already connect xlp6000."}, namespace=name_space)
 
-@socketio.on('init', namespace=name_space)
+    if "picarro" in receiveData.keys() and receiveData["picarro"]=="close":
+        if picarro is None:
+            rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+                                request=False, hello=None, answer=None, termin=chr(13),
+                                timesleep=0.2, logger=None)
+            picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
+            socketio.emit("responseConnect",{"data","Connect picarro sucessfully."}, namespace=name_space)
+        else:
+            socketio.emit("responseConnect",{"data","Already connect picarro."}, namespace=name_space)
+
+
+
+
+@socketio.on("close", namespace=name_space)
+def closeInstrument(receiveData):
+    '''
+    receiveData={"plump":"close","picarro":close}
+    '''
+    if "plump" in receiveData.keys() and receiveData["plump"]=="close":
+        del xlp
+        xlp=None
+
+    if "picarro" in receiveData.keys() and receiveData["picarro"]=="close":
+        rs232Device.close()
+
+
+
+@socketio.on('initPump', namespace=name_space)
 def initPump(receiveData):
+    '''
+    receiveData={}
+    '''
     print(receiveData)
     command=xlp.init( init_force=None, direction=None, in_port=None,
              out_port=None)
@@ -367,7 +496,21 @@ def initPump(receiveData):
 
 @socketio.on('dispense', namespace=name_space)
 def dispense(receiveData):
-    # print(receiveData)
+    '''
+    收到注射器放出液體的指令
+    receiveData={
+    "data":[
+        {
+            "to_port":1, 
+            "volumn_ul":100,
+            "dispenseSpeed":1000,
+        }
+         ]
+    }
+    "volumn_ul":抽入容液量
+    dispenseSpeed: TopSpeed
+    "to_port":由哪一個port放出液體
+    '''
     for subData in receiveData["data"]:
         to_port=subData["to_port"]
         volume_ul=subData["volume_ul"]
@@ -384,8 +527,22 @@ def dispense(receiveData):
 
 
 @socketio.on('extract', namespace=name_space)
-def dispense(receiveData):
-    # print(receiveData)
+def extract(receiveData):
+    '''
+    收到注射器抽入液體的指令
+    receiveData={
+    "data":[
+        {
+            "from_port":1, 
+            "volumn_ul":100,
+            "extractSpeed":1000,
+        }
+         ]
+    }
+    "volumn_ul":抽入容液量
+    extractSpeed: TopSpeed
+    "from_port":由哪一個port抽取液體
+    '''
     for subData in receiveData["data"]:
         from_port=subData["from_port"]
         volume_ul=subData["volume_ul"]
@@ -402,8 +559,12 @@ def dispense(receiveData):
         xlp.waitReady(delay)    
 
 
-@socketio.on('getPumpStatus', namespace=name_space)
-def getPumpPosition(receiveData):
+@socketio.on('getPlungerStatus', namespace=name_space)
+def getPlungerPosition(receiveData):
+    '''
+    拿到注射器的位置
+    receiveData={}
+    '''
     pos=xlp.getPlungerPos()
     modeNum=xlp.getCurrentMode()
     volumn_ul=xlp._stepsToUl()
@@ -420,10 +581,22 @@ def getPumpPosition(receiveData):
         }
 
     }
-    socketio.emit('responsePumpStatus', responseData, namespace=name_space)
+    socketio.emit('responsePlungerStatus', responseData, namespace=name_space)
 
 @socketio.on('flush', namespace=name_space)
 def flush_pump(receiveData):
+    '''
+    收到清洗泵的指令, 開始清洗
+    receiveData={
+    "data":[
+            {
+            "flush_times":1,
+            "wait_gap_ms":100,
+            "waste_port":2
+            }
+        ]
+    }
+    '''
     if receiveData["data"] is None:
         return
     dataAry=receiveData["data"]
@@ -443,8 +616,48 @@ def flush_pump(receiveData):
             logger.info("{}清洗第{}次").format(subData["in_port"],i)
         xlp.waitReady(wait_gap_ms*1./1000)
 
-    
-
+@socketio.on('measure', namespace=name_space)
+def measure(receiveData):
+    '''
+    這是收到需要自動做一套實驗
+    receiveData={
+    "batchMinTimes":2,
+    "batchMaxTimes":5,
+    "maxTolerateError":0.01,
+    "data":[{
+            "flush":True,
+            "in_port":1,
+            "sample_vol":2,
+            "out_port":2,
+            "sample_DIC":1090,
+            "sample_name":"sample1",
+            "sample_usage":"sample"
+        }
+    },
+    {
+            "flush":True,
+            "in_port":1,
+            "sample_vol":2,
+            "out_port":2,
+            "sample_DIC":1090,
+            "sample_name":"sample2",
+            "sample_usage":"sample"
+        }
+    },
+    ]
+    '''
+    # dataFull,batchMinTimes=2, batchMaxTimes=5,esp=0.01
+    if receiveData["data"] is None:
+        return
+    batchMinTimes=int(receiveData["batchMinTimes"])
+    batchMaxTimes=int(receiveData["batchMaxTimes"])
+    esp=float(receiveData["maxTolerateError"])
+    dataAry=receiveData["data"]
+    # for subData in dataAry:
+    resDf=ma.runEntireMeasure(dataFull=receiveData["data"],batchMinTimes=batchMinTimes, batchMaxTimes=batchMaxTimes,esp=esp)
+    resFinalDf= ma.cal_a_b(resDf)
+    csvStr=resFinalDf.to_csv()
+    socketio.emit('responseData', {"data": csvStr}, namespace=name_space)
 
 # @socketio.on('setSpeed', namespace=name_space)
 # def mtest_message(receiveData):
