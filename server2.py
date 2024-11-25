@@ -1,20 +1,22 @@
 import pandas as pd
-from regression import regression
-from picarro_G2301 import Picarro_G2301
 import json
-import logging
-from myLogger import mylogger
-from mySerial import RS232_Device
 import re
-import datetime
 import time
+import datetime
 import traceback
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from scipy import integrate
-from tecancavro.models import XCaliburD
-
+import os
+import glob
+from myLogger import mylogger
+from mySerial import RS232_Device
+from regression import regression
+from picarro_G2301 import Picarro_G2301
 from tecancavro.transport import TecanAPISerial, TecanAPINode
+from tecancavro.models import TecanXLP6000
+from myMeasureAction import measureAction
+
 # class instrument():
 
 #     @abstractmethod
@@ -23,291 +25,8 @@ from tecancavro.transport import TecanAPISerial, TecanAPINode
 
 
 
-class measureAction:
-    #     # if config["logStart"] == "True":
-    #     logger.handlers.clear()
-    def __init__(self, logger=None,sio=None, picarro=None, xlp=None, prodFlag=True,name_space="echo"):
-        self.picarro=picarro
-        self.xlp=xlp
-        self.logger=logger
-        self.name_space = name_space
-        self.sio=sio
-        self.prodFlag=prodFlag
-        self.oldConcDataWithStdDf=None
-    def set_config(self,acitionKey,actionData):
-        config = actionData
-        logger=self.logger
-        
-        # if actionKey.lower()=="set_picarro_config":
-        # from logger_moudle import logger
-        if logger is None :
-            self.logger = logging.getLogger('mylogger')
-            logger.setLevel(logging.DEBUG)
-            console_handler = logging.StreamHandler()
-        # Open and read the JSON file
-        # with open('picarro_G2302.json', 'r') as file:
-        #     config = json.load(file)
-        # file.close()
-        if config["logStart"].lower()== "true":
-            logFolder = config["logFolder"]
-            logDtStr = datetime.datetime.now().strftime("%Y%m%d")
-            file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
-            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-            console_handler.setFormatter(formatter)
-            file_handler.setFormatter(formatter)
-            logger.addHandler(console_handler)
-            logger.addHandler(file_handler)
-        
-    def close_log(self):
-        if self.logger is not None:
-            self.logger.handlers.clear()
-        return True
-    def open_connection(self,actionKey):
-        if actionKey=="open_connection_picarro":
-            rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                                    request=False, hello=None, answer=None, termin=chr(13),
-                                    timesleep=0.2, logger=None)
 
-            self.picarro = Picarro_G2301(rs232Device, logger, config, False)
-        elif actionKey=="open_connection_xlp":
-            pass
-            # rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-            #                         request=False, hello=None, answer=None, termin=chr(13),
-            #                         timesleep=0.2, logger=None)
-
-            # self.picarro = Picarro_G2301(rs232Device, logger, config, False)        
-        return True
-
-
-
-
-
-    def getCO2Second(self,resDf,gapSencond=1):
-        
-        '''
-        每秒讀取儀器最近的DATA, 
-        輸入:resDf-之前的數據
-        輸出:resNewDf-讀取後更新的數據
-        '''
-        
-        
-
-        dataTmpDf=self.picarro._Meas_GetBuffer()
-        # print("---dataTmpDf")
-        # print(dataTmpDf)
-        resNewDf=pd.concat([resDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
-        
-        csvStr=resNewDf.to_csv()
-        self.sio.emit('responseData', {
-                      "data": csvStr}, namespace=self.name_space)
-        time.sleep(gapSencond)
-
-        return resNewDf
-    def calNetArea(self, x, y, baseValue=0):
-        result = integrate.trapezoid(y, x)
-        print(result)
-        if result-baseValue < 0:
-            result2 = 0
-        else:
-            result2 = result-baseValue
-        return result
-    def getCO2Sample(self,data,estimateSampeSecond=150,baseValue=0):
-        """
-        測定已知DIC的1次Sample的過程, 並計算面積
-        input:    
-          "data":{
-            "flush":True,
-            "in_port":1,
-            "sample_vol":2,
-            "out_port":2,
-            "sample_DIC":1090,
-            "sample_name":"sample1",
-            "sample_usage":"sample"
-            }
-        output: result dataframe
-        "meas_datetime", get realtime data from picarro 
-        'meas_datetimestamp',
-        "meas_name":pass from sample_name
-        "meas_usage":pass from sample_usage
-        "meas_vol":pass from sample_vol
-        "meas_DIC":pass from sample_DIC
-        "meas_val1":get realtime data from picarro 
-        "meas_val2":get realtime data from picarro 
-        "meas_val3":get realtime data from picarro 
-        "meas_netarea":integral by 'meas_datetimestamp'-"meas_val1"
-        """
-
-        resDf=pd.DataFrame(columns=["meas_datetime",'meas_datetimestamp',"meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3","meas_netarea"])
-        oldDf = resDf
-        for j in range(estimateSampeSecond):
-            resDf=self.getCO2Second(resDf)
-            print("--get bew resDf")
-            print(resDf)
-            if not self.prodFlag:
-                print("------------------test")
-                if data["sample_name"]=="sample1":
-                    resDf["meas_val1"] = resDf["meas_val1"].astype(float)+1.1*(j)
-                elif data["sample_name"] == "sample2":
-                    resDf["meas_val1"]=resDf["meas_val1"].astype(float)+1.2*(j)
-                elif data["sample_name"] == "sample3":
-                    resDf["meas_val1"] = resDf["meas_val1"].astype(float)+1.3*(j)
-                elif data["sample_name"] == "measure1":
-                    print("shape",resDf["meas_val1"].shape)
-                    resDf["meas_val1"] = resDf["meas_val1"].astype(float)+0.9*(j)
-        for i in resDf.index:
-            #########################
-            # resDf.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
-            #####################
-            # datas['meas_datetime'])
-                resDf.loc[i, 'meas_datetimestamp']=pd.to_datetime(resDf.loc[i,
-                                                           "meas_datetime"]).timestamp()-60*60*8
-        resDf["meas_DIC"]=data["sample_DIC"]
-        resDf["meas_name"]=data["sample_name"]
-        resDf["meas_vol"]=data["sample_vol"]
-        resDf["meas_usage"]=data["sample_usage"]
-        # x=resDf["meas_DIC"].tolist()
-        y = resDf["meas_val1"].tolist()
-        print("---", data["sample_name"])
-        x = resDf["meas_datetimestamp"].tolist()
-
-
-        resDf["meas_netarea"]=self.calNetArea(x=x, y=y,baseValue=baseValue)
-        csvStr=resDf.to_csv()
-        self.sio.emit('responseData', {
-                      "data": csvStr}, namespace=self.name_space)
-        return resDf
-
-    def runOneMeasure(self,data):
-        """
-        測定已知DIC的1次Sample的過程, 包括泵的操作
-        """
-        completeFlag=False
-        if self.prodFlag:
-            completeFlag=self.xlp.primePort( in_port=data["in_port"], volume_ul=data["sample_vol"], speed_code=None, out_port=data["out_port"],
-                  split_command=False)
-        if completeFlag or not self.prodFlag:
-            tmpDf=self.getCO2Sample(data,estimateSampeSecond=3)
-        if "flush" in data.keys() and data["flush"] and self.prodFlag:
-            self.flush_pump()
-        return tmpDf
-
-
-    def runEntireMeasure(self,dataFull,batchMinTimes=2, batchMaxTimes=5,esp=0.01):
-        """
-        測定已知DIC的2-5次Sample的過程, 包括泵的操作
-        """
-        sampleName="test1"
-        resDf=pd.DataFrame(columns=["meas_datetime","meas_name","meas_usage","meas_vol","meas_DIC","meas_val1","meas_val2","meas_val3"])
-        sucessfulTimes=0
-        for i in range(int(batchMaxTimes)):
-            data=dataFull[i]
-            tmpDf=self.runOneMeasure(data)
-            # add flag to reduce the successful measure
-            pulseDtStr,pulseMean,pulseStd,pulseSlope=self.getCO2PulseBuffer()
-            RSD=(float(pulseStd)/float(pulseMean))
-            if RSD <= esp:
-                sucessfulTimes+=1
-            tmpDf.loc[tmpDf.index,"RSD"]=round(RSD,2)
-            
-            resDf=pd.concat([resDf, tmpDf]).drop_duplicates(keep=False, ignore_index=True)
-            csvStr=resDf.to_csv()
-            print(resDf)
-            self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
-
-                # self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
-            if sucessfulTimes >=batchMinTimes:
-                return resDf
-            
-        # fileName="/picarro_data/{}__{}.csv".format(sampleName,logDtStr)
-        # resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
-
-        return resDf
-
-    def cal_a_b(self,resDf):
-        reg= regression(data=resDf)
-        regData = resDf.loc[resDf["meas_usage"]=="sample"]
-        calDICData= resDf.loc[(resDf["meas_usage"]=="measure")]
-        y = regData["meas_val1"].astype(float).tolist()
-        x = regData["meas_DIC"].astype(float).tolist()
-        slope, intercept, r_value, p_value, std_err =reg.cal_regression( x,y)
-        resDf["a"]=slope
-        resDf["b"]=intercept
-        return resDf
-    def cal_DIC_content(self,resDf):
-        reg= regression(data=resDf)
-        regData = resDf.loc[resDf["meas_usage"]=="sample"]
-        calDICData= resDf.loc[(resDf["meas_usage"]=="measure")]    
-        measureDfFirstIdx=calDICData.index[0]
-        meas_netarea=calDICData.loc[measureDfFirstIdx, "meas_netarea"]
-        DICValue=reg.dicContent(co2PeakArea=meas_netarea,slope=slope,intercept=intercept,sampleVol=1)
-        resDf.loc[calDICData.index,"meas_DIC"]=DICValue
-        nowDt=datetime.datetime.now().strftime("%Y%m%d_%H%M")
-        fileName="picarro_data/{}_{}.csv".format("test",nowDt)
-        resDf.to_csv(fileName, encoding='utf-8', index=False, header=True)
-        csvStr=resDf.to_csv()
-        self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
-        return resDf    
-
-    def getCO2PulseBuffer_notUse(self):
-        """
-        取得最新的Pulse data
-        """
-        dataTmpDf = self.picarro._Pulse_GetBuffer()
-        # print("---dataTmpDf")
-        # print(dataTmpDf)
-        print("get data with std")
-        print(dataTmpDf)
-        for i in range(3):
-            if self.oldConcDataWithStdDf is None:
-                # resNewDf=dataTmpDf
-                dataTmpJson = dataTmpDf.to_json(orient="records")
-                self.sio.emit('concDataWithStd', {
-                              "data": dataTmpJson}, namespace=self.name_space)
-            else:
-                resNewDf=pd.concat([self.oldConcDataWithStdDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
-                diffDf=dataTmpDf[~self.oldConcDataWithStdDf.eq(dataTmpDf).all(axis=1)]
-                self.oldConcDataWithStdDf=resNewDf
-                if diffDf.shape[0]>0:
-                    diffDataJson=diffDf.to_json(orient="records")
-                    self.sio.emit('concDataWithStd', {"data":diffDataJson}, namespace=self.name_space)
-                if not self.prodFlag:
-                    # "plus_datetime","mean1","std1","slope1","mean2","std2","slope2","mean3","std3","slope3"
-                    diffDataJson.loc[0,"mean1"]=1.1*i
-                    diffDataJson.loc[0, "mean2"] = 1.2*i
-                    diffDataJson.loc[0, "mean3"] = 1.3*i
-                    diffDataJson.loc[0, "std1"] = 1.1*i
-                    diffDataJson.loc[0, "std2"] = 1.2*i
-                    diffDataJson.loc[0, "std3"] = 1.3*i
-                    diffDataJson.loc[0, "slope1"] = 1.1*i
-                    diffDataJson.loc[0, "slope2"] = 1.2*i
-                    diffDataJson.loc[0, "slope3"] = 1.3*i
-                    self.sio.emit('concDataWithStd', {"data":diffDataJson}, namespace=self.name_space)
-            time.sleep(1)
-
-        return resNewDf
     
-
-
-    def getCO2PulseBuffer(self):
-        """
-        取得最新的Pulse data
-        """
-        dataTmpDf = self.picarro._Pulse_GetBuffer()
-        # print("---dataTmpDf")
-        # print(dataTmpDf)
-        print("get data with std")
-        print(dataTmpDf)
-
-        for i in dataTmpDf.index:
-            #########################
-            # resDf.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
-            #####################
-            # datas['meas_datetime'])
-                dataTmpDf.loc[i, 'meas_datetimestamp']=pd.to_datetime(dataTmpDf.loc[i,
-                                                           "plus_datetime"]).timestamp()-60*60*8
-        idMax=dataTmpDf["meas_datetimestamp"].idxmax()
-
-        return dataTmpDf.loc[idMax,"plus_datetime"],dataTmpDf.loc[idMax,"mean1"],dataTmpDf.loc[idMax,"std1"],dataTmpDf.loc[idMax,"slope1"]
 #     picarroConfig={
 #         "data":{
 #                 "logFolder": "picarro_log/",
@@ -341,7 +60,10 @@ class measureAction:
     # print("yes")
     # emit('my_response', {'message': "sucessful"})
 
-# xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
+# xlp = TecanXLP6000(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
+
+
+
 
 
 
@@ -355,6 +77,49 @@ socketio = SocketIO()
 socketio.init_app(app, cors_allowed_origins='*')
 
 name_space = '/echo'
+socketio.run(app, host='0.0.0.0', port=5001)
+pump_config={}
+with open('pump_config.json') as json_file:
+    pump_config = json.load(json_file)
+json_file.close()
+
+picarro_config={}
+with open('picarro_config.json') as json_file:
+    picarro_config = json.load(json_file)
+json_file.close()
+
+xlp=None
+picarro=None
+rs232Device=None
+ma=None
+
+# config = {
+#     "logFolder": "picarro_log/",
+#     "logStart": "True",
+#     "dataFolder": "picarro_data/"
+# }
+logger = mylogger(name=__name__, logFolder=pump_config["debug_log_path"],level=0, sio=socketio, name_space=name_space)
+loggerPicarro=logger.getLogger("Picarro")
+loggerSerial=logger.getLogger("Serial")
+loggerXlp=logger.getLogger("Tecan_XLP6000")
+try:
+    rs232Device = RS232_Device(device_name="Picarro_G2301", com=picarro_config["com"], port=9600,
+                                request=False, hello=None, answer=None, termin=chr(13),
+                                timesleep=0.2, logger=loggerSerial)
+    picarro=Picarro_G2301(rs232Con=rs232Device, logger=loggerPicarro, config=picarro_config, prodFlag=False)
+
+    xlp=TecanXLP6000(  com_link=TecanAPISerial(0, pump_config["com"], 9600),\
+                    num_ports=int(pump_config["num_ports"]), syringe_ul=int(pump_config["syringe_ul"]),\
+                    direction=pump_config["direction"],microstep=int(pump_config["microstep"]), \
+                    waste_port=pump_config["waste_port"], slope=int(pump_config["slope"]), \
+                    init_force=int(pump_config["init_force"]),debug=pump_config["debug"], \
+                    debug_log_path=pump_config["debug_log_path"])
+    ma = measureAction(xlp=xlp, picarro=picarro,
+                            logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
+except:
+    traceback.print_exc()
+
+
 
 @app.route('/')
 def index():
@@ -375,34 +140,27 @@ def connected_msg():
 @socketio.on('disconnect', namespace=name_space)
 def disconnect_msg():
     print('client disconnected.')
-xlp=None
 
 
-config = {
-    "logFolder": "picarro_log/",
-    "logStart": "True",
-    "dataFolder": "picarro_data/"
-}
-logger = mylogger(name=__name__, logFolder="main_log/",level=0, sio=socketio, name_space=name_space)
 # loggerPicarro = mylogger(name="Picarro",logFolder="picarro_log/", level=0, sio=socketio, name_space=name_space)
-loggerPicarro = logging.getLogger('Picarro')
-loggerPicarro.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-# logFolder = config["logFolder"]
-# logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+# loggerPicarro = logging.getLogger('Picarro')
+# loggerPicarro.setLevel(logging.DEBUG)
+# console_handler = logging.StreamHandler()
+# # logFolder = config["logFolder"]
+# # logDtStr = datetime.datetime.now().strftime("%Y%m%d")
 
-formatter = logging.Formatter(
-    '%(asctime)s - %(levelname)-8s - %(name)-12s - %(message)s')
-# file_handler = logging.FileHandler(
-#     logFolder+'_{}.txt'.format(logDtStr))
-file_handler = logging.handlers.TimedRotatingFileHandler(
-    "picarro_log/"+"picaro", when='d', interval=1, backupCount=365, encoding='utf-8')
-file_handler.suffix = "%Y%m%d"
-file_handler.extMatch = re.compile(r"^\d{4}\d{2}\d{2}$")
-console_handler.setFormatter(formatter)
-file_handler.setFormatter(formatter)
-loggerPicarro.addHandler(console_handler)
-loggerPicarro.addHandler(file_handler)
+# formatter = logging.Formatter(
+#     '%(asctime)s - %(levelname)-8s - %(name)-12s - %(message)s')
+# # file_handler = logging.FileHandler(
+# #     logFolder+'_{}.txt'.format(logDtStr))
+# file_handler = logging.handlers.TimedRotatingFileHandler(
+#     "picarro_log/"+"picaro", when='d', interval=1, backupCount=365, encoding='utf-8')
+# file_handler.suffix = "%Y%m%d"
+# file_handler.extMatch = re.compile(r"^\d{4}\d{2}\d{2}$")
+# console_handler.setFormatter(formatter)
+# file_handler.setFormatter(formatter)
+# loggerPicarro.addHandler(console_handler)
+# loggerPicarro.addHandler(file_handler)
 
 
 
@@ -425,23 +183,8 @@ loggerPicarro.addHandler(file_handler)
 #                         logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
 
 
-pumpDefaultSetting={
-    "extractSpeed":900,
-    "dispenseSpeed":900,
 
-}
-try:
-    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                                request=False, hello=None, answer=None, termin=chr(13),
-                                timesleep=0.2, logger=None)
-    picarro=Picarro_G2301(rs232Device, loggerPicarro, config, prodFlag=False)
-    xlp=XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
-                    microstep=2, waste_port=4, slope=14, init_force=0,
-                    debug=True, debug_log_path='./pump_log/')
-    ma = measureAction(xlp=xlp, picarro=picarro,
-                            logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
-except:
-    traceback.print_exc()
+
 
 
 # @socketio.on('responseData', namespace=name_space)
@@ -455,19 +198,67 @@ except:
 #         ia.getCO2Sample_with_std()
     # print(res2)
 
-@socketio.on('connectPump', namespace=name_space)
-def connectPump(receiveData):
-    print(receiveData)
-    xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
-                 microstep=2, waste_port=4, slope=14, init_force=0,
-                 debug=True, debug_log_path='./pump_log/')
-@socketio.on('connectPicarro', namespace=name_space)
-def connectPump(receiveData):
-    print(receiveData)
-    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                                request=False, hello=None, answer=None, termin=chr(13),
-                                timesleep=0.2, logger=None)
-    picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
+# @socketio.on('connectPump', namespace=name_space)
+# def connectPump(receiveData):
+#     print(receiveData)
+#     xlp = TecanXLP6000(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
+#                  microstep=2, waste_port=4, slope=14, init_force=0,
+#                  debug=True, debug_log_path='./pump_log/')
+# @socketio.on('connectPicarro', namespace=name_space)
+# def connectPump(receiveData):
+#     print(receiveData)
+#     rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+#                                 request=False, hello=None, answer=None, termin=chr(13),
+#                                 timesleep=0.2, logger=None)
+#     picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
+
+
+@socketio.on('getDefaultConfig', namespace=name_space)
+def getDefaultSpeed(receiveData):
+    '''
+    receiveData={}
+    '''
+    logger.info("Channel-getDefaultSpeed","取得顯示介面的設定值")
+    pump_config={}
+    with open('pump_config.json') as json_file:
+        pump_config = json.load(json_file)
+    json_file.close()
+
+    picarro_config={}
+    with open('picarro_config.json') as json_file:
+        picarro_config = json.load(json_file)
+    json_file.close()
+    responseData={
+        "pump":pump_config,
+        "picarro":picarro_config
+    }
+    socketio.emit("getDefaultConfig",responseData, namespace=name_space)
+
+
+@socketio.on('getPicarroDataRealTime', namespace=name_space)
+def getPicarroDataRealTime(receiveData):
+    logger.info("Channel-getPicarroDataRealTime","取得Picarro中CO2最新的數據")
+    if picarro is not None:
+        responseData=picarro.getLatestData()
+        socketio.emit("getPicarroDataRealTime",responseData, namespace=name_space)
+        # print("---dataTmpDf")
+        # print(dataTmpDf)
+        # resNewDf=pd.concat([resDf, dataTmpDf]).drop_duplicates(keep=False, ignore_index=True)
+        
+        # csvStr=dataTmpDf.to_csv()
+
+
+
+@socketio.on('getFullLog', namespace=name_space)
+def getFullLog(receiveData):
+    logger.info("Channel-getFullLog","取得最新BUFFER中的LOG")
+    list_of_files = glob.glob('/main_log/*.log') # * means all if need specific format then *.csv
+    latest_file = max(list_of_files, key=os.path.getctime)
+    print(latest_file)
+    file = open(latest_file, "r")
+    logContent = file.read()
+    socketio.emit("getFullLog",{"data",logContent}, namespace=name_space) 
+    file.close()
 
 
 @socketio.on("connectInstrument", namespace=name_space)
@@ -475,14 +266,15 @@ def connectInstrument(receiveData):
     '''
     receiveData={"plump":"connect","picarro":"connect"}
     '''
+    logger.info("Channel-connectInstrument","連接儀器")
     if "plump" in receiveData.keys() and receiveData["plump"]=="connect":
         if xlp is None:
-            xlp = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
+            xlp = TecanXLP6000(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
                     microstep=2, waste_port=4, slope=14, init_force=0,
                     debug=True, debug_log_path='./pump_log/')
-            socketio.emit("responseConnect",{"data","Connect xlp6000 sucessfully."}, namespace=name_space) 
+            socketio.emit("connectInstrument",{"data","Connect xlp6000 sucessfully."}, namespace=name_space) 
         else:
-            socketio.emit("responseConnect",{"data","Already connect xlp6000."}, namespace=name_space)
+            socketio.emit("connectInstrument",{"data","Already connect xlp6000."}, namespace=name_space)
 
     if "picarro" in receiveData.keys() and receiveData["picarro"]=="close":
         if picarro is None:
@@ -490,18 +282,51 @@ def connectInstrument(receiveData):
                                 request=False, hello=None, answer=None, termin=chr(13),
                                 timesleep=0.2, logger=None)
             picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
-            socketio.emit("responseConnect",{"data","Connect picarro sucessfully."}, namespace=name_space)
+            socketio.emit("connectInstrument",{"data","Connect picarro sucessfully."}, namespace=name_space)
         else:
-            socketio.emit("responseConnect",{"data","Already connect picarro."}, namespace=name_space)
+            socketio.emit("connectInstrument",{"data","Already connect picarro."}, namespace=name_space)
+
+# my_dict = {}
+
+# def change_dict(str_file_path, dict_param):
+#   with open(str_file_path) as opened_file:
+#     dict_param = json.load(opened_file)  # **
+#   opened_file.close()
+
+# change_dict(my_file_path, my_dict)  # *
+
+
+@socketio.on("configInstrument", namespace=name_space)
+def configInstrument(receiveData):
+    '''
+    receiveData={"plump":configData,"picarro":configData}
+    '''
+
+    logger.info("Channel-configInstrument","更改儀器配置")
+    if "plump" in receiveData.keys() and isinstance(receiveData["pump"], dict):
+        newConfig=receiveData["pump"]
+        for key,value in newConfig.items():
+            pump_config[key]=value
+        with open("pump_config.json", "w") as outfile: 
+            json.dump(pump_config, outfile)
+        outfile.close()
+
+    if "picarro" in receiveData.keys() and isinstance(receiveData["picarro"], dict):
+        newConfig=receiveData["picarro"]
+        for key,value in newConfig.items():
+            picarro_config[key]=value
+        with open("picarro_config.json", "w") as outfile: 
+            json.dump(picarro_config, outfile)
+        outfile.close()
 
 
 
-
-@socketio.on("close", namespace=name_space)
+@socketio.on("closeInstrument", namespace=name_space)
 def closeInstrument(receiveData):
     '''
     receiveData={"plump":"close","picarro":close}
     '''
+    logger.info("Channel-closeInstrument","關閉儀器")
     if "plump" in receiveData.keys() and receiveData["plump"]=="close":
         del xlp
         xlp=None
@@ -516,7 +341,7 @@ def initPump(receiveData):
     '''
     receiveData={}
     '''
-    print(receiveData)
+    logger.info("Channel-initPump","初始化泵XLP6000")
     command=xlp.init( init_force=None, direction=None, in_port=None,
              out_port=None)
     logger.info("泵己初始化完成,指令為{}".format(command))
@@ -541,13 +366,15 @@ def dispense(receiveData):
     dispenseSpeed: TopSpeed
     "to_port":由哪一個port放出液體
     '''
+
+    logger.info("Channel-dispense","注射器放出液體")
     for subData in receiveData["data"]:
         to_port=subData["to_port"]
         volume_ul=subData["volume_ul"]
         if "dispenseSpeed" in subData.keys():
             dispenseSpeed = int(subData("dispenseSpeed"))
         else:
-            dispenseSpeed =pumpDefaultSetting["dispenseSpeed"]        
+            dispenseSpeed =pump_config["dispenseSpeed"]        
         xlp.setTopSpeed(dispenseSpeed)
         xlp.dispene( to_port, volume_ul)
         command=xlp.self.cmd_chain
@@ -573,13 +400,15 @@ def extract(receiveData):
     extractSpeed: TopSpeed
     "from_port":由哪一個port抽取液體
     '''
+
+    logger.info("Channel-extract","泵抽樣")
     for subData in receiveData["data"]:
         from_port=subData["from_port"]
         volume_ul=subData["volume_ul"]
         if "extractSpeed" in subData.keys():
             extractSpeed = int(subData("extractSpeed"))
         else:
-            extractSpeed =pumpDefaultSetting["extractSpeed"]
+            extractSpeed =pump_config["extractSpeed"]
         
         xlp.setTopSpeed(extractSpeed)
         xlp.extract( from_port, volume_ul)
@@ -595,6 +424,8 @@ def getPlungerPosition(receiveData):
     拿到注射器的位置
     receiveData={}
     '''
+
+    logger.info("Channel-getPlungerStatus","取得泵的狀態")
     pos=xlp.getPlungerPos()
     modeNum=xlp.getCurrentMode()
     volumn_ul=xlp._stepsToUl()
@@ -611,7 +442,7 @@ def getPlungerPosition(receiveData):
         }
 
     }
-    socketio.emit('responsePlungerStatus', responseData, namespace=name_space)
+    socketio.emit('getPlungerPosition', responseData, namespace=name_space)
 
 @socketio.on('flush', namespace=name_space)
 def flush_pump(receiveData):
@@ -620,13 +451,17 @@ def flush_pump(receiveData):
     receiveData={
     "data":[
             {
+            "in_port":1,
             "flush_times":1,
             "wait_gap_ms":100,
-            "waste_port":2
+            "waste_port":2,
+            "volumn_ul":1000,
             }
         ]
     }
     '''
+
+    logger.info("Channel-flush","清洗泵")
     if receiveData["data"] is None:
         return
     dataAry=receiveData["data"]
@@ -640,44 +475,47 @@ def flush_pump(receiveData):
         else:
             out_port=xlp.waste_port
         for i in range(times ):
-            waitSeconds=xlp.extractToWaste( in_port=subData["in_port"], volume_ul=1100, out_port=out_port,
+            waitSeconds=xlp.extractToWaste( in_port=subData["in_port"], volume_ul=subData["volume_ul"], out_port=out_port,
                     speed_code=None, minimal_reset=False, flush=True)
             xlp.waitReady(waitSeconds)
             logger.info("{}清洗第{}次").format(subData["in_port"],i)
         xlp.waitReady(wait_gap_ms*1./1000)
 
-@socketio.on('measure', namespace=name_space)
-def measure(receiveData):
+
+
+
+
+@socketio.on('sampling', namespace=name_space)
+def sampling(receiveData):
     '''
     這是收到需要自動做一套實驗
     receiveData={
     "batchMinTimes":2,
     "batchMaxTimes":5,
     "maxTolerateError":0.01,
-    "data":[{
-            "flush":True,
-            "in_port":1,
-            "sample_vol":2,
-            "out_port":2,
-            "sample_DIC":1090,
-            "sample_name":"sample1",
-            "sample_usage":"sample"
-        }
-    },
-    {
-            "flush":True,
-            "in_port":1,
-            "sample_vol":2,
-            "out_port":2,
-            "sample_DIC":1090,
-            "sample_name":"sample2",
-            "sample_usage":"sample"
-        }
-    },
-    ]
+    "data": 
+    [{
+        "flush":True,
+        "in_port":1,
+        "sample_vol":2,
+        "out_port":2,
+        "sample_DIC":1090,
+        "sample_name":"sample1",
+        "sample_usage":"sample"
     }
+    ,
+    {
+        "flush":True,
+        "in_port":1,
+        "sample_vol":2,
+        "out_port":2,
+        "sample_DIC":1090,
+        "sample_name":"sample2",
+        "sample_usage":"sample"
+    }]
     '''
     # dataFull,batchMinTimes=2, batchMaxTimes=5,esp=0.01
+    logger.info("Channel-sampling","進行取樣,計算a,b")
     if receiveData["data"] is None:
         return
     batchMinTimes=int(receiveData["batchMinTimes"])
@@ -691,12 +529,55 @@ def measure(receiveData):
     
     
     resDfWithab= ma.cal_a_b(resDf)
+    resDfWithab.to_csv(picarro_config["data_path"]+"data_with_a_b.csv",encoding="utf-8",index=False)
+
     csvStr = resDfWithab.to_csv()
     # resFinalDf=ma.cal_DIC_content(resDfWithab)
     # csvStr=resFinalDf.to_csv()
-    socketio.emit('responseData', {"data": csvStr}, namespace=name_space)
-    logger.info("計算已完成")
+    responseData={"data":csvStr,"type":"full_sample_data"}
+    socketio.emit('sampleing', responseData, namespace=name_space)
+    logger.info("Sampling計算已完成")
 
+
+@socketio.on('measuring', namespace=name_space)
+def measuring(receiveData):
+    '''
+    這是收到需要自動做一套實驗
+    receiveData={
+    "data":[{
+            "flush":True,
+            "in_port":1,
+            "sample_vol":2,
+            "out_port":2,
+            "sample_DIC":1090,
+            "sample_name":"measure1",
+            "sample_usage":"measure"
+        },
+    {
+            "flush":True,
+            "in_port":1,
+            "sample_vol":2,
+            "out_port":2,
+            "sample_DIC":1090,
+            "sample_name":"measure2",
+            "sample_usage":"measure"
+        }
+    ]
+    }
+    '''
+
+    logger.info("Channel-measuring","進行測量,已完成計算a,b,計算DIC")
+    # dataFull,batchMinTimes=2, batchMaxTimes=5,esp=0.01
+    folder=picarro_config["data_path"]
+    fileDtStr=datetime.datetime.now().strftime("%y%d%m_%H%M")
+    sampleingWitabFile=folder+"data_temp_with_a_b.csv"
+    finalResultFile=folder+"data"+fileDtStr+".csv"
+    # csvStr = resDfWithab.to_csv()
+    resFinalDf=ma.runEntireMeasuring(dataFull=receiveData["data"],sampleingWitabFile=sampleingWitabFile,finalResultFile=finalResultFile)
+    csvStr=resFinalDf.to_csv()
+    responseData={"data":csvStr,"type":"full_experiment_data"}
+    socketio.emit('measuring',responseData, namespace=name_space)
+    logger.info("Measuring計算已完成")
 # @socketio.on('setSpeed', namespace=name_space)
 # def mtest_message(receiveData):
 #     print(receiveData)
@@ -714,5 +595,6 @@ def measure(receiveData):
     #     xlp.setSlope( slope_value=slopeValue,execute=True)
 
 
-if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5001)
+# if __name__ == '__main__':
+#     # socketio.run(app, host='0.0.0.0', port=5001)
+#     pass

@@ -15,6 +15,7 @@ class Picarro_G2301():
         self.logger=logger
         self.prodFlag=prodFlag
         self.config=config
+
     def collectDataFromFirstBuffFirst(self):
         while self.collectDataFlag==True:
             try:
@@ -44,13 +45,13 @@ class Picarro_G2301():
         if self.handleError(buffReturn): return 
 
         # self.logger.info("> {<:15}:".format("Reutrn Result:"))
-        self.logInfoCall("Reutrn Result:", "")
+        self.logDebugCall("Reutrn Result:", "")
         
         retAry=buffReturn.split(chr(13))
         for i in range(1,len(retAry)):
             ret=retAry[i]
             # self.logger.info("> {<:15}:{}".format(ret))
-            self.logInfoCall("", ret)
+            self.logDebugCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -61,8 +62,8 @@ class Picarro_G2301():
                 retDf.loc[retDfIdx,"meas_val2"]=valAry[2]
                 retDf.loc[retDfIdx,"meas_val3"]=valAry[3]
                 retDfIdx+=1
-        print(retDf)
-        retDf.to_csv("data.csv")
+        # print(retDf)
+        # retDf.to_csv("data.csv")
         return retDf
 
 
@@ -82,13 +83,13 @@ class Picarro_G2301():
         retAry=buffReturn.split(chr(13))
         if self.handleError(buffReturn): return 
         # self.logInfoCall("Return Result", "")
-        self.logInfoCall("Return Result", "")
+        self.logDebugCall("Return Result", "")
         for i in range(len(retAry)):
             ret=retAry[i]
 
             # self.logger.info("> "+ret)
             # self.logInfoCall("", ret)
-            self.logInfoCall("", ret)
+            self.logDebugCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -119,7 +120,7 @@ class Picarro_G2301():
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn)
         # )
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         return buffReturn
 
     def _Meas_GetScanTime(self):
@@ -136,7 +137,7 @@ class Picarro_G2301():
         buffReturn=buffReturn.replace(chr(13),"")
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         return buffReturn
     def _Instr_GetStatus(self):
         command="_Instr_GetStatus"
@@ -154,7 +155,7 @@ class Picarro_G2301():
         buffReturnBinary="{:b}".format(int(buffReturn))
         # buffReturnBinary.zfill(16)
    
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         self.logger.info("> {:<15}: {:b}".format("",int(buffReturn)))
         
 
@@ -222,7 +223,7 @@ class Picarro_G2301():
         buffReturn=buffReturn.replace(chr(13),"")
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         return buffReturn
     def _Valves_Seq_Stop(self):
 
@@ -239,7 +240,7 @@ class Picarro_G2301():
         buffReturn=buffReturn.replace(chr(13),"")
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         return buffReturn
 
 
@@ -258,7 +259,7 @@ class Picarro_G2301():
         buffReturn=buffReturn.replace(chr(13),"")
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         buffReturnAry=buffReturn.split(";")
         buffReturnBinary="{:b}".format(int(buffReturnAry[1]))
         valves=[]
@@ -271,7 +272,7 @@ class Picarro_G2301():
         explainStr=",".join(valves)+ " "+buffReturnAry[0]
 
         # self.logger.info("Return result: {}".format(explainStr))
-        self.logInfoCall("Explain", explainStr)
+        self.logDebugCall("Explain", explainStr)
         return buffReturn
 
     def _Valves_Seq_Settstate(self,num):
@@ -289,7 +290,7 @@ class Picarro_G2301():
         buffReturn=buffReturn.replace(chr(13),"")
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         buffReturnAry=buffReturn.split(";")
         buffReturnBinary="{:b}".format(int(buffReturnAry[1]))
         valves=[]
@@ -302,7 +303,7 @@ class Picarro_G2301():
         explainStr=",".join(valves)+ " "+buffReturnAry[0]
 
         # self.logger.info("Return result:explain-Valves {}".format(explainStr))
-        self.logInfoCall("Explain", explainStr)
+        self.logDebugCall("Explain", explainStr)
         return buffReturn
 
     def _Pulse_GetBuffer(self):
@@ -322,13 +323,13 @@ class Picarro_G2301():
                 "09/21/24 00:10:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;"+chr(13)
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:")
-        self.logInfoCall("Return Result", "")
+        self.logDebugCall("Return Result", "")
         
         retAry=buffReturn.split(chr(13))
         for i in range(len(retAry)):
             ret=retAry[i]
             # self.logger.info("# "+ret)
-            self.logInfoCall("", ret)
+            self.logDebugCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{2}/[0-9]{2}/[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -362,12 +363,12 @@ class Picarro_G2301():
             buffReturn=chr(13)+"09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;"+chr(13)
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:")
-        self.logInfoCall("Return Result", "")
+        self.logDebugCall("Return Result", "")
         retAry=buffReturn.split(chr(13))
         for i in range(len(retAry)):
             ret=retAry[i]
             # self.logger.info(ret)
-            self.logInfoCall("", ret)
+            self.logDebugCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{2}/[0-9]{2}/[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -401,7 +402,7 @@ class Picarro_G2301():
         buffReturn=buffReturn.replace(chr(13),"")
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         return buffReturn
     def _Plus_GetStatus(self):
         command="_Plus_GetStatus"
@@ -425,8 +426,8 @@ class Picarro_G2301():
         else:
             status=""
         # self.logger.info("Return result:{}-{}".format(buffReturn,status))
-        self.logInfoCall("Return Result", buffReturn)
-        self.logInfoCall("Explain", status)
+        self.logDebugCall("Return Result", buffReturn)
+        self.logDebugCall("Explain", status)
         return buffReturn
     def _Flux_Mode_Switch(self,para="CO2_H2O"):
         command="_Plus_GetStatus "+para
@@ -444,7 +445,7 @@ class Picarro_G2301():
         # buffReturn="'ERR:6001"
         if self.handleError(buffReturn): return 
         # self.logger.info("Return result:{}".format(buffReturn))
-        self.logInfoCall("Return Result", buffReturn)
+        self.logDebugCall("Return Result", buffReturn)
         return buffReturn
     
     def handleError(self,code):
@@ -475,13 +476,84 @@ class Picarro_G2301():
             return True
         else:
             return False
-        
+    def getLatestData(self):    
+        '''
+        每秒讀取儀器最近的DATA, 
+        輸入:resDf-之前的數據
+        輸出:resNewDf-讀取後更新的數據
+        '''
+        resDf=pd.DataFrame(columns=["meas_datetime","meas_val1","meas_val2","meas_val3"])
+        # resDf=self._Meas_GetBuffer()
+        resDf=self.getLatestMeasBuffer()
+        if resDf.shape[0]>0:
+            maxidx=resDf.index[0]
+                
+            pulseDateTime, mean,std,slope=self.getLatestPulseBuffer()
+            responseData={
+                "data":{
+                    "meas_datetime":resDf.loc[maxidx,"meas_datetime"],
+                    "meas_val1":resDf.loc[maxidx,"meas_val1"],
+                    "pulse_datetime":pulseDateTime,
+                    "pulse_mean":mean,
+                    "pulse_std":std,
+                    "pulse_slope":slope
+                }
+            }
+            
+        else:
+            responseData={
+            "data":{
+                "meas_datetime":None,
+                "meas_val1":None,
+                "pulse_datetime":pulseDateTime,
+                "pulse_mean":mean,
+                "pulse_std":std,
+                    "pulse_slope":slope
+                }
+            }      
+        return responseData     
+    def getLatestMeasBuffer(self):    
+        '''
+        每秒讀取儀器最近的DATA, 
+        輸入:resDf-之前的數據
+        輸出:resNewDf-讀取後更新的數據
+        '''
+        resDf=pd.DataFrame(columns=["meas_datetime","meas_val1","meas_val2","meas_val3"])
+        resDf=self._Meas_GetBuffer()
+        for i in resDf.index:
+            #########################
+            # resDf.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
+            #####################
+            # datas['meas_datetime'])
+                resDf.loc[i, 'meas_datetimestamp']=pd.to_datetime(resDf.loc[i,
+                                                           "meas_datetime"]).timestamp()-60*60*8
+        maxidx=resDf['meas_datetimestamp'].idxmax()    
+        return resDf[resDf.index==maxidx]
+    
+    def getLatestPulseBuffer(self):
+        """
+        取得最新的Pulse data
+        """
+        dataTmpDf = self._Pulse_GetBuffer()
+        for i in dataTmpDf.index:
+            #########################
+            # resDf.loc[i,"analysis_time"].timestamp()= utc time stamp, so subtract 8*60*60
+            #####################
+            # datas['meas_datetime'])
+                dataTmpDf.loc[i, 'meas_datetimestamp']=pd.to_datetime(dataTmpDf.loc[i,
+                                                           "plus_datetime"]).timestamp()-60*60*8
+        idMax=dataTmpDf["meas_datetimestamp"].idxmax()
+
+        return dataTmpDf.loc[idMax,"plus_datetime"],dataTmpDf.loc[idMax,"mean1"],dataTmpDf.loc[idMax,"std1"],dataTmpDf.loc[idMax,"slope1"]
     def logInfoCall(self, prefixName,command):
         # self.logger.debug(' {}: {}'.format(f_name, f_locals))
         msg = " {:<15}: {}".format(prefixName, command)
         self.logger.info(msg=msg)
     
-    
+    def logDebugCall(self, prefixName,command):
+        # self.logger.debug(' {}: {}'.format(f_name, f_locals))
+        msg = " {:<15}: {}".format(prefixName, command)
+        self.logger.debug(msg=msg)    
 # reg=regression("data.csv")
 # reg.readFile()
 
@@ -496,46 +568,46 @@ class Picarro_G2301():
 # print("resulDIC( \mu mol/L):{}".format(resultDIC))
 
 
-logger = logging.getLogger('mylogger')
-logger.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
+# logger = logging.getLogger('mylogger')
+# logger.setLevel(logging.DEBUG)
+# console_handler = logging.StreamHandler()
 
 
 
-# Open and read the JSON file
-with open('picarro_G2302.json', 'r') as file:
-    config = json.load(file)
-file.close()
+# # Open and read the JSON file
+# with open('picarro_G2302.json', 'r') as file:
+#     config = json.load(file)
+# file.close()
 
-if config["logStart"] in ["True","true","TRUE"]:
-    logFolder=config["logFolder"]
-    logDtStr = datetime.datetime.now().strftime("%Y%m%d")
-    file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    console_handler.setFormatter(formatter)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-    logger.addHandler(file_handler)
-
-
-rs232Device=RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                 request=False, hello=None, answer=None, termin=chr(13),
-                 timesleep=0.2,logger=None)
+# if config["logStart"] in ["True","true","TRUE"]:
+#     logFolder=config["logFolder"]
+#     logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+#     file_handler = logging.FileHandler(logFolder+'_{}.txt'.format(logDtStr))
+#     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+#     console_handler.setFormatter(formatter)
+#     file_handler.setFormatter(formatter)
+#     logger.addHandler(console_handler)
+#     logger.addHandler(file_handler)
 
 
-picarro = Picarro_G2301(rs232Device, logger, config, False)
-picarro._Meas_GetBuffer()
-# picarro._Meas_GetBufferFirst()
-# picarro._Meas_ClearBuffer()
-# picarro._Meas_GetScanTime()
-# picarro._Instr_GetStatus()
-# picarro._Valves_Seq_Start()
-# picarro._Valves_Seq_Readtstate()
-# picarro._Pulse_GetBuffer()
-# picarro._Pulse_GetBufferFirst()
-# picarro._Plus_ClearBuffer()
-# picarro._Plus_GetStatus()
-# picarro._Flux_Mode_Switch()
+# rs232Device=RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+#                  request=False, hello=None, answer=None, termin=chr(13),
+#                  timesleep=0.2,logger=None)
 
-if config["logStart"]=="True":
-    logger.handlers.clear()
+
+# picarro = Picarro_G2301(rs232Device, logger, config, False)
+# picarro._Meas_GetBuffer()
+# # picarro._Meas_GetBufferFirst()
+# # picarro._Meas_ClearBuffer()
+# # picarro._Meas_GetScanTime()
+# # picarro._Instr_GetStatus()
+# # picarro._Valves_Seq_Start()
+# # picarro._Valves_Seq_Readtstate()
+# # picarro._Pulse_GetBuffer()
+# # picarro._Pulse_GetBufferFirst()
+# # picarro._Plus_ClearBuffer()
+# # picarro._Plus_GetStatus()
+# # picarro._Flux_Mode_Switch()
+
+# if config["logStart"]=="True":
+#     logger.handlers.clear()

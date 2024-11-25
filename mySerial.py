@@ -20,7 +20,7 @@ class RS232_Device():
     # logger setting
     ###########
     # logger.handlers.clear()
-    def __init__(self, device_name=None, com=None, port=19200,
+    def __init__(self, device_name=None, com=None, baud=19200,
                  request=False, hello=None, answer=None, termin=None,
                  timesleep=0.2,logger=None):
         '''
@@ -34,7 +34,7 @@ class RS232_Device():
         '''
         self.com = com
         self.device_name = device_name
-        self.port = port
+        self.baud = baud
         self.request = request
         self.hello = hello
         self.answer = answer
@@ -50,21 +50,21 @@ class RS232_Device():
         logger=self.logger
         if not self.busy:
             try:
-                self.connection = serial.Serial(self.com, self.port, bytesize=8, parity='N', stopbits=1, timeout=1)
+                self.connection = serial.Serial(self.com, self.baud, bytesize=8, parity='N', stopbits=1, timeout=1)
                 if self.request == False:
                     self.connected = True
-                logger.warning('%s 打开成功,开启端口为%s,波特率为%s' % (self.device_name, self.com, self.port))
+                logger.info('%s 打开成功,开启端口为%s,波特率为%s' % (self.device_name, self.com, self.baud))
             except serial.serialutil.SerialException as e:
                 self.busy = False
-                logger.warning('%s 打开失败,端口%s已被开启或无此端口,%s' % (self.device_name, self.com, str(e)))
+                logger.error('%s 打开失败,端口%s已被开启或无此端口,%s' % (self.device_name, self.com, str(e)))
 
         if all((self.request, self.connection)):
             if self.answer in self.query(self.hello).encode('utf-8'):
                 self.connected = True
-                logger.warning('%s 握手成功' % self.device_name)
+                logger.info('%s 握手成功' % self.device_name)
             else:
                 self.connected = False
-                logger.warning('%s 通讯失败,请确认端口连接及设备状态！' % self.device_name)
+                logger.error('%s 通讯失败,请确认端口连接及设备状态！' % self.device_name)
 
         return self.connected
 
@@ -73,14 +73,15 @@ class RS232_Device():
         if self.connection:
             try:
                 self.connection.open()
-                logger.warning('%s 打开成功,开启端口为%s,波特率为%s' % (self.device_name, self.com, self.port))
+                logger.info('%s 打开成功,开启端口为%s,波特率为%s' % (self.device_name, self.com, self.baud))
             except serial.serialutil.SerialException as e:
                 self.busy = False
-                logger.warning('%s 打开失败,端口%s已被开启或无此端口,%s' % (self.device_name, self.com, str(e)))
+                logger.error('%s 打开失败,端口%s已被开启或无此端口,%s' % (self.device_name, self.com, str(e)))
 
     def close(self):
         logger=self.logger
-        if self.busy:
+        # if self.busy:
+        if self.connection:
             self.connection.close()
             logger.info('%s 通讯成功关闭!' % self.device_name)
             self.busy = False

@@ -19,14 +19,16 @@ class mylogger(logging.Logger):
             '%(asctime)s - %(levelname)-8s - %(name)-12s - %(message)s')
         # file_handler = logging.FileHandler(
         #     logFolder+'_{}.txt'.format(logDtStr))
-        file_handler = logging.handlers.TimedRotatingFileHandler(
+        self.file_handler = logging.handlers.TimedRotatingFileHandler(
             logFolder+"main", when='d', interval=1, backupCount=365, encoding='utf-8')
-        file_handler.suffix = "%Y%m%d_%H%M.log"
-        console_handler.setFormatter(formatter)
-        file_handler.setFormatter(formatter)
-        super().addHandler(console_handler)
-        super().addHandler(file_handler)
+        self.file_handler.suffix = "%Y%m%d_%H%M.log"
+        self.console_handler.setFormatter(formatter)
+        self.file_handler.setFormatter(formatter)
+        super().addHandler(self.console_handler)
+        super().addHandler(self.file_handler)
     
+    def getLogger(self,loggerName):
+        super().getLogger(loggerName)
         # self.sio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
     def wrapEmit(func):
         """
@@ -44,7 +46,13 @@ class mylogger(logging.Logger):
 
     @wrapEmit
     def info(self, msg, *args, **kwargs):
-        super().info(msg, *args, **kwargs)
+        
+        if len(args) == 1 and isinstance(args[0], str):
+            msg1=args.pop()
+            msgNew = " {:<15}: {}".format( msg,msg1)
+        else:
+            msgNew=msg
+        super().info(msgNew, *args, **kwargs)
         # print("print str",str)
 
     @wrapEmit
@@ -52,26 +60,36 @@ class mylogger(logging.Logger):
         """
         Delegate a warning call to the underlying logger.
         """
-        super().warning( msg, *args, **kwargs)
+        if len(args) == 1 and isinstance(args[0], str):
+            msg1=args.pop()
+            msgNew = " {:<15}: {}".format( msg,msg1)
+        else:
+            msgNew=msg
+        super().warning(msgNew, *args, **kwargs)
 
-    @wrapEmit
-    def warn(self, msg, *args, **kwargs):
-        # warnings.warn("The 'warn' method is deprecated, "
-        #     "use 'warning' instead", DeprecationWarning, 2)
-        # self.warning(msg, *args, **kwargs)
-        super().warn( msg, *args, **kwargs)
     @wrapEmit
     def error(self, msg, *args, **kwargs):
         """
         Delegate an error call to the underlying logger.
         """
-        super().error( msg, *args, **kwargs)
+        if len(args) == 1 and isinstance(args[0], str):
+            msg1=args.pop()
+            msgNew = " {:<15}: {}".format( msg,msg1)
+        else:
+            msgNew=msg
+        super().error(msgNew, *args, **kwargs)
+
     @wrapEmit
     def exception(self, msg, *args, exc_info=True, **kwargs):
         """
         Delegate an exception call to the underlying logger.
         """
-        super().exception( msg, *args, exc_info=exc_info, **kwargs)
+        if len(args) == 1 and isinstance(args[0], str):
+            msg1=args.pop()
+            msgNew = " {:<15}: {}".format( msg,msg1)
+        else:
+            msgNew=msg
+        super().exception(msgNew, *args, **kwargs)
 
         #super(mylogger,self).info(str)
     @wrapEmit
@@ -79,7 +97,12 @@ class mylogger(logging.Logger):
         """
         Delegate a critical call to the underlying logger.
         """
-        super().critical( msg, *args, **kwargs)
+        if len(args) == 1 and isinstance(args[0], str):
+            msg1=args.pop()
+            msgNew = " {:<15}: {}".format( msg,msg1)
+        else:
+            msgNew=msg
+        super().critical(msgNew, *args, **kwargs)
 
 
 

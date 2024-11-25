@@ -1,0 +1,18 @@
+{
+    "com": "/dev/ttyUSB0", 
+    "baud":9600,
+    "bytesize":8, 
+    "parity":"N", 
+    "stopbits":1,
+    "num_ports":4, 
+    "syringe_ul":1000, 
+    "direction":"CW",
+    "microstep":2,
+    "waste_port":4,
+    "slope":14,
+    "init_force":0,
+    "extractSpeed":900,
+    "dispenseSpeed":900,
+    "debug":true, 
+    "debug_log_path":"./main_log/"
+}
