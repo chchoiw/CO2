@@ -1,0 +1,10 @@
+{
+    "com": "/dev/ttyUSB0", 
+    "baud":9600,
+    "bytesize":8, 
+    "parity":"N", 
+    "stopbits":1,
+    "debug":true, 
+    "debug_log_path":"./main_log/",
+    "data_path":"./picarro_data/"
+}

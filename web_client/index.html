@@ -24,15 +24,26 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
     <title>socket.io</title>
 </head>
-<button onclick="send()">Picarro config setting</button>
-<button onclick="piacrroGetData()">Picarro get data</button>
+<button onclick="getDefaultSpeed()">getDefaultSpeed</button>
+<button onclick="getPicarroDataRealTime()">getPicarroDataRealTime</button>
+<button onclick="getFullLog()">getFullLog</button>
+<button onclick="connectInstrument()">connectInstrument</button>
+<button onclick="configInstrument()">configInstrument</button>
+<button onclick="closeInstrument()">closeInstrument</button>
+<button onclick="initPump()">initPump</button>
+<button onclick="dispense()">dispense</button>
+<button onclick="extract()">extract</button>
+<button onclick="getPlungerStatus()">getPlungerStatus</button>
+<button onclick="flush()">flush</button>
+<button onclick="sampling()">sampling</button>
+<button onclick="measuring()">measuring</button>
 <h1 id="receive"></h1>
 
 <body>
     <script>
         var socket = null
-        function initWebSocket() {
-            socket = io.connect('ws://localhost:5000/echo', {
+        function initWebSocket(name_space) {
+            socket = io.connect('ws://localhost:5000/'+name_space, {
                 timeout: 300000,
                 reconnectionDelayMax: 1000,
                 reconnectionDelay: 500
@@ -45,55 +56,330 @@
                 console.log('连接断开')
                 // socket.emit('disconnect1', { 'data': 'I\'m disconnected!' });
             })
-            socket.on('responseData', msg => {
-                // 接受数据
-                console.log("msg", msg)
-            })
+
             socket.on('error message', msg => {
                 console.log('error:' + msg)
 
             })
-        }
-        function send() {
 
-            // sendObj={
-            //     "logFolder": "picarro_log/",
-            //     "logStart": "True",
-            //     "dataFolder": "picarro_data/",
 
-            // }
-            sendObj = {
-                "data": [{
-                    "sample_datetime": "2024-09-21 00:00:00",
-                    "sample_name": "sample1", "sample_vol": "1.", "sample_DIC": "200.",
-                    "sample_usage": "sample", "sample_DIC": "2."
-                },
-                {
-                    "sample_datetime": "2024-09-21 00:00:00",
-                    "sample_name": "sample2", "sample_vol": "2.", "sample_DIC": "400.",
-                    "sample_usage": "sample", "sample_DIC": "4."
-                },
-                {
-                    "sample_datetime": "2024-09-21 00:00:00",
-                    "sample_name": "sample3", "sample_vol": "3.", "sample_DIC": "300.",
-                    "sample_usage": "sample", "sample_DIC": "3."
-                },
-                // {
-                //     "sample_datetime": "2024-09-21 00:00:00",
-                //     "sample_name": "sample4", "sample_vol": "2.5", "sample_DIC": "450.",
-                //     "sample_usage": "sample", "sample_DIC": "4."
-                // },
-                {
-                    "sample_datetime": "2024-09-21 00:00:00",
-                    "sample_name": "measure1", "sample_vol": "2.3", "sample_DIC": "420.",
-                    "sample_usage": "measure", "sample_DIC": "4."
-                },
-                ]
 
+            socket.on('getDefaultConfig', msg => {
+                
+                /*
+                    接收pump 和CO2儀器的config 
+                    responseData={
+                    "pump":pump_config,
+                    "picarro":picarro_config
+                }
+
+                pump_config={
+                "com": "/dev/ttyUSB0", 
+                "baud":9600,
+                "bytesize":8, 
+                "parity":"N", 
+                "stopbits":1,
+                "num_ports":4, 
+                "syringe_ul":1000, 
+                "direction":"CW",
+                "microstep":2,
+                "waste_port":4,
+                "slope":14,
+                "init_force":0,
+                "extractSpeed":900,
+                "dispenseSpeed":900,
+                "debug":true, 
+                "debug_log_path":"./pump_log/"
             }
-            socket.emit('responseData', sendObj)
-            console.log("sendObj")
+
+
+            picarro_config={
+                "com": "/dev/ttyUSB0", 
+                "baud":9600,
+                "bytesize":8, 
+                "parity":"N", 
+                "stopbits":1,
+                "debug":true, 
+                "debug_log_path":"./picarro_log/",
+                "data_path":"./picarro_data/"
+            }
+            */
+                
+                console.log("msg", msg)
+            })
+
+            socket.on('getPicarroDataRealTime', msg => {
+                /*
+                取得Picarro中CO2最新的數據
+                responseData={
+                    "data":
+                    {
+                        "meas_datetime":resDf.loc[maxidx,"meas_datetime"],
+                        "meas_val1":resDf.loc[maxidx,"meas_val1"],
+                        "pulse_datetime":pulseDateTime,
+                        "pulse_mean":mean,
+                        "pulse_std":std,
+                        "pulse_slope":slope
+                    }
+                }
+                */
+                console.log("msg", msg)
+            })
+
+
+            socket.on('getFullLog', msg => {
+                // 取得最新BUFFER中的LOG
+                /*
+                 responseData= {"data",logContent}
+                */
+                console.log("msg", msg)
+            })
+
+            socket.on('connectInstrument', msg => {
+                // 連接儀器
+                /*
+                 responseData= {"data",replyStr}
+                */
+                console.log("msg", msg)
+            })
+            socket.on('configInstrument', msg => {
+                // 更改儀器配置
+                /*
+                 responseData= {}
+                */
+                console.log("msg", msg)
+            })
+
+            socket.on('closeInstrument', msg => {
+                // 關閉儀器
+                /*
+                 responseData= {}
+                */
+                console.log("msg", msg)
+            })
+            socket.on('initPump', msg => {
+                // 初始化泵XLP6000
+                /*
+                 responseData= {}
+                */
+                console.log("msg", msg)
+            })            
+            socket.on('dispense', msg => {
+                // 注射器放出液體
+                /*
+                 responseData= {}
+                */
+                console.log("msg", msg)
+            })    
+            socket.on('extract', msg => {
+                // 注射器抽出液體
+                /*
+                 responseData= {}
+                */
+                console.log("msg", msg)
+            })   
+            socket.on('getPlungerStatus', msg => {
+                // 取得泵的狀態
+                /*
+                responseData={
+                    "data":
+                    {
+                        "modeNum":modeNum,
+                        "pos":pos,
+                        "volumn_ul":volumn_ul,
+                        "curPort":curPort,
+                        "datetime":nowDt
+                    }
+                }
+                */
+                console.log("msg", msg)
+            }) 
+            socket.on('flush', msg => {
+                // 清洗泵
+                /*
+                responseData={}
+                */
+                console.log("msg", msg)
+            }) 
+            socket.on('realTimeData', msg => {
+                // 實時更新實驗CO2的數據
+                /*
+                responseData={"data":csvStr,"sample_name":"sample1","type":"a_sample_data"}
+                當"type"="a_sample_data", 即csvStr是完整一個sample(如:sample1)的數據
+                當"type"="latest_data",即取得實時"sample1"最新的數據,
+                csvStr包括只取樣數據
+                */
+                console.log("msg", msg)
+            }) 
+            socket.on('sampling', msg => {
+                // 進行取樣
+                /*
+                responseData={"data":csvStr,"type":"full_sample_data"}
+                csvStr包括只取樣數據
+                當"type"="full_sample_data",即取得所有在這個實驗sample的數據,
+                */
+                console.log("msg", msg)
+            }) 
+            socket.on('measuring', msg => {
+                // 進行測量
+                /*
+                {"data":csvStr,"type":"full_experiment_data"}
+                csvStr包括取樣和測量的數據
+                當"type"="full_experiment_data",即取得所有在這個實驗包括sampling 和 measuring的數據,
+                */
+                console.log("msg", msg)
+            }) 
         }
+        function getDefaultConfig() {
+            sendObj = {}
+            socket.emit('getDefaultConfig', sendObj)
+        }
+        function getPicarroDataRealTime() {
+            sendObj = {}
+            socket.emit('getPicarroDataRealTime', sendObj)
+        }
+
+        function getFullLog() {
+            sendObj = {}
+            socket.emit('getFullLog', sendObj)
+        }
+        function connectInstrument() {
+            sendObj = {"plump":"connect","picarro":"connect"}
+            socket.emit('connectInstrument', sendObj)
+        }
+        function configInstrument() {
+            pump_config={
+                "com": "/dev/ttyUSB0", 
+                "baud":9600,
+                "bytesize":8, 
+                "parity":"N", 
+                "stopbits":1,
+                "num_ports":4, 
+                "syringe_ul":1000, 
+                "direction":"CW",
+                "microstep":2,
+                "waste_port":4,
+                "slope":14,
+                "init_force":0,
+                "extractSpeed":900,
+                "dispenseSpeed":900,
+                "debug":true, 
+                "debug_log_path":"./pump_log/"
+            }
+            picarro_config={
+                "com": "/dev/ttyUSB0", 
+                "baud":9600,
+                "bytesize":8, 
+                "parity":"N", 
+                "stopbits":1,
+                "debug":true, 
+                "debug_log_path":"./picarro_log/",
+                "data_path":"./picarro_data/"
+            }
+            sendObj = {"plump":pump_config,"picarro":picarro_config}
+            socket.emit('connectInstrument', sendObj)
+        }
+        function closeInstrument() {
+            sendObj = {"plump":"close","picarro":close}
+            socket.emit('closeInstrument', sendObj)
+        }
+        function initPump() {
+            sendObj = {}
+            socket.emit('initPump', sendObj)
+        }
+        function dispense() {
+            sendObj = {
+                    "data":[
+                            {
+                                "to_port":1, 
+                                "volumn_ul":100,
+                                "dispenseSpeed":1000,
+                            }
+                        ]
+                    }
+            socket.emit('dispense', sendObj)
+        }     
+        function extract() {
+            sendObj = {
+                    "data":[
+                            {
+                                "from_port":1, 
+                                "volumn_ul":100,
+                                "extractSpeed":1000,
+                            }
+                        ]
+                    }
+            socket.emit('extract', sendObj)
+        }    
+        function getPlungerStatus() {
+            sendObj = {}
+            socket.emit('getPlungerStatus', sendObj)
+        }    
+        function flush() {
+            sendObj = {
+                "data":[
+                        {
+                            "in_port":1,
+                            "flush_times":1,
+                            "wait_gap_ms":100,
+                            "waste_port":2,
+                            "volumn_ul":1000,
+                        }
+                    ]
+                }
+            socket.emit('flush', sendObj)
+        }    
+        function sampling() {
+            sendObj = {
+                    "data":
+                    [{
+                        "flush":True,
+                        "in_port":1,
+                        "sample_vol":2,
+                        "out_port":2,
+                        "sample_DIC":1090,
+                        "sample_name":"sample1",
+                        "sample_usage":"sample"
+                    }
+                    ,
+                    {
+                        "flush":True,
+                        "in_port":1,
+                        "sample_vol":2,
+                        "out_port":2,
+                        "sample_DIC":1090,
+                        "sample_name":"sample2",
+                        "sample_usage":"sample"
+                    }]
+                    }
+                
+            socket.emit('sampling', sendObj)
+        } 
+        function measuring() {
+            sendObj = {
+                    "data":[{
+                            "flush":True,
+                            "in_port":1,
+                            "sample_vol":2,
+                            "out_port":2,
+                            "sample_DIC":1090,
+                            "sample_name":"measure1",
+                            "sample_usage":"measure"
+                        },
+                        {
+                            "flush":True,
+                            "in_port":1,
+                            "sample_vol":2,
+                            "out_port":2,
+                            "sample_DIC":1090,
+                            "sample_name":"measure2",
+                            "sample_usage":"measure"
+                        }
+                    ]
+                }
+                
+            socket.emit('measuring', sendObj)
+        }     
         function piacrroGetData() {
 
             sendObj = {
