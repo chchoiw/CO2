@@ -26,7 +26,8 @@ class Picarro_G2301():
             except:
                 time.sleep(1.0)
     def _Meas_GetBuffer(self):
-        command="_Meas_GetBuffer"+chr(13)
+        command="_Meas_GetBuffer"
+        "Run command:{}".format(command)
         # self.logger.info("> {:<15}:{}".format("Run Command",command))
         self.logInfoCall("Run Command",command)
         ########################################################
@@ -35,11 +36,11 @@ class Picarro_G2301():
         retDf=pd.DataFrame(columns=["meas_datetime","meas_val1","meas_val2","meas_val3"])
         retDfIdx=0
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
-            buffReturn="2"+chr(13)+"2024-09-21 00:00:00;23.480;1.233;20.111;"+chr(13)+\
-           "2024-09-21 00:05:00;23.480;1.233;20.111;"+chr(13)+\
-                "2024-09-21 00:10:00;23.480;1.233;20.111;"+chr(13)
+            buffReturn="2"+chr(13)+"2024-09-21 00:00:00;23.180;1.333;20.111;"+chr(13)+\
+           "2024-09-21 00:05:00;23.280;1.433;21.111;"+chr(13)+\
+                "2024-09-21 00:10:00;23.380;1.533;22.111;"+chr(13)
         if self.handleError(buffReturn): return 
 
         # self.logger.info("> {<:15}:".format("Reutrn Result:"))
@@ -49,7 +50,7 @@ class Picarro_G2301():
         for i in range(1,len(retAry)):
             ret=retAry[i]
             # self.logger.info("> {<:15}:{}".format(ret))
-            self.logInfoCall("-- >> ", ret)
+            self.logInfoCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -66,7 +67,7 @@ class Picarro_G2301():
 
 
     def _Meas_GetBufferFirst(self):
-        command="_Meas_GetBufferFirst"+chr(13)
+        command="_Meas_GetBufferFirst"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command",command)
         ########################################################
@@ -75,7 +76,7 @@ class Picarro_G2301():
         retDf=pd.DataFrame(columns=["meas_datetime","meas_val1","meas_val2","meas_val3"])
         retDfIdx=0
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn=self.rs232Conn.query(command+chr(13))        
         else:
             buffReturn=chr(13)+"2024-09-12 00:00:00;23.480;1.233;20.111;"+chr(13)
         retAry=buffReturn.split(chr(13))
@@ -87,7 +88,7 @@ class Picarro_G2301():
 
             # self.logger.info("> "+ret)
             # self.logInfoCall("", ret)
-            self.logInfoCall("-- >> ", ret)
+            self.logInfoCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};[0-9]{1,3}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -102,7 +103,7 @@ class Picarro_G2301():
         return retDf
 
     def _Meas_ClearBuffer(self):
-        command="_Meas_ClearBuffer"+chr(13)
+        command="_Meas_ClearBuffer"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command",command)
         ########################################################
@@ -111,7 +112,7 @@ class Picarro_G2301():
         retDf=pd.DataFrame(columns=["meas_datetime","meas_val1","meas_val2","meas_val3"])
         retDfIdx=0
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"OK"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -122,14 +123,14 @@ class Picarro_G2301():
         return buffReturn
 
     def _Meas_GetScanTime(self):
-        command="_Meas_GetScanTime"+chr(13)
+        command="_Meas_GetScanTime"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result: seconds
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"10.2323"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -138,14 +139,14 @@ class Picarro_G2301():
         self.logInfoCall("Return Result", buffReturn)
         return buffReturn
     def _Instr_GetStatus(self):
-        command="_Instr_GetStatus"+chr(13)
+        command="_Instr_GetStatus"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result: 16 bit int
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"963"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -154,68 +155,68 @@ class Picarro_G2301():
         # buffReturnBinary.zfill(16)
    
         self.logInfoCall("Return Result", buffReturn)
-        self.logger.info("> {:<15}: {:b}".format("-- >> ",int(buffReturn)))
+        self.logger.info("> {:<15}: {:b}".format("",int(buffReturn)))
         
 
         lenBinary=len(buffReturnBinary)
         if lenBinary>=15:
             if (buffReturnBinary[lenBinary-1-14] == '0'):
-                self.logInfoCall("-- >> ", "The instrument is not currently in an error state.")
+                self.logInfoCall("", "The instrument is not currently in an error state.")
             elif (buffReturnBinary[lenBinary-1-14]=='1'): 
-                self.logInfoCall("-- >> ", "A system error is present. Use _Instr_GetError for more information.")
+                self.logInfoCall("", "A system error is present. Use _Instr_GetError for more information.")
         if lenBinary>=14:
             if (buffReturnBinary[lenBinary-1-13]=='0'): 
-                self.logInfoCall("-- >> ", "The instrument has successfully started up.")
+                self.logInfoCall("", "The instrument has successfully started up.")
             elif (buffReturnBinary[lenBinary-1-13]=='1'): 
-                self.logInfoCall("-- >> ", "The instrument is currently warming up from power-off or restart.")
+                self.logInfoCall("", "The instrument is currently warming up from power-off or restart.")
         if lenBinary>=10:     
             if (buffReturnBinary[lenBinary-1-9]=='0'): 
-                self.logInfoCall("-- >> ", "The warm box temperature is not stabilized within acceptable bounds.")
+                self.logInfoCall("", "The warm box temperature is not stabilized within acceptable bounds.")
             elif (buffReturnBinary[lenBinary-1-9]=='1'): 
-                self.logInfoCall("-- >> ", "The warm box temperature is within acceptable bounds for measurements.")
+                self.logInfoCall("", "The warm box temperature is within acceptable bounds for measurements.")
         if lenBinary>=9:
             if (buffReturnBinary[lenBinary-1-8]=='0'): 
-                self.logInfoCall("-- >> ", "The cavity temperature is not stabilized within acceptable bounds.")
+                self.logInfoCall("", "The cavity temperature is not stabilized within acceptable bounds.")
             elif (buffReturnBinary[lenBinary-1-8]=='1'): 
-                self.logInfoCall("-- >> ", "The cavity temperature is within acceptable bounds for measurements.")
+                self.logInfoCall("", "The cavity temperature is within acceptable bounds for measurements.")
         if lenBinary>=8:
             if (buffReturnBinary[lenBinary-1-7]=='0'): 
-                self.logInfoCall("-- >> ", "The gas sample pressure is not stabilized within acceptable bounds.")
+                self.logInfoCall("", "The gas sample pressure is not stabilized within acceptable bounds.")
             elif (buffReturnBinary[lenBinary-1-7]=='1'):  
-                self.logInfoCall("-- >> ", "The gas sample pressure is within acceptable bounds for measurement..") 
+                self.logInfoCall("", "The gas sample pressure is within acceptable bounds for measurement..") 
         if lenBinary>=6:       
             if (buffReturnBinary[lenBinary-1-6]=='0'): 
-                self.logInfoCall("-- >> ", "Valves are closed and no gas is flowing.") 
+                self.logInfoCall("", "Valves are closed and no gas is flowing.") 
             elif (buffReturnBinary[lenBinary-1-6]=='1'): 
-                self.logInfoCall("-- >> ", "Valves are open (pressure is within acceptable bounds for measurement.") 
+                self.logInfoCall("", "Valves are open (pressure is within acceptable bounds for measurement.") 
         if lenBinary>=3:
             if (buffReturnBinary[lenBinary-1-2]=='0'): 
-                self.logInfoCall("-- >> ", "The error queue is empty.")
+                self.logInfoCall("", "The error queue is empty.")
             elif (buffReturnBinary[lenBinary-1-2]=='1'): 
-                self.logInfoCall("-- >> ", "There is at least one value in the error queue.")
+                self.logInfoCall("", "There is at least one value in the error queue.")
         if lenBinary>=2:
             if (buffReturnBinary[lenBinary-1-1]=='0'): 
-                self.logInfoCall("-- >> ", "The measurement system is currently inactive.")
+                self.logInfoCall("", "The measurement system is currently inactive.")
             elif (buffReturnBinary[lenBinary-1-1]=='1'): 
-                self.logInfoCall("-- >> ", "The measurement system is currently active.")    
+                self.logInfoCall("", "The measurement system is currently active.")    
         if lenBinary>=1:          
             if (buffReturnBinary[lenBinary-1]=='0'): 
-                self.logInfoCall("-- >> ", "The instrument currently cannot make a gas measurement.")
+                self.logInfoCall("", "The instrument currently cannot make a gas measurement.")
             elif (buffReturnBinary[lenBinary-1]=='1'):   
-                self.logInfoCall("-- >> ", "The instrument is currently capable of measuring the sample gas.")
+                self.logInfoCall("", "The instrument is currently capable of measuring the sample gas.")
         # self.logger.info("# Status end")                        
         return buffReturn   
 
     def _Valves_Seq_Start(self):
 
-        command="_Valves_Seq_Start"+chr(13)
+        command="_Valves_Seq_Start"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result: seconds
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"OK"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -225,14 +226,14 @@ class Picarro_G2301():
         return buffReturn
     def _Valves_Seq_Stop(self):
 
-        command="_Valves_Seq_Stop"+chr(13)
+        command="_Valves_Seq_Stop"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result: seconds
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"OK"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -244,14 +245,14 @@ class Picarro_G2301():
 
     def _Valves_Seq_Readtstate(self):
 
-        command="_Valves_Seq_Readstate"+chr(13)
+        command="_Valves_Seq_Readstate"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result: seconds
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"ON;8"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -270,19 +271,19 @@ class Picarro_G2301():
         explainStr=",".join(valves)+ " "+buffReturnAry[0]
 
         # self.logger.info("Return result: {}".format(explainStr))
-        self.logInfoCall("-- >> Explain", explainStr)
+        self.logInfoCall("Explain", explainStr)
         return buffReturn
 
     def _Valves_Seq_Settstate(self,num):
 
-        command="_Valves_Seq_Readstate "+num+chr(13)
+        command="_Valves_Seq_Readstate "+num
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result: seconds
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"ON;8"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -301,11 +302,11 @@ class Picarro_G2301():
         explainStr=",".join(valves)+ " "+buffReturnAry[0]
 
         # self.logger.info("Return result:explain-Valves {}".format(explainStr))
-        self.logInfoCall("-- >> Explain", explainStr)
+        self.logInfoCall("Explain", explainStr)
         return buffReturn
 
     def _Pulse_GetBuffer(self):
-        command="_Pulse_GetBuffer"+chr(13)
+        command="_Pulse_GetBuffer"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
@@ -314,7 +315,7 @@ class Picarro_G2301():
         retDf=pd.DataFrame(columns=["plus_datetime","mean1","std1","slope1","mean2","std2","slope2","mean3","std3","slope3"])
         retDfIdx=0
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn=self.rs232Conn.query(command+chr(13))        
         else:
             buffReturn="3"+chr(13)+"09/21/24 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;"+chr(13)+\
            "09/21/24 00:05:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;"+chr(13)+\
@@ -327,7 +328,7 @@ class Picarro_G2301():
         for i in range(len(retAry)):
             ret=retAry[i]
             # self.logger.info("# "+ret)
-            self.logInfoCall("-- >> ", ret)
+            self.logInfoCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{2}/[0-9]{2}/[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -347,7 +348,7 @@ class Picarro_G2301():
         print(retDf)
         return retDf
     def _Pulse_GetBufferFirst(self):
-        command="_Pulse_GetBufferFirst"+chr(13)
+        command="_Pulse_GetBufferFirst"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
@@ -356,7 +357,7 @@ class Picarro_G2301():
         retDf=pd.DataFrame(columns=["plus_datetime","mean1","std1","slope1","mean2","std2","slope2","mean3","std3","slope3"])
         retDfIdx=0
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"09/12/19 00:00:00.123;23.480;-123331.233;20.111;23.480;-123331.233;20.111;23.480;-123331.233;20.111;"+chr(13)
         if self.handleError(buffReturn): return 
@@ -366,7 +367,7 @@ class Picarro_G2301():
         for i in range(len(retAry)):
             ret=retAry[i]
             # self.logger.info(ret)
-            self.logInfoCall("-- >> ", ret)
+            self.logInfoCall("", ret)
             measGetBuffReg=r"(?i)[0-9]{2}/[0-9]{2}/[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};[-]{0,1}[0-9]{1,7}.[0-9]{1,3};"
             reGroup=re.search(measGetBuffReg, ret) 
             if reGroup is not None:
@@ -386,14 +387,14 @@ class Picarro_G2301():
         # print(retDf)
         return retDf
     def _Plus_ClearBuffer(self):
-        command="_Plus_ClearBuffer"+chr(13)
+        command="_Plus_ClearBuffer"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result:OK
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn=self.rs232Conn.query(command+chr(13))        
         else:
             buffReturn=chr(13)+"OK"+chr(13)
         
@@ -403,14 +404,14 @@ class Picarro_G2301():
         self.logInfoCall("Return Result", buffReturn)
         return buffReturn
     def _Plus_GetStatus(self):
-        command="_Plus_GetStatus"+chr(13)
+        command="_Plus_GetStatus"
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
         # Respected Result:0,1,2
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn = self.rs232Conn.query(command+chr(13))
         else:
             buffReturn=chr(13)+"1"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -425,10 +426,10 @@ class Picarro_G2301():
             status=""
         # self.logger.info("Return result:{}-{}".format(buffReturn,status))
         self.logInfoCall("Return Result", buffReturn)
-        self.logInfoCall("-- >> Explain", status)
+        self.logInfoCall("Explain", status)
         return buffReturn
     def _Flux_Mode_Switch(self,para="CO2_H2O"):
-        command="_Plus_GetStatus "+para+chr(13)
+        command="_Plus_GetStatus "+para
         # self.logger.info("Run command:{}".format(command))
         self.logInfoCall("Run Command", command)
         ########################################################
@@ -436,7 +437,7 @@ class Picarro_G2301():
         # Respected Result:OK
         ###############################################
         if self.prodFlag:
-            buffReturn=self.rs232Conn.query(command)        
+            buffReturn=self.rs232Conn.query(command+chr(13))        
         else:
             buffReturn=chr(13)+"OK"+chr(13)
         buffReturn=buffReturn.replace(chr(13),"")
@@ -476,8 +477,9 @@ class Picarro_G2301():
             return False
         
     def logInfoCall(self, prefixName,command):
-        # self.logger.debug('-> {}: {}'.format(f_name, f_locals))
-        self.logger.info("> {:<15}: {}".format(prefixName, command))
+        # self.logger.debug(' {}: {}'.format(f_name, f_locals))
+        msg = " {:<15}: {}".format(prefixName, command)
+        self.logger.info(msg=msg)
     
     
 # reg=regression("data.csv")
@@ -522,14 +524,14 @@ rs232Device=RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
 
 
 picarro = Picarro_G2301(rs232Device, logger, config, False)
-# picarro._Meas_GetBuffer()
+picarro._Meas_GetBuffer()
 # picarro._Meas_GetBufferFirst()
 # picarro._Meas_ClearBuffer()
 # picarro._Meas_GetScanTime()
 # picarro._Instr_GetStatus()
 # picarro._Valves_Seq_Start()
 # picarro._Valves_Seq_Readtstate()
-picarro._Pulse_GetBuffer()
+# picarro._Pulse_GetBuffer()
 # picarro._Pulse_GetBufferFirst()
 # picarro._Plus_ClearBuffer()
 # picarro._Plus_GetStatus()

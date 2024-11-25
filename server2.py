@@ -144,6 +144,7 @@ class measureAction:
             print("--get bew resDf")
             print(resDf)
             if not self.prodFlag:
+                print("------------------test")
                 if data["sample_name"]=="sample1":
                     resDf["meas_val1"] = resDf["meas_val1"].astype(float)+1.1*(j)
                 elif data["sample_name"] == "sample2":
@@ -185,7 +186,7 @@ class measureAction:
             completeFlag=self.xlp.primePort( in_port=data["in_port"], volume_ul=data["sample_vol"], speed_code=None, out_port=data["out_port"],
                   split_command=False)
         if completeFlag or not self.prodFlag:
-            tmpDf=self.getCO2Sample(data)
+            tmpDf=self.getCO2Sample(data,estimateSampeSecond=3)
         if "flush" in data.keys() and data["flush"] and self.prodFlag:
             self.flush_pump()
         return tmpDf
@@ -207,8 +208,10 @@ class measureAction:
             if RSD <= esp:
                 sucessfulTimes+=1
             tmpDf.loc[tmpDf.index,"RSD"]=round(RSD,2)
+            
             resDf=pd.concat([resDf, tmpDf]).drop_duplicates(keep=False, ignore_index=True)
             csvStr=resDf.to_csv()
+            print(resDf)
             self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
 
                 # self.sio.emit('responseData', {"data": csvStr}, namespace=self.name_space)
@@ -229,6 +232,11 @@ class measureAction:
         slope, intercept, r_value, p_value, std_err =reg.cal_regression( x,y)
         resDf["a"]=slope
         resDf["b"]=intercept
+        return resDf
+    def cal_DIC_content(self,resDf):
+        reg= regression(data=resDf)
+        regData = resDf.loc[resDf["meas_usage"]=="sample"]
+        calDICData= resDf.loc[(resDf["meas_usage"]=="measure")]    
         measureDfFirstIdx=calDICData.index[0]
         meas_netarea=calDICData.loc[measureDfFirstIdx, "meas_netarea"]
         DICValue=reg.dicContent(co2PeakArea=meas_netarea,slope=slope,intercept=intercept,sampleVol=1)
@@ -375,27 +383,46 @@ config = {
     "logStart": "True",
     "dataFolder": "picarro_data/"
 }
-logger = mylogger(name=__name__, level=0, sio=socketio, name_space=name_space)
-logger.setLevel(logging.DEBUG)
+logger = mylogger(name=__name__, logFolder="main_log/",level=0, sio=socketio, name_space=name_space)
+# loggerPicarro = mylogger(name="Picarro",logFolder="picarro_log/", level=0, sio=socketio, name_space=name_space)
+loggerPicarro = logging.getLogger('Picarro')
+loggerPicarro.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
-if config["logStart"] in ["True", "true", "TRUE"]:
-    logFolder = config["logFolder"]
-    # logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+# logFolder = config["logFolder"]
+# logDtStr = datetime.datetime.now().strftime("%Y%m%d")
 
-    formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(message)s')
-    # file_handler = logging.FileHandler(
-    #     logFolder+'_{}.txt'.format(logDtStr))
-    file_handler=logging.handlers.TimedRotationFileHandler(logFolder+"frontEndLog",when='d',interval=1,backupCount=365)
-    file_handler.suffix="%Y%m%d_%H%M.log"
-    console_handler.setFormatter(formatter)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-    logger.addHandler(file_handler)
+formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)-8s - %(name)-12s - %(message)s')
+# file_handler = logging.FileHandler(
+#     logFolder+'_{}.txt'.format(logDtStr))
+file_handler = logging.handlers.TimedRotatingFileHandler(
+    "picarro_log/"+"picaro", when='d', interval=1, backupCount=365, encoding='utf-8')
+file_handler.suffix = "%Y%m%d"
+file_handler.extMatch = re.compile(r"^\d{4}\d{2}\d{2}$")
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+loggerPicarro.addHandler(console_handler)
+loggerPicarro.addHandler(file_handler)
+
+
+
+# if config["logStart"] in ["True", "true", "TRUE"]:
+#     logFolder = config["logFolder"]
+#     # logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+
+#     formatter = logging.Formatter(
+#         '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+#     # file_handler = logging.FileHandler(
+#     #     logFolder+'_{}.txt'.format(logDtStr))
+#     file_handler=logging.handlers.TimedRotatingFileHandler(logFolder+"frontEndLog",when='d',interval=1,backupCount=365)
+#     file_handler.suffix="%Y%m%d_%H%M.log"
+#     console_handler.setFormatter(formatter)
+#     file_handler.setFormatter(formatter)
+#     logger.addHandler(console_handler)
+#     logger.addHandler(file_handler)
 
 # ia = instrumentActoin(xlp=xlp, picarro=picarro,
 #                         logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
-
 
 
 pumpDefaultSetting={
@@ -403,15 +430,18 @@ pumpDefaultSetting={
     "dispenseSpeed":900,
 
 }
-rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
-                            request=False, hello=None, answer=None, termin=chr(13),
-                            timesleep=0.2, logger=None)
-picarro=Picarro_G2301(rs232Device, logger, config, prodFlag=False)
-xlp=XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
-                 microstep=2, waste_port=4, slope=14, init_force=0,
-                 debug=True, debug_log_path='./pump_log/')
-ma = measureAction(xlp=xlp, picarro=picarro,
-                        logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
+try:
+    rs232Device = RS232_Device(device_name="Picarro_G2301", com='COM1', port=9600,
+                                request=False, hello=None, answer=None, termin=chr(13),
+                                timesleep=0.2, logger=None)
+    picarro=Picarro_G2301(rs232Device, loggerPicarro, config, prodFlag=False)
+    xlp=XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600),num_ports=4, syringe_ul=1000, direction='CW',
+                    microstep=2, waste_port=4, slope=14, init_force=0,
+                    debug=True, debug_log_path='./pump_log/')
+    ma = measureAction(xlp=xlp, picarro=picarro,
+                            logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
+except:
+    traceback.print_exc()
 
 
 # @socketio.on('responseData', namespace=name_space)
@@ -440,7 +470,7 @@ def connectPump(receiveData):
     picarro = Picarro_G2301(rs232Device, logger, config, prodFlag=False)
 
 
-@socketio.on("connect", namespace=name_space)
+@socketio.on("connectInstrument", namespace=name_space)
 def connectInstrument(receiveData):
     '''
     receiveData={"plump":"connect","picarro":"connect"}
@@ -645,6 +675,7 @@ def measure(receiveData):
         }
     },
     ]
+    }
     '''
     # dataFull,batchMinTimes=2, batchMaxTimes=5,esp=0.01
     if receiveData["data"] is None:
@@ -654,10 +685,17 @@ def measure(receiveData):
     esp=float(receiveData["maxTolerateError"])
     dataAry=receiveData["data"]
     # for subData in dataAry:
+    ma = measureAction(xlp=xlp, picarro=picarro,
+                       logger=logger, prodFlag=False, name_space=name_space, sio=socketio)
     resDf=ma.runEntireMeasure(dataFull=receiveData["data"],batchMinTimes=batchMinTimes, batchMaxTimes=batchMaxTimes,esp=esp)
-    resFinalDf= ma.cal_a_b(resDf)
-    csvStr=resFinalDf.to_csv()
+    
+    
+    resDfWithab= ma.cal_a_b(resDf)
+    csvStr = resDfWithab.to_csv()
+    # resFinalDf=ma.cal_DIC_content(resDfWithab)
+    # csvStr=resFinalDf.to_csv()
     socketio.emit('responseData', {"data": csvStr}, namespace=name_space)
+    logger.info("計算已完成")
 
 # @socketio.on('setSpeed', namespace=name_space)
 # def mtest_message(receiveData):
@@ -677,4 +715,4 @@ def measure(receiveData):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000)
+    socketio.run(app, host='0.0.0.0', port=5001)

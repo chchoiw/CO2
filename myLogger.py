@@ -3,13 +3,30 @@ from functools import wraps
 class mylogger(logging.Logger):
     # https://github.com/python/cpython/blob/3.13/Lib/logging/__init__.py
 
-    def __init__(self,name, level=0,sio=None,name_space="echo"):
+    def __init__(self, name, logFolder, level=0, sio=None, name_space="echo"):
         # super(FooChild,self) 首先找到 FooChild 的父类（就是类 FooParent），然后把类 FooChild 的对象转换为类 FooParent 的对象
         super().__init__(name=name, level=level)    
         self.sio=sio
         self.name_space=name_space
-        #self.logging=logging
 
+
+        super().setLevel(logging.DEBUG)
+        console_handler = logging.StreamHandler()
+        # logFolder = config["logFolder"]
+        # logDtStr = datetime.datetime.now().strftime("%Y%m%d")
+
+        formatter = logging.Formatter(
+            '%(asctime)s - %(levelname)-8s - %(name)-12s - %(message)s')
+        # file_handler = logging.FileHandler(
+        #     logFolder+'_{}.txt'.format(logDtStr))
+        file_handler = logging.handlers.TimedRotatingFileHandler(
+            logFolder+"main", when='d', interval=1, backupCount=365, encoding='utf-8')
+        file_handler.suffix = "%Y%m%d_%H%M.log"
+        console_handler.setFormatter(formatter)
+        file_handler.setFormatter(formatter)
+        super().addHandler(console_handler)
+        super().addHandler(file_handler)
+    
         # self.sio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
     def wrapEmit(func):
         """
@@ -29,12 +46,14 @@ class mylogger(logging.Logger):
     def info(self, msg, *args, **kwargs):
         super().info(msg, *args, **kwargs)
         # print("print str",str)
+
     @wrapEmit
     def warning(self, msg, *args, **kwargs):
         """
         Delegate a warning call to the underlying logger.
         """
         super().warning( msg, *args, **kwargs)
+
     @wrapEmit
     def warn(self, msg, *args, **kwargs):
         # warnings.warn("The 'warn' method is deprecated, "
