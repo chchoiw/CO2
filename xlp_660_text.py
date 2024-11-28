@@ -1,4 +1,4 @@
-from tecancavro.models import XCaliburD
+from tecancavro.models import TecanXLP6000
 
 from tecancavro.transport import TecanAPISerial, TecanAPINode
 from time import sleep
@@ -34,9 +34,9 @@ def getSerialPumps():
 
 if __name__ == '__main__':
     print("find serial pumps")
-    # print(findSerialPumps())
+    print(findSerialPumps(),getSerialPumps())
     print("init tecancavro")
-    pump = XCaliburD(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
+    pump = TecanXLP6000(com_link=TecanAPISerial(0, '/dev/ttyUSB0', 9600))
     # pump.init( init_force=0, direction="CW", in_port=0,out_port=0)
     # print(pump.getStartSpeed())
     # print(pump.getTopSpeed())

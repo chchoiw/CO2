@@ -36,6 +36,8 @@ try:
 except:
     from time import sleep
 
+# from time import sleep
+
 from .tecanapi import TecanAPI, TecanAPITimeout
 
 # From http://stackoverflow.com/questions/12090503/

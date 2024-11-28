@@ -24,7 +24,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
     <title>socket.io</title>
 </head>
-<button onclick="getDefaultSpeed()">getDefaultSpeed</button>
+<button onclick="getDefaultConfig()">getDefaultConfig</button>
 <button onclick="getPicarroDataRealTime()">getPicarroDataRealTime</button>
 <button onclick="getFullLog()">getFullLog</button>
 <button onclick="connectInstrument()">connectInstrument</button>
@@ -43,7 +43,7 @@
     <script>
         var socket = null
         function initWebSocket(name_space) {
-            socket = io.connect('ws://localhost:5000/'+name_space, {
+            socket = io.connect('ws://101.132.168.84:7423/' + name_space, {
                 timeout: 300000,
                 reconnectionDelayMax: 1000,
                 reconnectionDelay: 500
@@ -65,7 +65,7 @@
 
 
             socket.on('getDefaultConfig', msg => {
-                
+
                 /*
                     接收pump 和CO2儀器的config 
                     responseData={
@@ -104,7 +104,7 @@
                 "data_path":"./picarro_data/"
             }
             */
-                
+
                 console.log("msg", msg)
             })
 
@@ -163,21 +163,21 @@
                  responseData= {}
                 */
                 console.log("msg", msg)
-            })            
+            })
             socket.on('dispense', msg => {
                 // 注射器放出液體
                 /*
                  responseData= {}
                 */
                 console.log("msg", msg)
-            })    
+            })
             socket.on('extract', msg => {
                 // 注射器抽出液體
                 /*
                  responseData= {}
                 */
                 console.log("msg", msg)
-            })   
+            })
             socket.on('getPlungerStatus', msg => {
                 // 取得泵的狀態
                 /*
@@ -193,14 +193,14 @@
                 }
                 */
                 console.log("msg", msg)
-            }) 
+            })
             socket.on('flush', msg => {
                 // 清洗泵
                 /*
                 responseData={}
                 */
                 console.log("msg", msg)
-            }) 
+            })
             socket.on('realTimeData', msg => {
                 // 實時更新實驗CO2的數據
                 /*
@@ -210,7 +210,7 @@
                 csvStr包括只取樣數據
                 */
                 console.log("msg", msg)
-            }) 
+            })
             socket.on('sampling', msg => {
                 // 進行取樣
                 /*
@@ -219,7 +219,7 @@
                 當"type"="full_sample_data",即取得所有在這個實驗sample的數據,
                 */
                 console.log("msg", msg)
-            }) 
+            })
             socket.on('measuring', msg => {
                 // 進行測量
                 /*
@@ -228,7 +228,7 @@
                 當"type"="full_experiment_data",即取得所有在這個實驗包括sampling 和 measuring的數據,
                 */
                 console.log("msg", msg)
-            }) 
+            })
         }
         function getDefaultConfig() {
             sendObj = {}
@@ -244,43 +244,43 @@
             socket.emit('getFullLog', sendObj)
         }
         function connectInstrument() {
-            sendObj = {"plump":"connect","picarro":"connect"}
+            sendObj = { "plump": "connect", "picarro": "connect" }
             socket.emit('connectInstrument', sendObj)
         }
         function configInstrument() {
-            pump_config={
-                "com": "/dev/ttyUSB0", 
-                "baud":9600,
-                "bytesize":8, 
-                "parity":"N", 
-                "stopbits":1,
-                "num_ports":4, 
-                "syringe_ul":1000, 
-                "direction":"CW",
-                "microstep":2,
-                "waste_port":4,
-                "slope":14,
-                "init_force":0,
-                "extractSpeed":900,
-                "dispenseSpeed":900,
-                "debug":true, 
-                "debug_log_path":"./pump_log/"
+            pump_config = {
+                "com": "/dev/ttyUSB0",
+                "baud": 9600,
+                "bytesize": 8,
+                "parity": "N",
+                "stopbits": 1,
+                "num_ports": 4,
+                "syringe_ul": 1000,
+                "direction": "CW",
+                "microstep": 2,
+                "waste_port": 4,
+                "slope": 14,
+                "init_force": 0,
+                "extractSpeed": 900,
+                "dispenseSpeed": 900,
+                "debug": true,
+                "debug_log_path": "./pump_log/"
             }
-            picarro_config={
-                "com": "/dev/ttyUSB0", 
-                "baud":9600,
-                "bytesize":8, 
-                "parity":"N", 
-                "stopbits":1,
-                "debug":true, 
-                "debug_log_path":"./picarro_log/",
-                "data_path":"./picarro_data/"
+            picarro_config = {
+                "com": "/dev/ttyUSB0",
+                "baud": 9600,
+                "bytesize": 8,
+                "parity": "N",
+                "stopbits": 1,
+                "debug": true,
+                "debug_log_path": "./picarro_log/",
+                "data_path": "./picarro_data/"
             }
-            sendObj = {"plump":pump_config,"picarro":picarro_config}
+            sendObj = { "plump": pump_config, "picarro": picarro_config }
             socket.emit('connectInstrument', sendObj)
         }
         function closeInstrument() {
-            sendObj = {"plump":"close","picarro":close}
+            sendObj = { "plump": "close", "picarro": close }
             socket.emit('closeInstrument', sendObj)
         }
         function initPump() {
@@ -289,97 +289,97 @@
         }
         function dispense() {
             sendObj = {
-                    "data":[
-                            {
-                                "to_port":1, 
-                                "volumn_ul":100,
-                                "dispenseSpeed":1000,
-                            }
-                        ]
+                "data": [
+                    {
+                        "to_port": 1,
+                        "volumn_ul": 100,
+                        "dispenseSpeed": 1000,
                     }
+                ]
+            }
             socket.emit('dispense', sendObj)
-        }     
+        }
         function extract() {
             sendObj = {
-                    "data":[
-                            {
-                                "from_port":1, 
-                                "volumn_ul":100,
-                                "extractSpeed":1000,
-                            }
-                        ]
+                "data": [
+                    {
+                        "from_port": 1,
+                        "volumn_ul": 100,
+                        "extractSpeed": 1000,
                     }
+                ]
+            }
             socket.emit('extract', sendObj)
-        }    
+        }
         function getPlungerStatus() {
             sendObj = {}
             socket.emit('getPlungerStatus', sendObj)
-        }    
+        }
         function flush() {
             sendObj = {
-                "data":[
-                        {
-                            "in_port":1,
-                            "flush_times":1,
-                            "wait_gap_ms":100,
-                            "waste_port":2,
-                            "volumn_ul":1000,
-                        }
-                    ]
-                }
+                "data": [
+                    {
+                        "in_port": 1,
+                        "flush_times": 1,
+                        "wait_gap_ms": 100,
+                        "waste_port": 2,
+                        "volumn_ul": 1000,
+                    }
+                ]
+            }
             socket.emit('flush', sendObj)
-        }    
+        }
         function sampling() {
             sendObj = {
-                    "data":
+                "data":
                     [{
-                        "flush":True,
-                        "in_port":1,
-                        "sample_vol":2,
-                        "out_port":2,
-                        "sample_DIC":1090,
-                        "sample_name":"sample1",
-                        "sample_usage":"sample"
+                        "flush": True,
+                        "in_port": 1,
+                        "sample_vol": 2,
+                        "out_port": 2,
+                        "sample_DIC": 1090,
+                        "sample_name": "sample1",
+                        "sample_usage": "sample"
                     }
-                    ,
+                        ,
                     {
-                        "flush":True,
-                        "in_port":1,
-                        "sample_vol":2,
-                        "out_port":2,
-                        "sample_DIC":1090,
-                        "sample_name":"sample2",
-                        "sample_usage":"sample"
+                        "flush": True,
+                        "in_port": 1,
+                        "sample_vol": 2,
+                        "out_port": 2,
+                        "sample_DIC": 1090,
+                        "sample_name": "sample2",
+                        "sample_usage": "sample"
                     }]
-                    }
-                
+            }
+
             socket.emit('sampling', sendObj)
-        } 
+        }
         function measuring() {
             sendObj = {
-                    "data":[{
-                            "flush":True,
-                            "in_port":1,
-                            "sample_vol":2,
-                            "out_port":2,
-                            "sample_DIC":1090,
-                            "sample_name":"measure1",
-                            "sample_usage":"measure"
-                        },
-                        {
-                            "flush":True,
-                            "in_port":1,
-                            "sample_vol":2,
-                            "out_port":2,
-                            "sample_DIC":1090,
-                            "sample_name":"measure2",
-                            "sample_usage":"measure"
-                        }
-                    ]
+                "data": [{
+                    "flush": True,
+                    "in_port": 1,
+                    "sample_vol": 2,
+                    "out_port": 2,
+                    "sample_DIC": 1090,
+                    "sample_name": "measure1",
+                    "sample_usage": "measure"
+                },
+                {
+                    "flush": True,
+                    "in_port": 1,
+                    "sample_vol": 2,
+                    "out_port": 2,
+                    "sample_DIC": 1090,
+                    "sample_name": "measure2",
+                    "sample_usage": "measure"
                 }
-                
+                ]
+            }
+
             socket.emit('measuring', sendObj)
-        }     
+        }
         function piacrroGetData() {
 
             sendObj = {
@@ -388,7 +388,7 @@
             socket.emit('piacrroGetData', sendObj)
             console.log("sendObj")
         }
-        initWebSocket()
+        initWebSocket("echo")
     </script>
 </body>
 

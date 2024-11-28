@@ -98,7 +98,7 @@ class TecanXLP6000(Syringe):
             'cutoff_speed': None,
             'slope': slope
         }
-
+        self.logger=logger
         # Handle debug mode init
         self.debug = debug
         if logger is not None:

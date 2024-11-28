@@ -5,7 +5,7 @@ try:
     from gevent import sleep
 except:
     from time import sleep
-
+# from time import sleep
 
 class SyringeError(Exception):
     """

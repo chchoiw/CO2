@@ -16,7 +16,8 @@ from picarro_G2301 import Picarro_G2301
 from tecancavro.transport import TecanAPISerial, TecanAPINode
 from tecancavro.models import TecanXLP6000
 from myMeasureAction import measureAction
-
+from gevent import monkey as curious_george
+curious_george.patch_all(thread=False, select=False)
 # class instrument():
 
 #     @abstractmethod
@@ -77,7 +78,7 @@ socketio = SocketIO()
 socketio.init_app(app, cors_allowed_origins='*')
 
 name_space = '/echo'
-socketio.run(app, host='0.0.0.0', port=5001)
+# socketio.run(app, host='0.0.0.0', port=5001)
 pump_config={}
 with open('pump_config.json') as json_file:
     pump_config = json.load(json_file)
@@ -99,11 +100,16 @@ ma=None
 #     "dataFolder": "picarro_data/"
 # }
 logger = mylogger(name=__name__, logFolder=pump_config["debug_log_path"],level=0, sio=socketio, name_space=name_space)
-loggerPicarro=logger.getLogger("Picarro")
-loggerSerial=logger.getLogger("Serial")
-loggerXlp=logger.getLogger("Tecan_XLP6000")
+loggerPicarro=mylogger(name="Picarro", logFolder=pump_config["debug_log_path"],level=0, sio=socketio, name_space=name_space)
+loggerSerial = mylogger(
+    name="Serial", logFolder=pump_config["debug_log_path"], level=0, sio=socketio, name_space=name_space)
+# loggerXlp=logger.getLogger("Tecan_XLP6000")
+loggerXlp = mylogger(
+    name="Tecan_XLP6000", logFolder=pump_config["debug_log_path"], level=0, sio=socketio, name_space=name_space)
+print(loggerXlp)
+print(pump_config["com"])
 try:
-    rs232Device = RS232_Device(device_name="Picarro_G2301", com=picarro_config["com"], port=9600,
+    rs232Device = RS232_Device(device_name="Picarro_G2301", com=picarro_config["com"], baud=9600,
                                 request=False, hello=None, answer=None, termin=chr(13),
                                 timesleep=0.2, logger=loggerSerial)
     picarro=Picarro_G2301(rs232Con=rs232Device, logger=loggerPicarro, config=picarro_config, prodFlag=False)
@@ -113,7 +119,7 @@ try:
                     direction=pump_config["direction"],microstep=int(pump_config["microstep"]), \
                     waste_port=pump_config["waste_port"], slope=int(pump_config["slope"]), \
                     init_force=int(pump_config["init_force"]),debug=pump_config["debug"], \
-                    debug_log_path=pump_config["debug_log_path"])
+                    debug_log_path=pump_config["debug_log_path"],logger=loggerXlp)
     ma = measureAction(xlp=xlp, picarro=picarro,
                             logger=logger, prodFlag=False,name_space=name_space,sio=socketio)
 except:
@@ -595,6 +601,6 @@ def measuring(receiveData):
     #     xlp.setSlope( slope_value=slopeValue,execute=True)
 
 
-# if __name__ == '__main__':
-#     # socketio.run(app, host='0.0.0.0', port=5001)
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5001)
 #     pass
