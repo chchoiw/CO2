@@ -1,14 +1,16 @@
 import logging
+import logging.handlers
 from functools import wraps
+
+
 class mylogger(logging.Logger):
     # https://github.com/python/cpython/blob/3.13/Lib/logging/__init__.py
 
     def __init__(self, name, logFolder, level=0, sio=None, name_space="echo"):
         # super(FooChild,self) 首先找到 FooChild 的父类（就是类 FooParent），然后把类 FooChild 的对象转换为类 FooParent 的对象
-        super().__init__(name=name, level=level)    
-        self.sio=sio
-        self.name_space=name_space
-
+        super().__init__(name=name, level=level)
+        self.sio = sio
+        self.name_space = name_space
 
         super().setLevel(logging.DEBUG)
         console_handler = logging.StreamHandler()
@@ -22,14 +24,16 @@ class mylogger(logging.Logger):
         self.file_handler = logging.handlers.TimedRotatingFileHandler(
             logFolder+"main", when='d', interval=1, backupCount=365, encoding='utf-8')
         self.file_handler.suffix = "%Y%m%d_%H%M.log"
+        self.console_handler = logging.StreamHandler()
         self.console_handler.setFormatter(formatter)
         self.file_handler.setFormatter(formatter)
         super().addHandler(self.console_handler)
         super().addHandler(self.file_handler)
-    
-    def getLogger(self,loggerName):
-        super().getLogger(loggerName)
+
+    def getLogger(self, loggerName):
+        logging.getLogger(loggerName)
         # self.sio.emit('responseData', {'csvStr': csvStr}, namespace=self.name_space)
+
     def wrapEmit(func):
         """
         Decorator to wrap chainable commands, allowing for immediate execution
@@ -37,21 +41,21 @@ class mylogger(logging.Logger):
 
         """
         @wraps(func)
-        def addAndExec(self,msg, *args, **kwargs):
+        def addAndExec(self, msg, *args, **kwargs):
 
-            func(self, msg,*args, **kwargs)
+            func(self, msg, *args, **kwargs)
             self.sio.emit('log', {'data': msg}, namespace=self.name_space)
-            print("wrapmsg",msg)
+            print("wrapmsg", msg)
         return addAndExec
 
     @wrapEmit
     def info(self, msg, *args, **kwargs):
-        
+
         if len(args) == 1 and isinstance(args[0], str):
-            msg1=args.pop()
-            msgNew = " {:<15}: {}".format( msg,msg1)
+            msg1 = list(args).pop()
+            msgNew = " {:<15}: {}".format(msg, msg1)
         else:
-            msgNew=msg
+            msgNew = msg
         super().info(msgNew, *args, **kwargs)
         # print("print str",str)
 
@@ -61,10 +65,10 @@ class mylogger(logging.Logger):
         Delegate a warning call to the underlying logger.
         """
         if len(args) == 1 and isinstance(args[0], str):
-            msg1=args.pop()
-            msgNew = " {:<15}: {}".format( msg,msg1)
+            msg1 = list(args).pop()
+            msgNew = " {:<15}: {}".format(msg, msg1)
         else:
-            msgNew=msg
+            msgNew = msg
         super().warning(msgNew, *args, **kwargs)
 
     @wrapEmit
@@ -73,10 +77,10 @@ class mylogger(logging.Logger):
         Delegate an error call to the underlying logger.
         """
         if len(args) == 1 and isinstance(args[0], str):
-            msg1=args.pop()
-            msgNew = " {:<15}: {}".format( msg,msg1)
+            msg1 = list(args).pop()
+            msgNew = " {:<15}: {}".format(msg, msg1)
         else:
-            msgNew=msg
+            msgNew = msg
         super().error(msgNew, *args, **kwargs)
 
     @wrapEmit
@@ -85,10 +89,10 @@ class mylogger(logging.Logger):
         Delegate an exception call to the underlying logger.
         """
         if len(args) == 1 and isinstance(args[0], str):
-            msg1=args.pop()
-            msgNew = " {:<15}: {}".format( msg,msg1)
+            msg1 = list(args).pop()
+            msgNew = " {:<15}: {}".format(msg, msg1)
         else:
-            msgNew=msg
+            msgNew = msg
         super().exception(msgNew, *args, **kwargs)
 
         #super(mylogger,self).info(str)
@@ -98,12 +102,11 @@ class mylogger(logging.Logger):
         Delegate a critical call to the underlying logger.
         """
         if len(args) == 1 and isinstance(args[0], str):
-            msg1=args.pop()
-            msgNew = " {:<15}: {}".format( msg,msg1)
+            msg1 = list(args).pop()
+            msgNew = " {:<15}: {}".format(msg, msg1)
         else:
-            msgNew=msg
+            msgNew = msg
         super().critical(msgNew, *args, **kwargs)
-
 
 
 # config = {
